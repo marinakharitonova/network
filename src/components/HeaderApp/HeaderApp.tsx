@@ -1,6 +1,5 @@
 import React from 'react';
 import {Layout, Button, Image, Typography, Space} from 'antd';
-import {Container, HeaderTemplate} from '../../styles/components'
 import logo from '../../assets/images/logo.png'
 import HeaderDropdown from "./HeaderDropdown/HeaderDropdown";
 
@@ -8,10 +7,10 @@ const {Header} = Layout;
 const {Text} = Typography;
 
 
-const HeaderApp: React.FC = () => {
+function HeaderApp(){
     return (
-        <HeaderTemplate as={Header}>
-            <Container>
+        <Header>
+            <div className="container">
                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                     <Space align={'center'}>
                         <Image
@@ -28,10 +27,9 @@ const HeaderApp: React.FC = () => {
                         </Button>
                         <HeaderDropdown/>
                     </div>
-
                 </div>
-            </Container>
-        </HeaderTemplate>
+            </div>
+        </Header>
     )
 }
 

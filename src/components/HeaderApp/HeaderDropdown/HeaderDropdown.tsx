@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import {DownOutlined} from '@ant-design/icons';
 import {Dropdown, Menu, Space, Avatar} from 'antd';
 import type {MenuProps} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
 
 
-const HeaderDropdown: React.FC = () => {
+function HeaderDropdown(){
     const [open, setOpen] = useState(false);
 
     const handleMenuClick: MenuProps['onClick'] = e => {
@@ -27,6 +26,7 @@ const HeaderDropdown: React.FC = () => {
                     key: '1',
                 },
             ]}
+            style={{marginTop: '10px'}}
         />
     );
 
@@ -37,7 +37,6 @@ const HeaderDropdown: React.FC = () => {
                 <Space style={{color: 'white'}}>
                     <Avatar size={24} icon={<UserOutlined/>} alt={'user'}/>
                     username
-                    <DownOutlined style={{color: 'white', fontSize: '12px'}}/>
                 </Space>
             </a>
         </Dropdown>

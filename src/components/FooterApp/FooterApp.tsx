@@ -1,14 +1,13 @@
 import {Button, Layout, Space, Typography} from 'antd';
 import {GithubOutlined} from '@ant-design/icons';
-import {Container, HeaderTemplate} from '../../styles/components'
 
 const {Footer} = Layout;
 const {Text} = Typography;
 
 function FooterApp() {
     return (
-        <HeaderTemplate as={Footer}>
-            <Container>
+        <Footer>
+            <div className="container">
                 <div style={{textAlign: 'right', width: '100%', color: 'white'}}>
                     <Space size={10}>
                         <Text style={{color: 'inherit'}}>Marina Kharitonova</Text>
@@ -24,8 +23,8 @@ function FooterApp() {
                         </Button>
                     </Space>
                 </div>
-            </Container>
-        </HeaderTemplate>
+            </div>
+        </Footer>
     )
 }
 

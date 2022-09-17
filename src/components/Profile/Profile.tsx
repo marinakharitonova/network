@@ -1,20 +1,37 @@
-import {Image} from 'antd';
-import MyPost from './MyPosts/MyPost';
-import banner from '../../assets/images/profile/profile-banner.jpg'
+import PostsList from './PostsList/PostsList';
+import PostForm from "./PostForm/PostForm";
+import Banner from "./Banner/Banner";
 
-function Profile() {
+import {IPost} from "../../../models/post.model";
+import { FC } from 'react';
+
+const data: IPost[] = [
+    {
+        avatarSrc: 'https://avatars.mds.yandex.net/i?id=efb47ec07435b74e8dcf00ba0dba0874-5236416-images-thumbs&n=13&exp=1',
+        title: 'Ant Design Title 1',
+        description: 'desc1',
+        likesCount: 100
+    },
+    {
+        avatarSrc: null,
+        title: 'Ant Design Title 2',
+        description: 'desc2',
+        likesCount: 3
+    },
+    {
+        avatarSrc: null,
+        title: 'Title 3',
+        description: 'Hello, Marina',
+        likesCount: 7000
+    }
+];
+
+const Profile: FC = () => {
     return (
         <>
-            <div style={{marginBottom: '48px'}}>
-                <Image
-                    width={'100%'}
-                    height={300}
-                    src={banner}
-                    alt={'Banner'}
-                    style={{objectFit: 'cover', marginBottom: '48px'}}
-                />
-            </div>
-            <MyPost/>
+            <Banner/>
+            <PostForm/>
+            <PostsList posts={data}/>
         </>
 
     )
