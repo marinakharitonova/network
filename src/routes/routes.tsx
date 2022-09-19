@@ -7,7 +7,7 @@ import Settings from "../components/Settings/Settings";
 import News from "../components/News/News";
 import Music from "../components/Music/Music";
 
-const Routes = [
+const routes = [
     {
         path: "/",
         element: <App/>,
@@ -22,7 +22,7 @@ const Routes = [
                 element: <Profile/>,
             },
             {
-                path: "/dialogs",
+                path: "/dialogs/*",
                 element: <Dialogs/>,
             },
             {
@@ -42,4 +42,4 @@ const Routes = [
 
 ];
 
-export default Routes;
+export default routes;

@@ -2,7 +2,7 @@ import {FC} from "react";
 import {useRouteError} from "react-router-dom"
 import {Typography, Space} from 'antd';
 
-const {Title, Text} = Typography;
+const {Title} = Typography;
 
 interface RouteError {
     statusText?: string,

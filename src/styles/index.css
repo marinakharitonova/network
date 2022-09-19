@@ -25,3 +25,12 @@ body {
     background: #120338;
     line-height: inherit;
 }
+
+.ant-layout-sider {
+    width: auto !important;
+    min-width: auto !important;
+}
+
+.ant-card-body {
+    height: 100%;
+}

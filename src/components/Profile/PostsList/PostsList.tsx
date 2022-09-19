@@ -18,7 +18,7 @@ const PostsList: FC<PostsListProps> = ({posts}: PostsListProps) => {
                 dataSource={posts}
                 renderItem={item => (
                     <List.Item
-                        key={item.title}
+                        key={item.id}
                         actions={[
                             <Tooltip title="like">
                                 <Button icon={<LikeOutlined />} shape="round"> {item.likesCount} </Button>
@@ -35,7 +35,6 @@ const PostsList: FC<PostsListProps> = ({posts}: PostsListProps) => {
                 )}
             />
         </>
-
     )
 }
 
