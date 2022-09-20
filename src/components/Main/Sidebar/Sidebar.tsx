@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 
 const {Sider} = Layout;
 
-const SiderApp = (): JSX.Element => {
+const Sidebar = (): JSX.Element => {
 
     const items = [
         {label: (<Link to='profile'>Profile</Link>), key: '1'},
@@ -21,4 +21,4 @@ const SiderApp = (): JSX.Element => {
     )
 }
 
-export default SiderApp
+export default Sidebar

@@ -1,7 +1,7 @@
 import React from "react";
 import {Space, Avatar, Typography} from "antd";
 import {UserOutlined} from '@ant-design/icons';
-import {IMessage} from "../../../../../models/message.module";
+import {IMessage} from "../../../../../../models/message.module";
 
 const {Text} = Typography;
 

@@ -1,6 +1,6 @@
 import {Avatar, Button, List, Tooltip, Typography} from 'antd';
 import {LikeOutlined, UserOutlined,} from '@ant-design/icons';
-import {IPost} from "../../../../models/post.model";
+import {IPost} from "../../../../../models/post.model";
 
 const {Title} = Typography;
 

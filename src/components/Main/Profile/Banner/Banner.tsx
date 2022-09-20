@@ -1,5 +1,5 @@
 import {Image} from "antd";
-import banner from "../../../assets/images/profile/profile-banner.jpg";
+import banner from "../../../../assets/images/profile/profile-banner.jpg";
 
 const PostForm = (): JSX.Element => {
     return (
