@@ -1,4 +1,4 @@
-import React, {FC} from "react"
+import React from "react";
 import {Space, Avatar, Typography} from "antd";
 import {UserOutlined} from '@ant-design/icons';
 import {IMessage} from "../../../../../models/message.module";
@@ -15,9 +15,9 @@ const messageStyle: React.CSSProperties = {
 const messageAnswerStyle: React.CSSProperties =
     Object.assign({}, messageStyle, {justifySelf: 'flex-end'});
 
-interface MessageProps extends IMessage {}
+type MessageProps = IMessage
 
-const Message: FC<MessageProps> = (props: MessageProps) => {
+const Message = (props: MessageProps): JSX.Element => {
     return (
         <Space align="start" style={messageStyle}>
             {props.author.avatarSrc ? <Avatar src={props.author.avatarSrc} size={30}/>

@@ -1,10 +1,9 @@
-import {FC} from 'react';
 import {Layout, Menu} from 'antd';
 import {Link} from "react-router-dom";
 
 const {Sider} = Layout;
 
-const SiderApp: FC = () => {
+const SiderApp = (): JSX.Element => {
 
     const items = [
         {label: (<Link to='profile'>Profile</Link>), key: '1'},

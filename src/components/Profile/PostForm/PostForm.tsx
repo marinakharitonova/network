@@ -1,8 +1,7 @@
-import {FC} from "react";
 import {Button, Form} from "antd";
 import TextArea from "antd/es/input/TextArea";
 
-const PostForm: FC = () => {
+const PostForm = (): JSX.Element => {
     return (
         <Form
             name='basic'

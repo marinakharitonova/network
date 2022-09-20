@@ -1,4 +1,3 @@
-import {FC} from "react";
 import {useRouteError} from "react-router-dom"
 import {Typography, Space} from 'antd';
 
@@ -9,7 +8,7 @@ interface RouteError {
     message?: string
 }
 
-const ErrorPage: FC = () => {
+const ErrorPage = (): JSX.Element => {
     const error = useRouteError();
     const {statusText, message} = error as RouteError;
 

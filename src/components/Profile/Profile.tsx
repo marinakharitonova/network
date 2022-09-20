@@ -4,7 +4,6 @@ import Banner from "./Banner/Banner";
 import UserInfo from "./UserInfo/UserInfo";
 
 import {IPost} from "../../../models/post.model";
-import { FC } from 'react';
 
 const data: IPost[] = [
     {
@@ -30,7 +29,7 @@ const data: IPost[] = [
     }
 ];
 
-const Profile: FC = () => {
+const Profile = (): JSX.Element => {
     return (
         <>
             <Banner/>

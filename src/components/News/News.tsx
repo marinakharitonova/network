@@ -1,6 +1,5 @@
-import {FC} from 'react';
 
-const News: FC = () => {
+const News = (): JSX.Element => {
     return (
         <div>News</div>
     )

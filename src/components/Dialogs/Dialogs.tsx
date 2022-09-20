@@ -1,4 +1,3 @@
-import {FC} from "react"
 import {Row, Col} from "antd";
 import DialogsMenu from "./DialogsMenu/DialogsMenu";
 import MessagesList from "./MessagesList/MessagesList";
@@ -19,7 +18,7 @@ const dialogsData: IDialog[] = [
     },
 ]
 
-const Dialogs: FC = () => {
+const Dialogs = (): JSX.Element => {
 
     return (
         <Row gutter={16} style={{height: '100%'}}>

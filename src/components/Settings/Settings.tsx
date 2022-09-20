@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {SketchPicker} from 'react-color';
 import {ConfigProvider} from 'antd';
 
-const Settings: React.FC = () => {
+const Settings = (): JSX.Element => {
     const [color, setColor] = useState({
         primaryColor: '#25b864',
     });

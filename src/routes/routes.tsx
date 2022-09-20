@@ -14,27 +14,29 @@ const routes = [
         errorElement: <ErrorPage />,
         children: [
             {
-                path: "/",
+                path: "profile",
                 element: <Profile/>,
             },
             {
-                path: "/profile",
-                element: <Profile/>,
-            },
-            {
-                path: "/dialogs/*",
+                path: "dialogs",
                 element: <Dialogs/>,
+                children: [
+                    {
+                        path: ":dialogId",
+                        element: <Dialogs/>,
+                    }
+                ]
             },
             {
-                path: "/news",
+                path: "news",
                 element: <News/>,
             },
             {
-                path: "/music",
+                path: "music",
                 element: <Music/>,
             },
             {
-                path: "/settings",
+                path: "settings",
                 element: <Settings/>,
             },
         ],

@@ -1,8 +1,7 @@
-import {FC} from "react";
 import {Image} from "antd";
 import banner from "../../../assets/images/profile/profile-banner.jpg";
 
-const PostForm: FC = () => {
+const PostForm = (): JSX.Element => {
     return (
         <div style={{marginBottom: '48px'}}>
             <Image

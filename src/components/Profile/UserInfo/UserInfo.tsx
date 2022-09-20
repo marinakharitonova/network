@@ -1,9 +1,8 @@
-import {FC} from 'react';
 import {Descriptions, Avatar, Row, Col} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
 
 
-const UserInfo: FC = () => {
+const UserInfo = (): JSX.Element => {
     return (
         <Row gutter={16} style={{marginBottom: '36px'}}>
             <Col span={4}>

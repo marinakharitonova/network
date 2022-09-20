@@ -1,11 +1,10 @@
-import {FC} from 'react';
 import { Outlet } from "react-router-dom";
 import {Col, Layout, Row, Card} from 'antd';
 import SiderApp from '../SiderApp/SiderApp';
 
 const {Content} = Layout;
 
-const MainApp: FC = () => {
+const MainApp = (): JSX.Element => {
     return (
         <Layout>
             <div className="container">

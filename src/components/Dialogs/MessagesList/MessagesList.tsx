@@ -1,4 +1,3 @@
-import React, {FC} from "react"
 import Message from "./Message/Message";
 import {IMessage} from "../../../../models/message.module";
 
@@ -27,7 +26,7 @@ const messagesData: IMessage[] = [
     },
 ]
 
-const MessagesList: FC = () => {
+const MessagesList = (): JSX.Element => {
     return (
         <div style={messagesListStyle}>
             <Message id={messagesData[0].id} text={messagesData[0].text} author={messagesData[0].author}/>

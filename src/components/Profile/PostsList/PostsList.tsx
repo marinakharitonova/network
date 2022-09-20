@@ -1,15 +1,14 @@
-import React, {FC} from "react";
 import {Avatar, Button, List, Tooltip, Typography} from 'antd';
 import {LikeOutlined, UserOutlined,} from '@ant-design/icons';
 import {IPost} from "../../../../models/post.model";
 
 const {Title} = Typography;
 
-interface PostsListProps {
+type PostsListProps = {
     posts: IPost[]
 }
 
-const PostsList: FC<PostsListProps> = ({posts}: PostsListProps) => {
+const PostsList = ({posts}: PostsListProps): JSX.Element => {
     return (
         <>
             <Title level={2}>My posts</Title>
