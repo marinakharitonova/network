@@ -9,7 +9,6 @@ type ProfileProps = {
     posts: IPost[]
 }
 
-
 const Profile = ({posts} : ProfileProps): JSX.Element => {
     return (
         <>

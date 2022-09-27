@@ -18,7 +18,7 @@ type MessagesListProps = {
 
 const MessagesList = ({messages}: MessagesListProps): JSX.Element => {
     const messageItems = messages.map(el =>
-        (<Message id={el.id} text={el.text} author={el.author}/>))
+        (<Message key={el.id} id={el.id} text={el.text} author={el.author}/>))
 
     return (
         <div style={messagesListStyle}>

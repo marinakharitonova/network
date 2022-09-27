@@ -4,12 +4,15 @@ import reportWebVitals from './reportWebVitals';
 import './styles/index.css'
 import {purple} from '@ant-design/colors';
 import {ConfigProvider} from 'antd';
-import {BrowserRouter, createBrowserRouter, RouterProvider} from "react-router-dom";
+import {BrowserRouter, createBrowserRouter, Route, RouterProvider, Routes} from "react-router-dom";
 //import routes from "./routes/routes";
 import App from "./App";
 import {IDialog} from "../models/dialog.module";
 import {IMessage} from "../models/message.module";
 import {IPost} from "../models/post.model";
+import Profile from "./components/Main/Profile/Profile";
+import ErrorPage from "./components/ErrorPage/ErrorPage";
+import Dialogs from "./components/Main/Dialogs/Dialogs";
 
 //const router = createBrowserRouter(routes);
 
@@ -78,7 +81,14 @@ root.render(
     <React.StrictMode>
         <ConfigProvider>
             <BrowserRouter>
-                <App dialogsData={dialogsData} messagesData={messagesData} postsData={postsData}/>
+                <Routes>
+                    <Route path="/" element={<App/>}>
+                        <Route index element={<Profile posts={postsData}/>}/>
+                        <Route path="profile" element={<Profile posts={postsData}/>}/>
+                        <Route path="dialogs/*" element={<Dialogs dialogs={dialogsData} messages={messagesData}/>}/>
+                    </Route>
+                    <Route path="*" element={<div>Nothing is here</div>}/>
+                </Routes>
             </BrowserRouter>
             {/*<RouterProvider router={router}/>*/}
         </ConfigProvider>

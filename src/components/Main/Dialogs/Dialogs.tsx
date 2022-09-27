@@ -9,7 +9,6 @@ type DialogsProps = {
     messages: IMessage[]
 }
 
-
 const Dialogs = ({dialogs, messages}: DialogsProps): JSX.Element => {
 
     return (
