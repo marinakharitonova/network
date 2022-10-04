@@ -7,7 +7,7 @@ function App() {
     return (
         <Layout style={{minHeight: "100vh"}}>
             <HeaderApp/>
-            <Main />
+            <Main/>
             <FooterApp/>
         </Layout>
     );

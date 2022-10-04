@@ -6,30 +6,32 @@ import ErrorPage from "../components/ErrorPage/ErrorPage";
 import Settings from "../components/Main/Settings/Settings";
 import News from "../components/Main/News/News";
 import Music from "../components/Main/Music/Music";
-import {IPost} from "../../models/post.model";
 import {RouteObject} from "react-router-dom";
+import {profileLoader, dialogsLoader} from "../getData";
+
 
 const routes: RouteObject[] = [
     {
         path: "/",
-        // element: <App/>,
+        element: <App/>,
         errorElement: <ErrorPage />,
-        // loader: rootLoader,
         children: [
-            // {
-            //     path: "profile",
-            //     element: <Profile posts={}/>,
-            // },
-            // {
-            //     path: "dialogs",
-            //     element: <Dialogs dialogs={}/>,
-            //     children: [
-            //         {
-            //             path: ":dialogId",
-            //             element: <Dialogs/>,
-            //         }
-            //     ]
-            // },
+            {
+                path: "profile",
+                element: <Profile/>,
+                loader: profileLoader
+            },
+            {
+                path: "dialogs",
+                element: <Dialogs/>,
+                loader: dialogsLoader,
+                children: [
+                    {
+                        path: ":dialogId",
+                        element: <Dialogs/>,
+                    }
+                ]
+            },
             {
                 path: "news",
                 element: <News/>,
