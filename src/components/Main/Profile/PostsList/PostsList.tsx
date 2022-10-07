@@ -1,6 +1,7 @@
-import {Avatar, Button, List, Tooltip, Typography} from 'antd';
-import {LikeOutlined, UserOutlined,} from '@ant-design/icons';
+import {Button, List, Tooltip, Typography} from 'antd';
+import {LikeOutlined} from '@ant-design/icons';
 import {IPost} from "../../../../../models/post.model";
+import AvatarApp from "../../../AvatarApp/AvatarApp";
 
 const {Title} = Typography;
 
@@ -25,7 +26,7 @@ const PostsList = ({posts}: PostsListProps): JSX.Element => {
                         ]}
                     >
                         <List.Item.Meta
-                            avatar={item.avatarSrc ? <Avatar src={item.avatarSrc}/> : <Avatar icon={<UserOutlined/>}/>}
+                            avatar={<AvatarApp src={item.avatarSrc} size={40}/>}
                             title={item.title}
                             description={item.description}
 

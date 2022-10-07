@@ -1,7 +1,7 @@
 import React from "react";
-import {Space, Avatar, Typography} from "antd";
-import {UserOutlined} from '@ant-design/icons';
+import {Space, Typography} from "antd";
 import {IMessage} from "../../../../../../models/message.module";
+import AvatarApp from "../../../../AvatarApp/AvatarApp";
 
 const {Text} = Typography;
 
@@ -20,8 +20,7 @@ type MessageProps = IMessage
 const Message = (props: MessageProps): JSX.Element => {
     return (
         <Space align="start" style={messageStyle}>
-            {props.author.avatarSrc ? <Avatar src={props.author.avatarSrc} size={30}/>
-                : <Avatar icon={<UserOutlined/>} size={30}/>}
+            <AvatarApp src={props.author.avatarSrc}/>
             <Text>{props.text}</Text>
         </Space>
     )

@@ -1,12 +1,13 @@
 import {Descriptions, Avatar, Row, Col} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
+import AvatarApp from "../../../AvatarApp/AvatarApp";
 
 
 const UserInfo = (): JSX.Element => {
     return (
         <Row gutter={16} style={{marginBottom: '36px'}}>
             <Col span={4}>
-                <Avatar shape="square" size={128} icon={<UserOutlined/>}/>
+                <AvatarApp src={null} shape="square" size={128} />
             </Col>
             <Col span={18}>
                 <Descriptions style={{marginBottom: '36px'}}>

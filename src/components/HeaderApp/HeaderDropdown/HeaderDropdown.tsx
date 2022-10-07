@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {Dropdown, Menu, Space, Avatar} from 'antd';
+import {Dropdown, Menu, Space} from 'antd';
 import type {MenuProps} from 'antd';
-import {UserOutlined} from '@ant-design/icons';
+import AvatarApp from "../../AvatarApp/AvatarApp";
 
 
-function HeaderDropdown(){
+function HeaderDropdown() {
     const [open, setOpen] = useState(false);
 
     const handleMenuClick: MenuProps['onClick'] = e => {
@@ -35,7 +35,7 @@ function HeaderDropdown(){
         <Dropdown overlay={menu} onOpenChange={handleOpenChange} open={open}>
             <a onClick={e => e.preventDefault()}>
                 <Space style={{color: 'white'}}>
-                    <Avatar size={24} icon={<UserOutlined/>} alt={'user'}/>
+                    <AvatarApp src={null} size={24}/>
                     username
                 </Space>
             </a>

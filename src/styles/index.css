@@ -21,7 +21,7 @@ body {
 
 .ant-layout-header, .ant-layout-footer {
     height: auto;
-    padding: 36px 0;
+    padding: 20px 0;
     background: #120338;
     line-height: inherit;
 }

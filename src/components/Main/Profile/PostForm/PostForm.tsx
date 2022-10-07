@@ -1,26 +1,23 @@
 import {Button, Form} from "antd";
-import TextArea from "antd/es/input/TextArea";
+import TextArea, {TextAreaRef} from "antd/es/input/TextArea";
+import React, {useRef} from "react";
 
 const PostForm = (): JSX.Element => {
-    return (
-        <Form
-            name='basic'
-            labelCol={{span: 8}}
-            wrapperCol={{span: 16}}
-            autoComplete='off'
-        >
-            <Form.Item
-                name='post'
-            >
-                <TextArea showCount maxLength={300} allowClear={true} autoSize={{maxRows: 4, minRows: 4}}/>
-            </Form.Item>
 
-            <Form.Item>
-                <Button type='primary' htmlType='submit'>
-                    Post
-                </Button>
-            </Form.Item>
-        </Form>
+    const ref = useRef<TextAreaRef>(null);
+
+    const addPost = (): void => {
+        alert(ref.current?.resizableTextArea?.props.value)
+    }
+
+    return (
+        <div style={{maxWidth: '600px', marginBottom: '36px'}}>
+            <TextArea showCount maxLength={300} allowClear={true}
+                      autoSize={{maxRows: 4, minRows: 4}} ref={ref} style={{marginBottom: '16px'}}/>
+            <Button type='primary' htmlType='submit' onClick={addPost}>
+                Post
+            </Button>
+        </div>
     )
 }
 
