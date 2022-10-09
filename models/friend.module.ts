@@ -1,6 +1,6 @@
 export interface IFriend {
     id: number,
     name: string,
-    avatarSrc: String | null,
-    status: String | null,
+    avatarSrc: string | null,
+    status: string | null,
 }

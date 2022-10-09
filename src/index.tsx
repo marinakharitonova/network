@@ -6,8 +6,7 @@ import {purple} from '@ant-design/colors';
 import {ConfigProvider} from 'antd';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import routes from "./routes/routes";
-
-const router = createBrowserRouter(routes);
+import {store} from "./redux/state";
 
 ConfigProvider.config({
     theme: {
@@ -15,13 +14,21 @@ ConfigProvider.config({
     }
 });
 
+const router = createBrowserRouter(routes);
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-root.render(
-    <React.StrictMode>
-        <ConfigProvider>
-            <RouterProvider router={router}/>
-        </ConfigProvider>
-    </React.StrictMode>
-);
+
+function rerenderTree(){
+    root.render(
+        <React.StrictMode>
+            <ConfigProvider>
+                <RouterProvider router={router}/>
+            </ConfigProvider>
+        </React.StrictMode>
+    );
+}
+
+rerenderTree();
+
+store.subscribe(rerenderTree)
 
 reportWebVitals();

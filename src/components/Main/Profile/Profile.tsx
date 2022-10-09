@@ -6,7 +6,12 @@ import UserInfo from "./UserInfo/UserInfo";
 import {IPost} from "../../../../models/post.model";
 
 type ProfileData = {
-    posts: IPost[]
+    state: {
+        posts: IPost[],
+        newPostMessage: string,
+    },
+    addPost: () => void,
+    updateNewPostMessage: () => void
 }
 
 const Profile = (): JSX.Element => {
@@ -15,8 +20,11 @@ const Profile = (): JSX.Element => {
         <>
             <Banner/>
             <UserInfo/>
-            <PostForm/>
-            <PostsList posts={profileData.posts}/>
+            <PostForm addPost={profileData.addPost}
+                      newPostMessage={profileData.state.newPostMessage}
+                      updateNewPostMessage={profileData.updateNewPostMessage}
+            />
+            <PostsList posts={profileData.state.posts}/>
         </>
 
     )

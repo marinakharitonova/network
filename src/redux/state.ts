@@ -74,17 +74,50 @@ const friendsList: IFriend[] = [
     }
 ]
 
-export const state = {
-    profilePage: {
-        posts: postsData
+export const store = {
+    _emit(object: any) {
+        console.log('store changed')
     },
-    dialogsPage: {
-        messages: messagesData,
-        dialogs: dialogsData
+    _state: {
+        profilePage: {
+            posts: postsData,
+            newPostMessage: ''
+        },
+        dialogsPage: {
+            messages: messagesData,
+            dialogs: dialogsData
+        },
+        friendsPage: {
+            friends: friendsList
+        }
     },
-    friendsPage: {
-        friends: friendsList
-    }
+    getState() {
+        return this._state;
+    },
+    subscribe(observer: any) {
+        this._emit = observer
+    },
+
+    dispatch(action: any) {
+        if (action.type === 'ADD-POST') {
+            const newPost: IPost = {
+                id: 5,
+                avatarSrc: null,
+                title: 'Title new',
+                description: this._state.profilePage.newPostMessage,
+                likesCount: 0
+            }
+
+            this._state.profilePage.posts.push(newPost);
+            this._state.profilePage.newPostMessage = '';
+
+            this._emit(this._state)
+        }
+        if (action.type === 'UPDATE-NEW-POST-MESSAGE') {
+            this._state.profilePage.newPostMessage = action.message;
+            this._emit(this._state)
+        }
+    },
 }
 
 function sleep(n: number = 500) {
@@ -93,15 +126,19 @@ function sleep(n: number = 500) {
 
 export async function profileLoader() {
     await sleep();
-    return state.profilePage
+    return {
+        state: store.getState().profilePage,
+        addPost: store.dispatch.bind(store),
+        updateNewPostMessage: store.dispatch.bind(store)
+    }
 }
 
 export async function dialogsLoader() {
     await sleep();
-    return state.dialogsPage
+    return store.getState().dialogsPage
 }
 
 export async function friendsLoader() {
     await sleep();
-    return state.friendsPage
+    return store.getState().friendsPage
 }

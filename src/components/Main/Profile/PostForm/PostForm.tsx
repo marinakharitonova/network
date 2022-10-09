@@ -1,20 +1,36 @@
-import {Button, Form} from "antd";
+import {Button} from "antd";
 import TextArea, {TextAreaRef} from "antd/es/input/TextArea";
 import React, {useRef} from "react";
 
-const PostForm = (): JSX.Element => {
+type PostsFormProps = {
+    newPostMessage: string,
+    addPost: (action: any) => void,
+    updateNewPostMessage: (action: any) => void,
+}
+
+const PostForm = ({addPost, newPostMessage, updateNewPostMessage}: PostsFormProps): JSX.Element => {
 
     const ref = useRef<TextAreaRef>(null);
 
-    const addPost = (): void => {
-        alert(ref.current?.resizableTextArea?.props.value)
+    const handleClick = (): void => {
+        addPost({type: 'ADD-POST'});
+    }
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+        const value = e.target.value;
+        const action = {type: 'UPDATE-NEW-POST-MESSAGE', message: value};
+        updateNewPostMessage(action)
     }
 
     return (
         <div style={{maxWidth: '600px', marginBottom: '36px'}}>
             <TextArea showCount maxLength={300} allowClear={true}
-                      autoSize={{maxRows: 4, minRows: 4}} ref={ref} style={{marginBottom: '16px'}}/>
-            <Button type='primary' htmlType='submit' onClick={addPost}>
+                      autoSize={{maxRows: 4, minRows: 4}} ref={ref} style={{marginBottom: '16px'}}
+                      value={newPostMessage}
+                      onChange={handleChange}
+            />
+
+            <Button type='primary' onClick={handleClick}>
                 Post
             </Button>
         </div>
