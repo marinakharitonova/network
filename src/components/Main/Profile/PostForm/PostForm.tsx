@@ -1,6 +1,7 @@
 import {Button} from "antd";
-import TextArea, {TextAreaRef} from "antd/es/input/TextArea";
-import React, {useRef} from "react";
+import TextArea from "antd/es/input/TextArea";
+import React from "react";
+import {addPostActionCreator, updateNewPostMessageActionCreator} from "../../../../redux/state";
 
 type PostsFormProps = {
     newPostMessage: string,
@@ -10,22 +11,19 @@ type PostsFormProps = {
 
 const PostForm = ({addPost, newPostMessage, updateNewPostMessage}: PostsFormProps): JSX.Element => {
 
-    const ref = useRef<TextAreaRef>(null);
-
     const handleClick = (): void => {
-        addPost({type: 'ADD-POST'});
+        addPost(addPostActionCreator());
     }
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
         const value = e.target.value;
-        const action = {type: 'UPDATE-NEW-POST-MESSAGE', message: value};
-        updateNewPostMessage(action)
+        updateNewPostMessage(updateNewPostMessageActionCreator(value))
     }
 
     return (
         <div style={{maxWidth: '600px', marginBottom: '36px'}}>
             <TextArea showCount maxLength={300} allowClear={true}
-                      autoSize={{maxRows: 4, minRows: 4}} ref={ref} style={{marginBottom: '16px'}}
+                      autoSize={{maxRows: 4, minRows: 4}} style={{marginBottom: '16px'}}
                       value={newPostMessage}
                       onChange={handleChange}
             />

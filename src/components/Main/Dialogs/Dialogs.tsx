@@ -4,35 +4,49 @@ import MessagesList from "./MessagesList/MessagesList";
 import {IDialog} from "../../../../models/dialog.module";
 import {IMessage} from "../../../../models/message.module";
 import {useLoaderData} from "react-router-dom";
-import TextArea, {TextAreaRef} from "antd/es/input/TextArea";
-import React, {useRef} from "react";
+import TextArea from "antd/es/input/TextArea";
+import React from "react";
+import {sendMessageActionCreator, updateMessageActionCreator} from "../../../redux/state";
 
 type DialogsData = {
-    dialogs: IDialog[],
-    messages: IMessage[]
+    state: {
+        dialogs: IDialog[],
+        messages: IMessage[],
+        messageText: string
+    },
+    updateMessage: (action: any) => void,
+    sendMessage: (action: any) => void
+
 }
 
 const Dialogs = (): JSX.Element => {
 
-    const ref = useRef<TextAreaRef>(null);
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const value = e.target.value;
+        dialogsData.updateMessage(updateMessageActionCreator(value));
+    }
 
-    const sendMessage = (): void => {
-        alert(ref.current?.resizableTextArea?.props.value)
+    const handleClick = () => {
+        dialogsData.sendMessage(sendMessageActionCreator());
     }
 
     const dialogsData = useLoaderData() as DialogsData;
     return (
         <Row gutter={16} style={{height: '100%'}}>
             <Col span={6}>
-                <DialogsMenu dialogs={dialogsData.dialogs}/>
+                <DialogsMenu dialogs={dialogsData.state.dialogs}/>
             </Col>
             <Col span={18} style={{display: 'flex', flexDirection: 'column'}}>
-               <MessagesList messages={dialogsData.messages}/>
+                <MessagesList messages={dialogsData.state.messages}/>
 
                 <div style={{marginTop: 'auto'}}>
                     <TextArea showCount maxLength={1000} allowClear={true}
-                              autoSize={{maxRows: 4, minRows: 4}} ref={ref} style={{marginBottom: '16px'}}/>
-                    <Button type='primary' onClick={sendMessage}>
+                              value={dialogsData.state.messageText}
+                              onChange={handleChange}
+                              autoSize={{maxRows: 4, minRows: 4}}
+                              style={{marginBottom: '16px'}}
+                    />
+                    <Button type='primary' onClick={handleClick}>
                         Send
                     </Button>
                 </div>
