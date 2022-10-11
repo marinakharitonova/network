@@ -2,6 +2,9 @@ import {IDialog} from "../../models/dialog.module";
 import {IMessage} from "../../models/message.module";
 import {IPost} from "../../models/post.model";
 import {IFriend} from "../../models/friend.module";
+import profileReducer from "./profileReducer";
+import dialogsReducer from "./dialogsReducer";
+import friendsReducer from "./friendsReducer";
 
 const dialogsData: IDialog[] = [
     {
@@ -74,18 +77,6 @@ const friendsList: IFriend[] = [
     }
 ]
 
-const ADD_POST = 'ADD-POST';
-const UPDATE_NEW_POST_MESSAGE = 'UPDATE-NEW-POST-MESSAGE';
-const UPDATE_MESSAGE = 'UPDATE-MESSAGE';
-const SEND_MESSAGE = 'SEND-MESSAGE';
-
-export const addPostActionCreator = () => ({type: ADD_POST});
-export const updateNewPostMessageActionCreator = (value: string) =>
-    ({type: UPDATE_NEW_POST_MESSAGE, message: value});
-export const sendMessageActionCreator = () => ({type: SEND_MESSAGE});
-export const updateMessageActionCreator = (value: string) =>
-    ({type: UPDATE_MESSAGE, message: value});
-
 export const store = {
     _emit(object: any) {
         console.log('store changed')
@@ -112,42 +103,11 @@ export const store = {
     },
 
     dispatch(action: any) {
-        switch (action.type) {
-            case ADD_POST:
-                const newPost: IPost = {
-                    id: 5,
-                    avatarSrc: null,
-                    title: 'Title new',
-                    description: this._state.profilePage.newPostMessage,
-                    likesCount: 0
-                }
+        this._state.profilePage = profileReducer(this._state.profilePage, action);
+        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
+        this._state.friendsPage = friendsReducer(this._state.friendsPage, action);
 
-                this._state.profilePage.posts.push(newPost);
-                this._state.profilePage.newPostMessage = '';
-
-                this._emit(this._state);
-                break;
-            case UPDATE_NEW_POST_MESSAGE:
-                this._state.profilePage.newPostMessage = action.message;
-                this._emit(this._state);
-                break;
-            case UPDATE_MESSAGE:
-                this._state.dialogsPage.messageText = action.message;
-                this._emit(this._state);
-                break;
-            case SEND_MESSAGE:
-                const newMessage = {
-                    id: 3,
-                    author: {
-                        avatarSrc: null,
-                    },
-                    text: this._state.dialogsPage.messageText,
-                };
-                this._state.dialogsPage.messages.push(newMessage);
-                this._emit(this._state);
-                this._state.dialogsPage.messageText = '';
-                break;
-        }
+        this._emit(this._state);
     },
 }
 

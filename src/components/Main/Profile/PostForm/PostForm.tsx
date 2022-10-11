@@ -1,7 +1,7 @@
 import {Button} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import React from "react";
-import {addPostActionCreator, updateNewPostMessageActionCreator} from "../../../../redux/state";
+import {addPostActionCreator, updateNewPostMessageActionCreator} from "../../../../redux/profileReducer";
 
 type PostsFormProps = {
     newPostMessage: string,

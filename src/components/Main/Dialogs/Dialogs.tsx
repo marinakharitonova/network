@@ -1,4 +1,4 @@
-import {Row, Col, Form, Button} from "antd";
+import {Row, Col, Button} from "antd";
 import DialogsMenu from "./DialogsMenu/DialogsMenu";
 import MessagesList from "./MessagesList/MessagesList";
 import {IDialog} from "../../../../models/dialog.module";
@@ -6,7 +6,7 @@ import {IMessage} from "../../../../models/message.module";
 import {useLoaderData} from "react-router-dom";
 import TextArea from "antd/es/input/TextArea";
 import React from "react";
-import {sendMessageActionCreator, updateMessageActionCreator} from "../../../redux/state";
+import {sendMessageActionCreator, updateMessageActionCreator} from "../../../redux/dialogsReducer";
 
 type DialogsData = {
     state: {
