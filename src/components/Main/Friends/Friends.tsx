@@ -1,19 +1,15 @@
 import {List} from "antd";
-import {useLoaderData} from "react-router-dom";
-import {IFriend} from "../../../../models/friend.module";
 import AvatarApp from "../../AvatarApp/AvatarApp";
-
-type FriendsData = {
-    friends: IFriend[]
-}
+import {useAppSelector} from "../../../redux/hooks";
+import {SelectFriends} from "../../../redux/features/friendsSlice";
 
 const Friends = (): JSX.Element => {
-    const friendsData = useLoaderData() as FriendsData;
+    const {friends} = useAppSelector(SelectFriends)
 
     return (
         <List
             itemLayout="horizontal"
-            dataSource={friendsData.friends}
+            dataSource={friends}
             renderItem={item => (
                 <List.Item>
                     <List.Item.Meta

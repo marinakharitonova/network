@@ -2,6 +2,7 @@ import {Layout} from 'antd';
 import HeaderApp from "./components/HeaderApp/HeaderApp";
 import Main from "./components/Main/Main";
 import FooterApp from "./components/FooterApp/FooterApp";
+import React from "react";
 
 function App() {
     return (

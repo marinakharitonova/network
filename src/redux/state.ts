@@ -1,11 +1,3 @@
-import {IDialog} from "../../models/dialog.module";
-import {IMessage} from "../../models/message.module";
-import {IPost} from "../../models/post.model";
-import {IFriend} from "../../models/friend.module";
-import profileReducer from "./profileReducer";
-import dialogsReducer from "./dialogsReducer";
-import friendsReducer from "./friendsReducer";
-
 const dialogsData: IDialog[] = [
     {
         id: 1,
@@ -103,9 +95,9 @@ export const store = {
     },
 
     dispatch(action: any) {
-        this._state.profilePage = profileReducer(this._state.profilePage, action);
-        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
-        this._state.friendsPage = friendsReducer(this._state.friendsPage, action);
+        // this._state.profilePage = profileSlice(this._state.profilePage, action);
+        // this._state.dialogsPage = dialogsSlice(this._state.dialogsPage, action);
+        // this._state.friendsPage = friendsSlice(this._state.friendsPage, action);
 
         this._emit(this._state);
     },

@@ -8,7 +8,6 @@ import News from "../components/Main/News/News";
 import Music from "../components/Main/Music/Music";
 import Friends from "../components/Main/Friends/Friends";
 import {RouteObject} from "react-router-dom";
-import {dialogsLoader, profileLoader, friendsLoader} from "../redux/state";
 
 const routes: RouteObject[] = [
     {
@@ -19,12 +18,10 @@ const routes: RouteObject[] = [
             {
                 path: "profile",
                 element: <Profile/>,
-                loader: profileLoader
             },
             {
                 path: "dialogs",
                 element: <Dialogs/>,
-                loader: dialogsLoader,
                 children: [
                     {
                         path: ":dialogId",
@@ -35,7 +32,6 @@ const routes: RouteObject[] = [
             {
                 path: "friends",
                 element: <Friends/>,
-                loader: friendsLoader,
             },
             {
                 path: "news",

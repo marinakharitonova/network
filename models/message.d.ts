@@ -1,4 +1,4 @@
-export interface IMessage {
+interface IMessage {
     id: number,
     author: {
         avatarSrc: string | null,

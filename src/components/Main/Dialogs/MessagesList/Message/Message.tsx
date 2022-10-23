@@ -1,6 +1,5 @@
 import React from "react";
 import {Space, Typography} from "antd";
-import {IMessage} from "../../../../../../models/message.module";
 import AvatarApp from "../../../../AvatarApp/AvatarApp";
 
 const {Text} = Typography;

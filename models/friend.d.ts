@@ -1,4 +1,4 @@
-export interface IFriend {
+interface IFriend {
     id: number,
     name: string,
     avatarSrc: string | null,

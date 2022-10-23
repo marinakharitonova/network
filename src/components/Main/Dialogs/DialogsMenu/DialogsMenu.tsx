@@ -1,6 +1,5 @@
 import {Menu} from "antd";
 import {Link} from "react-router-dom";
-import {IDialog} from "../../../../../models/dialog.module";
 import AvatarApp from "../../../AvatarApp/AvatarApp";
 
 type DialogsMenuProps = {

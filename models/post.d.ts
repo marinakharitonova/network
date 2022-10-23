@@ -1,4 +1,4 @@
-export interface IPost {
+interface IPost {
     id: number,
     avatarSrc: string | null,
     title: string,

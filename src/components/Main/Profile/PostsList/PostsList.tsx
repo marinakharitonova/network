@@ -1,15 +1,13 @@
 import {Button, List, Tooltip, Typography} from 'antd';
 import {LikeOutlined} from '@ant-design/icons';
-import {IPost} from "../../../../../models/post.model";
 import AvatarApp from "../../../AvatarApp/AvatarApp";
+import {useAppSelector} from "../../../../redux/hooks";
+import {SelectProfilePosts} from "../../../../redux/features/profileSlice";
 
 const {Title} = Typography;
 
-type PostsListProps = {
-    posts: IPost[]
-}
-
-const PostsList = ({posts}: PostsListProps): JSX.Element => {
+const PostsList = (): JSX.Element => {
+    const posts = useAppSelector(SelectProfilePosts)
     return (
         <>
             <Title level={2}>My posts</Title>

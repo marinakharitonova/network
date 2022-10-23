@@ -1,10 +1,13 @@
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 import {SketchPicker} from 'react-color';
 import {ConfigProvider} from 'antd';
+import {AppColorContext} from "../../../index";
 
 const Settings = (): JSX.Element => {
+    const appColor = useContext(AppColorContext);
+
     const [color, setColor] = useState({
-        primaryColor: '#25b864',
+        primaryColor: appColor,
     });
     const onColorChange = (nextColor: Partial<typeof color>) => {
         const mergedNextColor = {
