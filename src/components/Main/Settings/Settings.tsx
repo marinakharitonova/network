@@ -1,34 +1,38 @@
-import {useContext, useState} from 'react';
-import {SketchPicker} from 'react-color';
-import {ConfigProvider} from 'antd';
-import {AppColorContext} from "../../../index";
+import React, {useContext} from 'react';
+import {ColorResult, SketchPicker} from 'react-color';
+import {ColorContext, defaultColor} from "../../../App";
+import {Button, ConfigProvider, Typography} from "antd";
+
+const {Title} = Typography;
 
 const Settings = (): JSX.Element => {
-    const appColor = useContext(AppColorContext);
+    const context = useContext(ColorContext);
 
-    const [color, setColor] = useState({
-        primaryColor: appColor,
-    });
-    const onColorChange = (nextColor: Partial<typeof color>) => {
-        const mergedNextColor = {
-            ...color,
-            ...nextColor,
-        };
-        setColor(mergedNextColor);
+    const changeColor = (color: string) => {
+        context?.changeColor(color);
         ConfigProvider.config({
-            theme: mergedNextColor,
+            theme: {
+                primaryColor: color,
+            }
         });
-    };
+    }
+
+    const handleColorChange = (result: ColorResult) => {
+        const {hex} = result;
+        changeColor(hex)
+    }
     return (
-        <SketchPicker
-            presetColors={['#1890ff', '#25b864', '#ff6f00']}
-            color={color.primaryColor}
-            onChange={({hex}) => {
-                onColorChange({
-                    primaryColor: hex,
-                });
-            }}
-        />
+        <>
+            <Title level={2}>Set the application color</Title>
+            <SketchPicker
+                presetColors={['#1890ff', '#25b864', '#ff6f00']}
+                color={context?.color}
+                onChange={handleColorChange}
+            />
+            <Button type='default' style={{marginTop: '16px'}} onClick={() => changeColor(defaultColor)}>
+                Set default color
+            </Button>
+        </>
     )
 
 }
