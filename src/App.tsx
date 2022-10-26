@@ -2,17 +2,11 @@ import {ConfigProvider, Layout} from 'antd';
 import HeaderApp from "./components/HeaderApp/HeaderApp";
 import Main from "./components/Main/Main";
 import FooterApp from "./components/FooterApp/FooterApp";
-import React, {useState} from "react";
+import React, {useEffect} from "react";
 import {purple} from "@ant-design/colors";
 import {useLocalStorage} from "./hooks/useLocalStorage";
 
 export const defaultColor = purple[8];
-
-ConfigProvider.config({
-    theme: {
-        primaryColor: defaultColor,
-    }
-});
 
 interface ColorContextInterface {
     color: string;
@@ -27,9 +21,22 @@ const App = (): JSX.Element => {
     const colorContextValue: ColorContextInterface = {
         color: appColor,
         changeColor: (color: string) => {
-            setAppColor(color)
+            setAppColor(color);
+            ConfigProvider.config({
+                theme: {
+                    primaryColor: color,
+                }
+            });
         }
     };
+
+    useEffect(() => {
+        ConfigProvider.config({
+            theme: {
+                primaryColor: appColor,
+            }
+        });
+    }, [])
 
     return (
         <ConfigProvider>
