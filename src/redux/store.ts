@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import profileSlice from "./features/profileSlice";
 import dialogsSlice from "./features/dialogsSlice";
-import friendsSlice from "./features/friendsSlice";
+import usersSlice from "./features/usersSlice";
 
 export const store = configureStore({
     reducer: {
         profile: profileSlice,
         dialogs: dialogsSlice,
-        friends: friendsSlice
+        users: usersSlice
     }
 })
 

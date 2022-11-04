@@ -25,6 +25,7 @@
     "models/dialog.d.ts",
     "models/message.d.ts",
     "models/post.d.ts",
-    "models/friend.d.ts"
+    "models/user.d.ts",
+    "models/request.d.ts"
   ]
 }

@@ -6,7 +6,7 @@ import ErrorPage from "../components/ErrorPage/ErrorPage";
 import Settings from "../components/Main/Settings/Settings";
 import News from "../components/Main/News/News";
 import Music from "../components/Main/Music/Music";
-import Friends from "../components/Main/Friends/Friends";
+import Users from "../components/Main/Users/Users";
 import {RouteObject} from "react-router-dom";
 
 const routes: RouteObject[] = [
@@ -30,8 +30,8 @@ const routes: RouteObject[] = [
                 ]
             },
             {
-                path: "friends",
-                element: <Friends/>,
+                path: "users",
+                element: <Users/>,
             },
             {
                 path: "news",

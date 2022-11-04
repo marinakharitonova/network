@@ -27,7 +27,6 @@ const PostsList = (): JSX.Element => {
                             avatar={<AvatarApp src={item.avatarSrc} size={40}/>}
                             title={item.title}
                             description={item.description}
-
                         />
                     </List.Item>
                 )}
