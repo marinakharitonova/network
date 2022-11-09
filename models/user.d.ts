@@ -1,11 +1,16 @@
 interface IUser {
-    id: string,
+    id: number,
     name: string,
+    uniqueUrlName: string | null,
+    photos: {
+        small: string | null,
+        large: string | null
+    }
     avatarSrc: string | null,
     status: string | null,
     location: {
         country: string,
         city: string
     } | null,
-    isFriend: boolean
+    followed: boolean
 }

@@ -1,78 +1,50 @@
-import {Button, Tabs} from "antd";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {SelectFriends, SelectUsers, fetchUsers} from "../../../redux/features/usersSlice";
+import {SelectUsers, fetchUsers, toggleFollow} from "../../../redux/features/usersSlice";
 import UsersList from "./UsersList/UsersList";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import PaginationApp from "../../PaginationApp/PaginationApp";
+import Loader from "../../Loader/Loader";
+import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 
 const Users = (): JSX.Element => {
     const users = useAppSelector(SelectUsers);
-    const friends = useAppSelector(SelectFriends);
     const usersStatus = useAppSelector(state => state.users.status);
     const error = useAppSelector(state => state.users.error)
     const dispatch = useAppDispatch();
+    const usersCount = useAppSelector(state => state.users.usersCount);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize] = useState(10);
 
     useEffect(() => {
         if (usersStatus === 'idle') {
-            dispatch(fetchUsers())
+            dispatch(fetchUsers({page: currentPage, count: pageSize}))
         }
     }, [usersStatus, dispatch])
 
-    let content
+    const handlePageChange = (current: number) => {
+        dispatch(fetchUsers({page: current, count: pageSize}))
+        setCurrentPage(current);
+    }
 
-    if (usersStatus === 'loading') {
-        content = <div>Loading</div>
-    } else if (usersStatus === 'succeeded') {
-        content = <Tabs
-            defaultActiveKey="1"
-            items={[
-                {
-                    label: `My friends`,
-                    key: '1',
-                    children: (
-                        <>
-                            <UsersList users={friends}/>
-                            <div
-                                style={{
-                                    textAlign: 'center',
-                                    marginTop: 12,
-                                    height: 32,
-                                    lineHeight: '32px',
-                                }}
-                            >
-                                <Button>loading more</Button>
-                            </div>
-                        </>
 
-                    ),
-                },
-                {
-                    label: `All users`,
-                    key: '2',
-                    children: (
-                        <>
-                            <UsersList users={users}/>
-                            <div
-                                style={{
-                                    textAlign: 'center',
-                                    marginTop: 12,
-                                    height: 32,
-                                    lineHeight: '32px',
-                                }}
-                            >
-                                <Button>loading more</Button>
-                            </div>
-                        </>
-                    ),
-                }
-            ]}
-        />
-    } else if (usersStatus === 'failed') {
-        content = <div>{error}</div>
+    const handleToggleFollow = (id: number) => {
+        dispatch(toggleFollow(id))
     }
 
     return (
         <>
-            {content}
+            {usersStatus === 'loading' && <Loader/>}
+            {usersStatus === 'succeeded' &&
+                <>
+                    <UsersList users={users} handler={handleToggleFollow}/>
+                    <PaginationApp total={usersCount} pageSize={pageSize}
+                                   current={currentPage}
+                                   handler={handlePageChange}
+                    />
+                </>
+            }
+            {usersStatus === 'failed' && <ErrorMessage text={error}/>}
         </>
     )
 }

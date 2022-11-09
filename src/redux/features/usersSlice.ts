@@ -1,56 +1,44 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit"
 import {RootState} from "../store";
 
-interface FriendsState {
+import {default as axios} from 'axios';
+
+interface UsersState {
     users: IUser[],
     status: IRequest["status"],
-    error: IRequest["error"]
+    error: IRequest["error"],
+    usersCount: number,
 }
 
-const initialState: FriendsState = {
+const initialState: UsersState = {
     users: [],
     status: 'idle',
-    error: null
+    error: null,
+    usersCount: 0,
 }
 
-export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
-    const usersList: IUser[] = [
-        {
-            id: '1',
-            name: 'Bobi',
-            avatarSrc: null,
-            status: 'hello!',
-            location: {
-                country: 'Russia',
-                city: 'Moscow'
-            },
-            isFriend: false
-        },
-        {
-            id: '2',
-            name: 'Kitty',
-            avatarSrc: 'https://avatars.mds.yandex.net/i?id=8e6ab4f8369e986613acb7cc651e55a0-4352086-images-thumbs&n=13&exp=1',
-            status: 'mr mr mr',
-            location: null,
-            isFriend: true
+export const fetchUsers = createAsyncThunk('users/fetchUsers',
+    async (payload: { page: number, count: number }, ee) => {
+
+    const response = await axios.get(`https://social-network.samuraijs.com/api/1.0/users?count=${payload.count}&page=${payload.page}`, {
+        headers: {
+            'API-KEY': '41b53631-d409-42fd-9c23-c463cd4b426b'
         }
-    ]
-    const promise = new Promise((resolve, reject) => {
-        setTimeout(() => resolve(usersList), 1000)
     })
 
-    const response = await promise
+    const users: IUser[] = response.data.items;
+    const usersCount = response.data.totalCount;
 
-    return response
+    return {users, usersCount}
 })
 
 const usersSlice = createSlice({
     name: "users",
     initialState,
     reducers: {
-        toggleFollow: (state, {payload}: PayloadAction<string>) => {
+        toggleFollow: (state, {payload}: PayloadAction<number>) => {
             let currentUser = state.users.find(user => user.id === payload)!;
-            currentUser.isFriend = !currentUser.isFriend;
+            currentUser.followed = !currentUser.followed;
         }
     },
     extraReducers(builder) {
@@ -60,11 +48,16 @@ const usersSlice = createSlice({
             })
             .addCase(fetchUsers.fulfilled, (state, action) => {
                 state.status = 'succeeded'
-                state.users = action.payload as IUser[]
+                state.users = action.payload.users
+
+                if (state.usersCount === 0) {
+                    state.usersCount = action.payload.usersCount
+                }
+
             })
             .addCase(fetchUsers.rejected, (state, action) => {
                 state.status = 'failed'
-                state.error = action.error.message
+                state.error = action.error.message || null
             })
     }
 })
@@ -72,4 +65,4 @@ const usersSlice = createSlice({
 export default usersSlice.reducer
 export const {toggleFollow} = usersSlice.actions
 export const SelectUsers = (state: RootState) => state.users.users
-export const SelectFriends = (state: RootState) => state.users.users.filter(user => user.isFriend)
+export const SelectFriends = (state: RootState) => state.users.users.filter(user => user.followed)

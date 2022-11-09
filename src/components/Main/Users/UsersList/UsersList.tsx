@@ -1,34 +1,20 @@
-import {Button, List} from "antd";
-import AvatarApp from "../../../AvatarApp/AvatarApp";
-import {useAppDispatch} from "../../../../redux/hooks";
-import {toggleFollow} from "../../../../redux/features/usersSlice";
+import {List} from "antd";
+import ListItem from "./ListItem";
 
 type UsersListProps = {
     users: IUser[],
+    handler: (id: number) => void
 }
 
-const UsersList = ({users}: UsersListProps): JSX.Element => {
-    const dispatch = useAppDispatch();
+const UsersList = ({users, handler}: UsersListProps): JSX.Element => {
+
+    console.log('render list');
 
     return (
         <List
             itemLayout="horizontal"
             dataSource={users}
-            renderItem={user => (
-                <List.Item
-                    actions={
-                    [<Button type='primary'
-                             onClick={() => dispatch(toggleFollow(user.id))}>{user.isFriend ? 'Unfollow' : 'Follow'}
-                    </Button>]
-                }>
-                    <List.Item.Meta
-                        avatar={<AvatarApp src={user.avatarSrc} size={40}/>}
-                        title={user.name}
-                        description={user.status}
-                    />
-                    <div>{user.location && `${user.location.country}, ${user.location.city}`}</div>
-                </List.Item>
-            )}
+            renderItem={user => (<ListItem user={user} handler={handler}/>)}
         />
     )
 }
