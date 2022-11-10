@@ -1,54 +1,65 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit"
+import {
+    createAsyncThunk,
+    createSlice,
+    PayloadAction,
+    createEntityAdapter,
+} from "@reduxjs/toolkit"
 import {RootState} from "../store";
 
 import {default as axios} from 'axios';
 
 interface UsersState {
-    users: IUser[],
     status: IRequest["status"],
     error: IRequest["error"],
     usersCount: number,
 }
 
-const initialState: UsersState = {
-    users: [],
+const additionalState: UsersState = {
     status: 'idle',
     error: null,
     usersCount: 0,
 }
 
+const usersAdapter = createEntityAdapter<IUser>();
+
+const initialState = usersAdapter.getInitialState(additionalState);
+
 export const fetchUsers = createAsyncThunk('users/fetchUsers',
     async (payload: { page: number, count: number }, ee) => {
 
-    const response = await axios.get(`https://social-network.samuraijs.com/api/1.0/users?count=${payload.count}&page=${payload.page}`, {
-        headers: {
-            'API-KEY': '41b53631-d409-42fd-9c23-c463cd4b426b'
-        }
+        const response = await axios.get(`https://social-network.samuraijs.com/api/1.0/users?count=${payload.count}&page=${payload.page}`, {
+            headers: {
+                'API-KEY': '41b53631-d409-42fd-9c23-c463cd4b426b'
+            }
+        })
+
+        const users: IUser[] = response.data.items;
+        const usersCount = response.data.totalCount;
+
+        return {users, usersCount}
     })
-
-    const users: IUser[] = response.data.items;
-    const usersCount = response.data.totalCount;
-
-    return {users, usersCount}
-})
 
 const usersSlice = createSlice({
     name: "users",
     initialState,
     reducers: {
         toggleFollow: (state, {payload}: PayloadAction<number>) => {
-            let currentUser = state.users.find(user => user.id === payload)!;
-            currentUser.followed = !currentUser.followed;
+            const currentUser = state.entities[payload];
+            if (currentUser) {
+                currentUser.followed = !currentUser.followed;
+            }
+
         }
     },
     extraReducers(builder) {
         builder
-            .addCase(fetchUsers.pending, (state, action) => {
+            .addCase(fetchUsers.pending, (state) => {
                 state.status = 'loading'
             })
             .addCase(fetchUsers.fulfilled, (state, action) => {
                 state.status = 'succeeded'
-                state.users = action.payload.users
+
+                usersAdapter.setAll(state, action.payload.users)
 
                 if (state.usersCount === 0) {
                     state.usersCount = action.payload.usersCount
@@ -64,5 +75,10 @@ const usersSlice = createSlice({
 
 export default usersSlice.reducer
 export const {toggleFollow} = usersSlice.actions
-export const SelectUsers = (state: RootState) => state.users.users
-export const SelectFriends = (state: RootState) => state.users.users.filter(user => user.followed)
+
+export const {
+    selectAll: selectUsers,
+    selectById: selectUserById,
+    selectIds: selectUserIds
+} = usersAdapter.getSelectors<RootState>(state => state.users)
+

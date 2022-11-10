@@ -1,20 +1,25 @@
 import {Button, List} from "antd";
-import AvatarApp from "../../../AvatarApp/AvatarApp";
+import AvatarApp from "../../../../AvatarApp/AvatarApp";
+import {useAppDispatch, useAppSelector} from "../../../../../redux/hooks";
+import {selectUserById, toggleFollow} from "../../../../../redux/features/usersSlice";
+import {EntityId} from "@reduxjs/toolkit";
 
-type ListItemProps = {
-    user: IUser,
-    handler: (id: number) => void
+type UserItemProps = {
+    id: EntityId,
 }
 
-const ListItem = ({user, handler}: ListItemProps): JSX.Element => {
+const UserItem = ({id}: UserItemProps): JSX.Element => {
 
     console.log('render list item');
+
+    const user = useAppSelector(state => selectUserById(state, id))!;
+    const dispatch = useAppDispatch();
 
     return (
         <List.Item
             actions={
                 [<Button type='primary'
-                         onClick={() => handler(user.id)}>
+                         onClick={() => dispatch(toggleFollow(user.id))}>
                     {user.followed ? 'Unfollow' : 'Follow'}
                 </Button>]
             }>
@@ -28,4 +33,4 @@ const ListItem = ({user, handler}: ListItemProps): JSX.Element => {
     )
 }
 
-export default ListItem
+export default UserItem

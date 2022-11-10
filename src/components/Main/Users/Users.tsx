@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {SelectUsers, fetchUsers, toggleFollow} from "../../../redux/features/usersSlice";
+import {fetchUsers} from "../../../redux/features/usersSlice";
 import UsersList from "./UsersList/UsersList";
 import {useEffect, useState} from "react";
 import PaginationApp from "../../PaginationApp/PaginationApp";
@@ -7,11 +7,10 @@ import Loader from "../../Loader/Loader";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 
 const Users = (): JSX.Element => {
-    const users = useAppSelector(SelectUsers);
     const usersStatus = useAppSelector(state => state.users.status);
     const error = useAppSelector(state => state.users.error)
-    const dispatch = useAppDispatch();
     const usersCount = useAppSelector(state => state.users.usersCount);
+    const dispatch = useAppDispatch();
 
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize] = useState(10);
@@ -27,17 +26,12 @@ const Users = (): JSX.Element => {
         setCurrentPage(current);
     }
 
-
-    const handleToggleFollow = (id: number) => {
-        dispatch(toggleFollow(id))
-    }
-
     return (
         <>
             {usersStatus === 'loading' && <Loader/>}
             {usersStatus === 'succeeded' &&
                 <>
-                    <UsersList users={users} handler={handleToggleFollow}/>
+                    <UsersList/>
                     <PaginationApp total={usersCount} pageSize={pageSize}
                                    current={currentPage}
                                    handler={handlePageChange}
