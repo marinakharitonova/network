@@ -3,6 +3,7 @@ import AvatarApp from "../../../../AvatarApp/AvatarApp";
 import {useAppDispatch, useAppSelector} from "../../../../../redux/hooks";
 import {selectUserById, toggleFollow} from "../../../../../redux/features/usersSlice";
 import {EntityId} from "@reduxjs/toolkit";
+import {Link} from "react-router-dom";
 
 type UserItemProps = {
     id: EntityId,
@@ -15,6 +16,8 @@ const UserItem = ({id}: UserItemProps): JSX.Element => {
     const user = useAppSelector(state => selectUserById(state, id))!;
     const dispatch = useAppDispatch();
 
+    const userURL = `/profile/${id}`;
+
     return (
         <List.Item
             actions={
@@ -25,7 +28,7 @@ const UserItem = ({id}: UserItemProps): JSX.Element => {
             }>
             <List.Item.Meta
                 avatar={<AvatarApp src={user.photos.small} size={40}/>}
-                title={user.name}
+                title={<Link to={userURL}>{user.name}</Link>}
                 description={user.status}
             />
             <div>{user.location && `${user.location.country}, ${user.location.city}`}</div>

@@ -1,8 +1,8 @@
 import {Button} from "antd";
 import TextArea from "antd/es/input/TextArea";
-import {addPost} from "../../../../redux/features/profileSlice";
 import {useAppDispatch} from "../../../../redux/hooks";
 import {useTextarea} from "../../../../hooks/useTextarea";
+import {addPost} from "../../../../redux/features/profileSlice";
 
 const PostForm = (): JSX.Element => {
 

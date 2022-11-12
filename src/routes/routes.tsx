@@ -18,6 +18,12 @@ const routes: RouteObject[] = [
             {
                 path: "profile",
                 element: <Profile/>,
+                children: [
+                    {
+                        path: ":userId",
+                        element: <Profile/>,
+                    }
+                ]
             },
             {
                 path: "dialogs",

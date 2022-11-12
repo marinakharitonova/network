@@ -1,35 +1,19 @@
-import {Button, List, Tooltip, Typography} from 'antd';
-import {LikeOutlined} from '@ant-design/icons';
-import AvatarApp from "../../../AvatarApp/AvatarApp";
+import {List, Typography} from 'antd';
 import {useAppSelector} from "../../../../redux/hooks";
-import {SelectProfilePosts} from "../../../../redux/features/profileSlice";
+import {selectPostIds} from "../../../../redux/features/profileSlice";
+import PostItem from "./PostIem/PostItem";
 
 const {Title} = Typography;
 
 const PostsList = (): JSX.Element => {
-    const posts = useAppSelector(SelectProfilePosts)
+    const postIds = useAppSelector(selectPostIds);
     return (
         <>
             <Title level={2}>My posts</Title>
             <List
                 itemLayout='horizontal'
-                dataSource={posts}
-                renderItem={item => (
-                    <List.Item
-                        key={item.id}
-                        actions={[
-                            <Tooltip title="like">
-                                <Button icon={<LikeOutlined />} shape="round"> {item.likesCount} </Button>
-                            </Tooltip>
-                        ]}
-                    >
-                        <List.Item.Meta
-                            avatar={<AvatarApp src={item.avatarSrc} size={40}/>}
-                            title={item.title}
-                            description={item.description}
-                        />
-                    </List.Item>
-                )}
+                dataSource={postIds}
+                renderItem={id => (<PostItem id={id}/>)}
             />
         </>
     )

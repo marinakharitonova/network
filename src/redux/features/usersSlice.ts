@@ -14,7 +14,7 @@ interface UsersState {
     usersCount: number,
 }
 
-const additionalState: UsersState = {
+const additionalInitialState: UsersState = {
     status: 'idle',
     error: null,
     usersCount: 0,
@@ -22,7 +22,7 @@ const additionalState: UsersState = {
 
 const usersAdapter = createEntityAdapter<IUser>();
 
-const initialState = usersAdapter.getInitialState(additionalState);
+const initialState = usersAdapter.getInitialState(additionalInitialState);
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers',
     async (payload: { page: number, count: number }, ee) => {
@@ -33,11 +33,12 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers',
             }
         })
 
-        const users: IUser[] = response.data.items;
+        const users = response.data.items;
         const usersCount = response.data.totalCount;
 
         return {users, usersCount}
     })
+
 
 const usersSlice = createSlice({
     name: "users",

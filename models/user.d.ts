@@ -6,11 +6,10 @@ interface IUser {
         small: string | null,
         large: string | null
     }
-    avatarSrc: string | null,
     status: string | null,
     location: {
         country: string,
         city: string
     } | null,
-    followed: boolean
+    followed: boolean,
 }

@@ -1,10 +1,24 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit"
+import {createAsyncThunk, createEntityAdapter, createSlice, EntityId, PayloadAction} from "@reduxjs/toolkit"
+import {default as axios} from "axios";
 import {RootState} from "../store";
 
 interface ProfileState {
-    posts: IPost[];
-    newPostMessage: string;
+    status: IRequest["status"],
+    error: IRequest["error"],
+    profileInfo: IProfile,
+    postsCount: number,
 }
+
+const additionalInitialState: ProfileState = {
+    status: 'idle',
+    error: null,
+    profileInfo: {} as IProfile,
+    postsCount: 0
+}
+
+const postsAdapter = createEntityAdapter<IPost>();
+
+const initialState = postsAdapter.getInitialState(additionalInitialState);
 
 const postsData: IPost[] = [
     {
@@ -30,15 +44,29 @@ const postsData: IPost[] = [
     }
 ];
 
-const initialState: ProfileState = {
-    posts: postsData,
-    newPostMessage: '',
-}
+export const fetchProfile = createAsyncThunk('profile/fetchProfileInfo',
+    async (id: number, ee) => {
+
+        const response = await axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${id}`, {
+            headers: {
+                'API-KEY': '41b53631-d409-42fd-9c23-c463cd4b426b'
+            }
+        })
+
+        const profileInfo: IProfile = response.data;
+
+        console.log(postsData);
+
+        return {profileInfo, posts: postsData}
+    })
 
 const profileSlice = createSlice({
     name: "profile",
     initialState,
     reducers: {
+        changeStatus: (state, action) => {
+            state.status = action.payload
+        },
         addPost: (state, {payload}: PayloadAction<string>) => {
             const newPost: IPost = {
                 id: 5,
@@ -48,15 +76,36 @@ const profileSlice = createSlice({
                 likesCount: 0
             }
 
-            state.posts.push(newPost);
+            postsAdapter.setOne(state, newPost)
         },
-
-        updateNewPostMessage: (state, {payload}: PayloadAction<string>) => {
-            state.newPostMessage = payload
-        },
+        likePost: (state, action: PayloadAction<EntityId>) => {
+            const existingPost = state.entities[action.payload]
+            if (existingPost) {
+                existingPost.likesCount++
+            }
+        }
     },
+    extraReducers(builder) {
+        builder
+            .addCase(fetchProfile.pending, (state) => {
+                state.status = 'loading'
+            })
+            .addCase(fetchProfile.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.profileInfo = action.payload.profileInfo
+                postsAdapter.setAll(state, action.payload.posts)
+            })
+            .addCase(fetchProfile.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message || null
+            })
+    }
 })
 
-export const {addPost} = profileSlice.actions
-export const SelectProfilePosts = (state: RootState) => state.profile.posts
+export const {changeStatus, addPost, likePost} = profileSlice.actions
 export default profileSlice.reducer
+export const {
+    selectAll: selectPosts,
+    selectById: selectPostById,
+    selectIds: selectPostIds
+} = postsAdapter.getSelectors<RootState>(state => state.profile)

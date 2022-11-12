@@ -7,7 +7,7 @@ export const store = configureStore({
     reducer: {
         profile: profileSlice,
         dialogs: dialogsSlice,
-        users: usersSlice
+        users: usersSlice,
     }
 })
 

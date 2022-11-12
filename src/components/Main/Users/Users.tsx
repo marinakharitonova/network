@@ -7,7 +7,7 @@ import Loader from "../../Loader/Loader";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 
 const Users = (): JSX.Element => {
-    const usersStatus = useAppSelector(state => state.users.status);
+    const status = useAppSelector(state => state.users.status);
     const error = useAppSelector(state => state.users.error)
     const usersCount = useAppSelector(state => state.users.usersCount);
     const dispatch = useAppDispatch();
@@ -16,10 +16,10 @@ const Users = (): JSX.Element => {
     const [pageSize] = useState(10);
 
     useEffect(() => {
-        if (usersStatus === 'idle') {
+        if (status === 'idle') {
             dispatch(fetchUsers({page: currentPage, count: pageSize}))
         }
-    }, [usersStatus, dispatch])
+    }, [status, dispatch])
 
     const handlePageChange = (current: number) => {
         dispatch(fetchUsers({page: current, count: pageSize}))
@@ -28,8 +28,8 @@ const Users = (): JSX.Element => {
 
     return (
         <>
-            {usersStatus === 'loading' && <Loader/>}
-            {usersStatus === 'succeeded' &&
+            {status === 'loading' && <Loader/>}
+            {status === 'succeeded' &&
                 <>
                     <UsersList/>
                     <PaginationApp total={usersCount} pageSize={pageSize}
@@ -38,7 +38,7 @@ const Users = (): JSX.Element => {
                     />
                 </>
             }
-            {usersStatus === 'failed' && <ErrorMessage text={error}/>}
+            {status === 'failed' && <ErrorMessage text={error}/>}
         </>
     )
 }
