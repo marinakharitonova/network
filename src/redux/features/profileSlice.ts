@@ -55,8 +55,6 @@ export const fetchProfile = createAsyncThunk('profile/fetchProfileInfo',
 
         const profileInfo: IProfile = response.data;
 
-        console.log(postsData);
-
         return {profileInfo, posts: postsData}
     })
 

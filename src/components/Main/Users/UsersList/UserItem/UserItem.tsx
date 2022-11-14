@@ -4,6 +4,7 @@ import {useAppDispatch, useAppSelector} from "../../../../../redux/hooks";
 import {selectUserById, toggleFollow} from "../../../../../redux/features/usersSlice";
 import {EntityId} from "@reduxjs/toolkit";
 import {Link} from "react-router-dom";
+import {useState} from "react";
 
 type UserItemProps = {
     id: EntityId,
@@ -11,18 +12,30 @@ type UserItemProps = {
 
 const UserItem = ({id}: UserItemProps): JSX.Element => {
 
-    console.log('render list item');
-
     const user = useAppSelector(state => selectUserById(state, id))!;
     const dispatch = useAppDispatch();
+    const [followRequestStatus, setFollowRequestStatus] = useState<IRequest['status']>('idle')
 
     const userURL = `/profile/${id}`;
+
+    const handleToggleFollow = async () => {
+        try {
+            setFollowRequestStatus('loading')
+            await dispatch(toggleFollow({id: user.id, isFollow: user.followed})).unwrap()
+        } catch (err) {
+            console.error('Failed to follow user: ', err)
+        } finally {
+            setFollowRequestStatus('idle')
+        }
+    }
+
+    const isFollowBtnDisabled = followRequestStatus === 'loading';
 
     return (
         <List.Item
             actions={
-                [<Button type='primary'
-                         onClick={() => dispatch(toggleFollow(user.id))}>
+                [<Button type='primary' disabled={isFollowBtnDisabled}
+                         onClick={handleToggleFollow}>
                     {user.followed ? 'Unfollow' : 'Follow'}
                 </Button>]
             }>

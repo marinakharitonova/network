@@ -3,8 +3,12 @@ import {Dropdown, Menu, Space} from 'antd';
 import type {MenuProps} from 'antd';
 import AvatarApp from "../../AvatarApp/AvatarApp";
 
+type HeaderDropdownProps = {
+    login: string,
+    avatar: string | null
+}
 
-function HeaderDropdown() {
+const HeaderDropdown = ({login, avatar} : HeaderDropdownProps): JSX.Element => {
     const [open, setOpen] = useState(false);
 
     const handleMenuClick: MenuProps['onClick'] = e => {
@@ -35,8 +39,8 @@ function HeaderDropdown() {
         <Dropdown overlay={menu} onOpenChange={handleOpenChange} open={open}>
             <a onClick={e => e.preventDefault()}>
                 <Space style={{color: 'white'}}>
-                    <AvatarApp src={null} size={24}/>
-                    username
+                    <AvatarApp src={avatar} size={24}/>
+                    {login}
                 </Space>
             </a>
         </Dropdown>
