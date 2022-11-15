@@ -1,6 +1,6 @@
 import {createAsyncThunk, createEntityAdapter, createSlice, EntityId, PayloadAction} from "@reduxjs/toolkit"
-import {default as axios} from "axios";
 import {RootState} from "../store";
+import {profileAPI} from "../../api/profileAPI";
 
 interface ProfileState {
     status: IRequest["status"],
@@ -45,17 +45,11 @@ const postsData: IPost[] = [
 ];
 
 export const fetchProfile = createAsyncThunk('profile/fetchProfileInfo',
-    async (id: number, ee) => {
+    async (id: number) => {
 
-        const response = await axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${id}`, {
-            headers: {
-                'API-KEY': '41b53631-d409-42fd-9c23-c463cd4b426b'
-            }
-        })
+        const profileData = await profileAPI.fetchProfile(id)
 
-        const profileInfo: IProfile = response.data;
-
-        return {profileInfo, posts: postsData}
+        return {profileInfo: profileData, posts: postsData}
     })
 
 const profileSlice = createSlice({

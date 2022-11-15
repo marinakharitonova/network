@@ -4,8 +4,7 @@ import {
     createEntityAdapter,
 } from "@reduxjs/toolkit"
 import {RootState} from "../store";
-
-import {default as axios} from 'axios';
+import {usersAPI} from "../../api/usersAPI";
 
 interface UsersState {
     status: IRequest["status"],
@@ -26,42 +25,22 @@ const initialState = usersAdapter.getInitialState(additionalInitialState);
 export const fetchUsers = createAsyncThunk('users/fetchUsers',
     async (payload: { page: number, count: number }, ee) => {
 
-        const response = await axios.get(`https://social-network.samuraijs.com/api/1.0/users?count=${payload.count}&page=${payload.page}`, {
-            headers: {
-                'API-KEY': '41b53631-d409-42fd-9c23-c463cd4b426b'
-            },
-            withCredentials: true
-        })
+        const usersData = await usersAPI.fetchUsers(payload.count, payload.page)
 
-        const users = response.data.items;
-        const usersCount = response.data.totalCount;
-
-        return {users, usersCount}
+        return {users: usersData.items, usersCount: usersData.totalCount}
     })
 
 export const toggleFollow = createAsyncThunk('users/toggleFollow',
-    async (payload: { id: number, isFollow: boolean }, ee) => {
+    async (payload: { userId: number, isFollow: boolean }, ee) => {
 
-        const url = `https://social-network.samuraijs.com/api/1.0/follow/${payload.id}`
-
-        let response
+        let data
         if (payload.isFollow) {
-            response = await axios.delete(url, {
-                headers: {
-                    'API-KEY': '41b53631-d409-42fd-9c23-c463cd4b426b'
-                },
-                withCredentials: true
-            })
+           data = await usersAPI.unFollow(payload.userId)
         } else {
-            response = await axios.post(url, {}, {
-                headers: {
-                    'API-KEY': '41b53631-d409-42fd-9c23-c463cd4b426b'
-                },
-                withCredentials: true
-            })
+            data = await usersAPI.follow(payload.userId)
         }
 
-        return {resultCode: response.data.resultCode, userId: payload.id}
+        return {resultCode: data.resultCode, userId: payload.userId}
     })
 
 

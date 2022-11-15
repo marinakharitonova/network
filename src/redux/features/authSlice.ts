@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {default as axios} from "axios";
+import {authAPI} from "../../api/authAPI";
+import {profileAPI} from "../../api/profileAPI";
 
 interface AuthState {
     id: number | null,
@@ -22,27 +23,17 @@ const initialState: AuthState = {
 export const fetchAuthorization = createAsyncThunk('auth/fetchAuthorization',
     async () => {
 
-        const response = await axios.get(`https://social-network.samuraijs.com/api/1.0/auth/me`, {
-            headers: {
-                'API-KEY': '41b53631-d409-42fd-9c23-c463cd4b426b'
-            },
-            withCredentials: true
-        })
+        const authData = await authAPI.fetchAuthorization();
 
-        const {id, email, login} = response.data.data
-        const resultCode = response.data.resultCode
+        const {id, email, login} = authData.data
+        const authResultCode = authData.resultCode
 
-        if (resultCode === 0) {
-            const profileResponse = await axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${id}`, {
-                headers: {
-                    'API-KEY': '41b53631-d409-42fd-9c23-c463cd4b426b'
-                },
-                withCredentials: true
-            })
-            return {id, email, login, resultCode, profile: profileResponse.data}
+        if (authResultCode === 0) {
+            const authorizedUserProfile = await profileAPI.fetchProfile(id)
+            return {id, email, login, authResultCode, profile: authorizedUserProfile}
         }
 
-        return {id, email, login, resultCode}
+        return {id, email, login, resultCode: authResultCode}
     })
 
 const authSlice = createSlice({
@@ -55,6 +46,7 @@ const authSlice = createSlice({
                 state.status = 'loading'
             })
             .addCase(fetchAuthorization.fulfilled, (state, action) => {
+                state.status = 'succeeded'
                 if (action.payload.resultCode === 1) {
                     state.isUserAuthorized = false
                 } else {
@@ -64,6 +56,9 @@ const authSlice = createSlice({
                     state.email = action.payload.email
                     state.authorizedUser = action.payload.profile
                 }
+            })
+            .addCase(fetchAuthorization.rejected, (state, action) => {
+                state.status = 'failed'
             })
     }
 })

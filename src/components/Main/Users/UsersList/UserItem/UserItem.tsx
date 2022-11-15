@@ -21,7 +21,7 @@ const UserItem = ({id}: UserItemProps): JSX.Element => {
     const handleToggleFollow = async () => {
         try {
             setFollowRequestStatus('loading')
-            await dispatch(toggleFollow({id: user.id, isFollow: user.followed})).unwrap()
+            await dispatch(toggleFollow({userId: user.id, isFollow: user.followed})).unwrap();
         } catch (err) {
             console.error('Failed to follow user: ', err)
         } finally {
