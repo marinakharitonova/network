@@ -7,6 +7,9 @@ const {Title} = Typography;
 
 const PostsList = (): JSX.Element => {
     const postIds = useAppSelector(selectPostIds);
+
+    console.log('render posts list');
+
     return (
         <>
             <Title level={2}>My posts</Title>

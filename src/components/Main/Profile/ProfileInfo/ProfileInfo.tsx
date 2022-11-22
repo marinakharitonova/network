@@ -1,12 +1,14 @@
 import {Descriptions, Row, Col, Button} from 'antd';
 import AvatarApp from "../../../AvatarApp/AvatarApp";
 import {FacebookOutlined, GithubOutlined, SelectOutlined, TwitterOutlined, YoutubeOutlined} from "@ant-design/icons";
+import {useAppSelector} from "../../../../redux/hooks";
 
 type ProfileInfoProps = {
     profileInfo: IProfile
 }
 
-const ProfileInfo = ({profileInfo}: ProfileInfoProps): JSX.Element | null => {
+const ProfileInfo = ({profileInfo}: ProfileInfoProps): JSX.Element => {
+
     function validateUrl(str: string) {
         if(/(http(s?)):\/\//i.test(str)) {
             return str

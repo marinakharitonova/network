@@ -5,6 +5,7 @@ import MessagesList from "./MessagesList/MessagesList";
 import {SelectDialogs, SelectMessages} from "../../../redux/features/dialogsSlice";
 import NewMessageForm from "./NewMessageForm/NewMessageForm";
 import {useAppSelector} from "../../../redux/hooks";
+import {withAuth} from "../../../hoc/withAuth";
 
 const Dialogs = (): JSX.Element => {
     const dialogs = useAppSelector(SelectDialogs);
@@ -24,4 +25,4 @@ const Dialogs = (): JSX.Element => {
     )
 }
 
-export default Dialogs
+export default withAuth(Dialogs)

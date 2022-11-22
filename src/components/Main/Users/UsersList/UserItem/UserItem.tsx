@@ -3,7 +3,7 @@ import AvatarApp from "../../../../AvatarApp/AvatarApp";
 import {useAppDispatch, useAppSelector} from "../../../../../redux/hooks";
 import {selectUserById, toggleFollow} from "../../../../../redux/features/usersSlice";
 import {EntityId} from "@reduxjs/toolkit";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
 
 type UserItemProps = {
@@ -15,10 +15,13 @@ const UserItem = ({id}: UserItemProps): JSX.Element => {
     const user = useAppSelector(state => selectUserById(state, id))!;
     const dispatch = useAppDispatch();
     const [followRequestStatus, setFollowRequestStatus] = useState<IRequest['status']>('idle')
+    const isUserAuthorized = useAppSelector(state => state.auth.isUserAuthorized)
+    const navigate = useNavigate();
 
     const userURL = `/profile/${id}`;
 
     const handleToggleFollow = async () => {
+        if (!isUserAuthorized) navigate('/login')
         try {
             setFollowRequestStatus('loading')
             await dispatch(toggleFollow({userId: user.id, isFollow: user.followed})).unwrap();

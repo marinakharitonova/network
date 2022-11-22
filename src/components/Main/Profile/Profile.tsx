@@ -4,10 +4,10 @@ import Banner from "./Banner/Banner";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import Loader from "../../Loader/Loader";
-import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import {useParams} from "react-router-dom";
-import {changeStatus, fetchProfile, selectPostIds} from "../../../redux/features/profileSlice";
+import {changeStatus, fetchProfile} from "../../../redux/features/profileSlice";
+import ContentLoader from "../../ContentLoader/ContentLoader";
+import {withAuth} from "../../../hoc/withAuth";
 
 const Profile = (): JSX.Element => {
 
@@ -15,30 +15,32 @@ const Profile = (): JSX.Element => {
     const status = useAppSelector(state => state.profile.status);
     const error = useAppSelector(state => state.profile.error);
     const profileInfo = useAppSelector(state => state.profile.profileInfo);
+    const authorizedUserId = useAppSelector(state => state.auth.id);
     let { userId } = useParams();
+    const profileId = userId ? userId : authorizedUserId;
 
     useEffect(() => {
-        dispatch(fetchProfile(Number(userId)))
+        dispatch(fetchProfile(Number(profileId)))
 
         return () => {
             dispatch(changeStatus('idle'))
         }
-    }, [dispatch, userId])
+    }, [dispatch, profileId])
 
-    return (
-        <>
-            {status === 'idle' && <Loader/>}
-            {status === 'succeeded' &&
-                <>
-                    <Banner/>
-                    <ProfileInfo profileInfo={profileInfo}/>
-                    <PostForm/>
-                    <PostsList/>
-                </>
-            }
-            {status === 'failed' && <ErrorMessage text={error}/>}
-        </>
-    )
+    return <ContentLoader error={error}
+                          status={status}
+                          renderContent={() => {
+                              return (
+                                  <>
+                                      <Banner/>
+                                      <ProfileInfo profileInfo={profileInfo}/>
+                                      <PostForm/>
+                                      <PostsList/>
+                                  </>
+                              )
+                          }}
+            />
 }
 
-export default Profile
+
+export default withAuth(Profile)

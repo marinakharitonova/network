@@ -2,9 +2,7 @@ import {createAsyncThunk, createEntityAdapter, createSlice, EntityId, PayloadAct
 import {RootState} from "../store";
 import {profileAPI} from "../../api/profileAPI";
 
-interface ProfileState {
-    status: IRequest["status"],
-    error: IRequest["error"],
+interface ProfileState extends IRequest {
     profileInfo: IProfile,
     postsCount: number,
 }
@@ -89,7 +87,9 @@ const profileSlice = createSlice({
             })
             .addCase(fetchProfile.rejected, (state, action) => {
                 state.status = 'failed'
-                state.error = action.error.message || null
+                if (action.error.message) {
+                    state.error = action.error.message
+                }
             })
     }
 })

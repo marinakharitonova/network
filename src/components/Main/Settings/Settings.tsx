@@ -12,6 +12,7 @@ const Settings = (): JSX.Element => {
         const {hex} = result;
         context?.changeColor(hex);
     }
+
     return (
         <>
             <Title level={2}>Set the application color</Title>
@@ -20,7 +21,7 @@ const Settings = (): JSX.Element => {
                 color={context?.color}
                 onChange={handleColorChange}
             />
-            <Button type='default' style={{marginTop: '16px'}} onClick={() =>context?.changeColor(defaultColor)}>
+            <Button type='default' style={{marginTop: '16px'}} onClick={() => context?.changeColor(defaultColor)}>
                 Set default color
             </Button>
         </>

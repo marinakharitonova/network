@@ -3,8 +3,7 @@ import {fetchUsers} from "../../../redux/features/usersSlice";
 import UsersList from "./UsersList/UsersList";
 import {useEffect, useState} from "react";
 import PaginationApp from "../../PaginationApp/PaginationApp";
-import Loader from "../../Loader/Loader";
-import ErrorMessage from "../../ErrorMessage/ErrorMessage";
+import ContentLoader from "../../ContentLoader/ContentLoader";
 
 const Users = (): JSX.Element => {
     const status = useAppSelector(state => state.users.status);
@@ -26,21 +25,20 @@ const Users = (): JSX.Element => {
         setCurrentPage(current);
     }
 
-    return (
-        <>
-            {status === 'loading' && <Loader/>}
-            {status === 'succeeded' &&
-                <>
-                    <UsersList/>
-                    <PaginationApp total={usersCount} pageSize={pageSize}
-                                   current={currentPage}
-                                   handler={handlePageChange}
-                    />
-                </>
-            }
-            {status === 'failed' && <ErrorMessage text={error}/>}
-        </>
-    )
+    return <ContentLoader error={error}
+                          status={status}
+                          renderContent={() => {
+                              return (
+                                  <>
+                                      <UsersList/>
+                                      <PaginationApp total={usersCount} pageSize={pageSize}
+                                                     current={currentPage}
+                                                     handler={handlePageChange}
+                                      />
+                                  </>
+                              )
+                          }}
+    />
 }
 
 export default Users

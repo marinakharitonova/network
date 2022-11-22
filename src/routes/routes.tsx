@@ -8,6 +8,7 @@ import News from "../components/Main/News/News";
 import Music from "../components/Main/Music/Music";
 import Users from "../components/Main/Users/Users";
 import {RouteObject} from "react-router-dom";
+import Login from "../components/Main/Login/Login";
 
 const routes: RouteObject[] = [
     {
@@ -15,6 +16,10 @@ const routes: RouteObject[] = [
         element: <App/>,
         errorElement: <ErrorPage />,
         children: [
+            {
+                path: "login",
+                element: <Login/>,
+            },
             {
                 path: "profile",
                 element: <Profile/>,
