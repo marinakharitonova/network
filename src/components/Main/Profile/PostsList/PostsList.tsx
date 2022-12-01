@@ -2,13 +2,12 @@ import {List, Typography} from 'antd';
 import {useAppSelector} from "../../../../redux/hooks";
 import {selectPostIds} from "../../../../redux/features/profileSlice";
 import PostItem from "./PostIem/PostItem";
+import React from "react";
 
 const {Title} = Typography;
 
 const PostsList = (): JSX.Element => {
     const postIds = useAppSelector(selectPostIds);
-
-    console.log('render posts list');
 
     return (
         <>
@@ -22,4 +21,4 @@ const PostsList = (): JSX.Element => {
     )
 }
 
-export default PostsList
+export default React.memo(PostsList)

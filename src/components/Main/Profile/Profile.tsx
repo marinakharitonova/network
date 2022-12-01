@@ -5,7 +5,7 @@ import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import {useParams} from "react-router-dom";
-import {changeStatus, fetchProfile} from "../../../redux/features/profileSlice";
+import {changeStatus, fetchProfile, fetchUserStatus} from "../../../redux/features/profileSlice";
 import ContentLoader from "../../ContentLoader/ContentLoader";
 import {withAuth} from "../../../hoc/withAuth";
 
@@ -15,12 +15,17 @@ const Profile = (): JSX.Element => {
     const status = useAppSelector(state => state.profile.status);
     const error = useAppSelector(state => state.profile.error);
     const profileInfo = useAppSelector(state => state.profile.profileInfo);
+    const userStatus = useAppSelector(state => state.profile.userStatus);
     const authorizedUserId = useAppSelector(state => state.auth.id);
     let { userId } = useParams();
-    const profileId = userId ? userId : authorizedUserId;
+    const profileId = userId ? Number(userId) : authorizedUserId;
 
     useEffect(() => {
-        dispatch(fetchProfile(Number(profileId)))
+        if (!profileId) return;
+
+        dispatch(fetchProfile(profileId))
+
+        dispatch(fetchUserStatus(profileId))
 
         return () => {
             dispatch(changeStatus('idle'))
@@ -33,7 +38,7 @@ const Profile = (): JSX.Element => {
                               return (
                                   <>
                                       <Banner/>
-                                      <ProfileInfo profileInfo={profileInfo}/>
+                                      <ProfileInfo profileInfo={profileInfo} userStatus={userStatus}/>
                                       <PostForm/>
                                       <PostsList/>
                                   </>

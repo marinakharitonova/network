@@ -5,13 +5,15 @@ import {profileAPI} from "../../api/profileAPI";
 interface ProfileState extends IRequest {
     profileInfo: IProfile,
     postsCount: number,
+    userStatus: string
 }
 
 const additionalInitialState: ProfileState = {
     status: 'idle',
     error: null,
     profileInfo: {} as IProfile,
-    postsCount: 0
+    postsCount: 0,
+    userStatus: ''
 }
 
 const postsAdapter = createEntityAdapter<IPost>();
@@ -48,6 +50,22 @@ export const fetchProfile = createAsyncThunk('profile/fetchProfileInfo',
         const profileData = await profileAPI.fetchProfile(id)
 
         return {profileInfo: profileData, posts: postsData}
+    })
+
+export const fetchUserStatus = createAsyncThunk('profile/fetchUserStatus',
+    async (id: number) => {
+
+        const userStatus = await profileAPI.fetchStatus(id)
+
+        return userStatus
+    })
+
+export const updateUserStatus = createAsyncThunk('profile/updateUserStatus',
+    async (status: string) => {
+
+        const response = await profileAPI.updateStatus(status)
+
+        return {resultCode: response.resultCode, newStatus: status}
     })
 
 const profileSlice = createSlice({
@@ -89,6 +107,14 @@ const profileSlice = createSlice({
                 state.status = 'failed'
                 if (action.error.message) {
                     state.error = action.error.message
+                }
+            })
+            .addCase(fetchUserStatus.fulfilled, (state, action) => {
+                state.userStatus = action.payload
+            })
+            .addCase(updateUserStatus.fulfilled, (state, action) => {
+                if (action.payload.resultCode === 0) {
+                    state.userStatus = action.payload.newStatus
                 }
             })
     }
