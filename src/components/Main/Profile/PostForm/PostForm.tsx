@@ -1,30 +1,78 @@
-import {Button} from "antd";
+import {Button, Form, Input, Select} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import {useAppDispatch} from "../../../../redux/hooks";
-import {useTextarea} from "../../../../hooks/useTextarea";
 import {addPost} from "../../../../redux/features/profileSlice";
+import {useEffect, useState} from "react";
+
+const {Option} = Select;
+
+const layout = {
+    labelCol: {span: 8},
+    wrapperCol: {span: 16},
+};
+const tailLayout = {
+    wrapperCol: {offset: 8, span: 16},
+};
 
 const PostForm = (): JSX.Element => {
-
     const dispatch = useAppDispatch();
-    const textarea = useTextarea('')
+    const [form] = Form.useForm();
+    const [, forceUpdate] = useState({});
 
-    const handleClick = (): void => {
-        dispatch(addPost(textarea.getValue()));
-        textarea.clearValue();
+    useEffect(() => {
+        forceUpdate({});
+    }, []);
+
+    const onFinish = (values: any) => {
+        dispatch(addPost(values.post))
+        form.resetFields()
+
     }
 
-    return (
-        <div style={{maxWidth: '600px', marginBottom: '36px'}}>
-            <TextArea {...textarea.field}
-                      showCount maxLength={300} allowClear={true}
-                      autoSize={{maxRows: 4, minRows: 4}} style={{marginBottom: '16px'}}
-            />
+    const onFinishFailed = (errorInfo: any) => {
+        console.log('Failed:', errorInfo);
+    };
 
-            <Button type='primary' onClick={handleClick}>
-                Post
-            </Button>
-        </div>
+    const onReset = () => {
+        form.resetFields();
+    };
+
+    return (
+        <Form
+            name="newPost"
+            form={form}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+            style={{maxWidth: '600px', marginBottom: '36px'}}
+        >
+            <Form.Item
+                name="post"
+                style={{marginBottom: '0'}}
+            >
+                <TextArea showCount maxLength={300}/>
+            </Form.Item>
+
+            <Form.Item shouldUpdate>
+                {() => (
+                    <>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            disabled={!form.getFieldsValue(true).post}
+                        >
+                            Post
+                        </Button>
+                        <Button htmlType="button" onClick={onReset} style={{marginLeft: '12px'}}
+                                disabled={!form.getFieldsValue(true).post}
+                        >
+                            Reset
+                        </Button>
+                    </>
+
+                )}
+            </Form.Item>
+        </Form>
     )
 }
 

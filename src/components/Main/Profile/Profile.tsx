@@ -17,7 +17,7 @@ const Profile = (): JSX.Element => {
     const profileInfo = useAppSelector(state => state.profile.profileInfo);
     const userStatus = useAppSelector(state => state.profile.userStatus);
     const authorizedUserId = useAppSelector(state => state.auth.id);
-    let { userId } = useParams();
+    let {userId} = useParams();
     const profileId = userId ? Number(userId) : authorizedUserId;
 
     useEffect(() => {
@@ -32,19 +32,16 @@ const Profile = (): JSX.Element => {
         }
     }, [dispatch, profileId])
 
-    return <ContentLoader error={error}
-                          status={status}
-                          renderContent={() => {
-                              return (
-                                  <>
-                                      <Banner/>
-                                      <ProfileInfo profileInfo={profileInfo} userStatus={userStatus}/>
-                                      <PostForm/>
-                                      <PostsList/>
-                                  </>
-                              )
-                          }}
-            />
+    const profileContent = (
+        <>
+            <Banner/>
+            <ProfileInfo profileInfo={profileInfo} userStatus={userStatus}/>
+            <PostForm/>
+            <PostsList/>
+        </>
+    )
+
+    return <ContentLoader error={error} status={status} renderContent={profileContent}/>
 }
 
 

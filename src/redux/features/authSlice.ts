@@ -36,6 +36,20 @@ export const fetchAuthorization = createAsyncThunk('auth/fetchAuthorization',
         return {id, email, login, resultCode: authResultCode}
     })
 
+export const login = createAsyncThunk('auth/login',
+    async (data: ILogin, {dispatch}) => {
+        const result = await authAPI.login(data);
+        if (result.resultCode === 0) {
+            return await authAPI.login(data)
+        } else throw new Error(result.messages.join(','))
+
+    })
+
+export const logout = createAsyncThunk('auth/logout',
+    async (n) => {
+        return await authAPI.logout()
+    })
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -59,6 +73,26 @@ const authSlice = createSlice({
             })
             .addCase(fetchAuthorization.rejected, (state, action) => {
                 state.status = 'failed'
+            })
+            .addCase(login.fulfilled, (state, action) => {
+                const {resultCode, data: {userId}} = action.payload
+                if (resultCode === 0) {
+                    state.isUserAuthorized = true
+                    state.id = userId
+                }
+            })
+            .addCase(logout.fulfilled, (state, action) => {
+                const {resultCode} = action.payload
+                if (resultCode === 0) {
+                    state.isUserAuthorized = false
+                    state.id = null
+                    state.email = null
+                    state.login = null
+                    state.authorizedUser = null
+                }
+            })
+            .addCase(login.rejected, (state, action) => {
+                console.log(action.error.message);
             })
     }
 })

@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {Dropdown, Menu, Space} from 'antd';
 import type {MenuProps} from 'antd';
 import AvatarApp from "../../AvatarApp/AvatarApp";
+import {useAppDispatch} from "../../../redux/hooks";
+import {logout} from "../../../redux/features/authSlice";
 
 type HeaderDropdownProps = {
     login: string,
@@ -10,10 +12,15 @@ type HeaderDropdownProps = {
 
 const HeaderDropdown = ({login, avatar} : HeaderDropdownProps): JSX.Element => {
     const [open, setOpen] = useState(false);
+    const dispatch = useAppDispatch()
 
     const handleMenuClick: MenuProps['onClick'] = e => {
-        if (e.key === '3') {
+        if (e.key === '2') {
             setOpen(false);
+        }
+
+        if (e.key === '1') {
+            dispatch(logout())
         }
     };
 

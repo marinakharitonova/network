@@ -1,29 +1,59 @@
 import TextArea from "antd/es/input/TextArea";
-import {Button} from "antd";
+import {Button, Form} from "antd";
 import {sendMessage} from "../../../../redux/features/dialogsSlice";
 import {useAppDispatch} from "../../../../redux/hooks";
-import {useTextarea} from "../../../../hooks/useTextarea";
+import {useEffect, useState} from "react";
 
 const NewMessageForm = (): JSX.Element => {
     const dispatch = useAppDispatch();
-    const textarea = useTextarea('');
 
-    const handleClick = () => {
-        dispatch(sendMessage(textarea.getValue()))
-        textarea.clearValue();
+    const [form] = Form.useForm();
+    const [, forceUpdate] = useState({});
+
+    useEffect(() => {
+        forceUpdate({});
+    }, []);
+
+    const onFinish = (values: any) => {
+        dispatch(sendMessage(values.message))
+        form.resetFields()
     }
 
+    const onFinishFailed = (errorInfo: any) => {
+        console.log('Failed:', errorInfo);
+    };
+
     return (
-        <div style={{marginTop: 'auto'}}>
-            <TextArea {...textarea.field}
-                      showCount maxLength={1000} allowClear={true}
-                      autoSize={{maxRows: 4, minRows: 4}}
-                      style={{marginBottom: '16px'}}
-            />
-            <Button type='primary' onClick={handleClick}>
-                Send
-            </Button>
-        </div>
+        <Form
+            name="newMessage"
+            form={form}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+            style={{marginTop: 'auto'}}
+        >
+            <Form.Item
+                name="message"
+            >
+                <TextArea/>
+            </Form.Item>
+
+            <Form.Item shouldUpdate style={{marginBottom: 0}}>
+                {() => (
+                    <>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            disabled={!form.getFieldsValue(true).message}
+                        >
+                            Send
+                        </Button>
+                    </>
+
+                )}
+            </Form.Item>
+
+        </Form>
     )
 }
 

@@ -1,6 +1,3 @@
-@import 'antd/dist/antd.min.css';
-@import 'antd/dist/antd.variable.min.css';
-
 body {
     margin: 0;
     padding: 0;
@@ -20,10 +17,14 @@ body {
 }
 
 .ant-layout-header, .ant-layout-footer {
-    height: auto;
-    padding: 20px 0;
+    height: auto !important;
+    padding: 20px 0 !important;
     background: #120338;
-    line-height: inherit;
+    line-height: inherit !important;
+}
+
+.ant-layout-header {
+    margin-bottom: 20px;
 }
 
 .ant-layout-sider {
@@ -33,4 +34,8 @@ body {
 
 .ant-card-body {
     height: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
 }

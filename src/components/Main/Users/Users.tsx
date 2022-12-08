@@ -25,20 +25,17 @@ const Users = (): JSX.Element => {
         setCurrentPage(current);
     }
 
-    return <ContentLoader error={error}
-                          status={status}
-                          renderContent={() => {
-                              return (
-                                  <>
-                                      <UsersList/>
-                                      <PaginationApp total={usersCount} pageSize={pageSize}
-                                                     current={currentPage}
-                                                     handler={handlePageChange}
-                                      />
-                                  </>
-                              )
-                          }}
-    />
+    const usersContent = (
+        <>
+            <UsersList/>
+            <PaginationApp total={usersCount} pageSize={pageSize}
+                           current={currentPage}
+                           handler={handlePageChange}
+            />
+        </>
+    )
+
+    return <ContentLoader error={error} status={status} renderContent={usersContent}/>
 }
 
 export default Users

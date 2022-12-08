@@ -20,7 +20,7 @@ const FooterApp = (): JSX.Element => {
                             icon={<GithubOutlined style={{color: 'white'}}/>}
                             href='https://github.com/marinakharitonova'
                             target='_blank'
-                            style={{color: 'inherit', padding: '0'}}
+                            style={{color: 'inherit', padding: '0', height: 'auto'}}
                         >
                             github.com
                         </Button>

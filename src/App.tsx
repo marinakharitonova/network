@@ -22,24 +22,11 @@ const App = (): JSX.Element => {
         color: appColor,
         changeColor: (color: string) => {
             setAppColor(color);
-            ConfigProvider.config({
-                theme: {
-                    primaryColor: color,
-                }
-            });
         }
     };
 
-    useEffect(() => {
-        ConfigProvider.config({
-            theme: {
-                primaryColor: appColor,
-            }
-        });
-    }, [])
-
     return (
-        <ConfigProvider>
+        <ConfigProvider theme={{token: {colorPrimary: appColor}}}>
             <ColorContext.Provider value={colorContextValue}>
                 <Layout style={{minHeight: "100vh"}}>
                     <HeaderApp/>
