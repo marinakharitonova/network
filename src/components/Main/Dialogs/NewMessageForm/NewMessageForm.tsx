@@ -23,6 +23,10 @@ const NewMessageForm = (): JSX.Element => {
         console.log('Failed:', errorInfo);
     };
 
+    const isBtnDisabled = () => {
+        return !form.getFieldsValue(true).message
+    }
+
     return (
         <Form
             name="newMessage"
@@ -34,8 +38,9 @@ const NewMessageForm = (): JSX.Element => {
         >
             <Form.Item
                 name="message"
+                style={{marginBottom: '0'}}
             >
-                <TextArea/>
+                <TextArea showCount maxLength={300}/>
             </Form.Item>
 
             <Form.Item shouldUpdate style={{marginBottom: 0}}>
@@ -44,7 +49,7 @@ const NewMessageForm = (): JSX.Element => {
                         <Button
                             type="primary"
                             htmlType="submit"
-                            disabled={!form.getFieldsValue(true).message}
+                            disabled={isBtnDisabled()}
                         >
                             Send
                         </Button>

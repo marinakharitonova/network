@@ -23,7 +23,7 @@ const Profile = (): JSX.Element => {
     useEffect(() => {
         if (!profileId) return;
 
-        dispatch(fetchProfile(profileId))
+        dispatch(fetchProfile({id: profileId}))
 
         dispatch(fetchUserStatus(profileId))
 

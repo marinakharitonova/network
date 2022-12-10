@@ -1,13 +1,16 @@
 import {Button, Checkbox, Form, Input, Typography} from 'antd';
-import {useAppDispatch} from "../../../redux/hooks";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import {login} from "../../../redux/features/authSlice";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import React from "react";
+import {Navigate} from "react-router-dom";
 
 const {Title} = Typography;
 
 const Login = (): JSX.Element => {
     const dispatch = useAppDispatch()
+
+    const isUserAuthorized = useAppSelector(state => state.auth.isUserAuthorized)
 
     const onFinish = (values: any) => {
         dispatch(login(values))
@@ -17,6 +20,8 @@ const Login = (): JSX.Element => {
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
+
+    if (isUserAuthorized) return <Navigate replace to="/profile" />
 
     return (
         <>

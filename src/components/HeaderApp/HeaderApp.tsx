@@ -5,6 +5,7 @@ import HeaderDropdown from "./HeaderDropdown/HeaderDropdown";
 import {ColorContext} from "../../App";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {fetchAuthorization} from "../../redux/features/authSlice";
+import {Link} from "react-router-dom";
 
 const {Header} = Layout;
 const {Text} = Typography;
@@ -14,9 +15,10 @@ const HeaderApp = (): JSX.Element => {
 
     const dispatch = useAppDispatch();
     const status = useAppSelector(state => state.auth.status)
+    const avatar = useAppSelector(state => state.profile.authorizedUserAvatar)
     const isUserAuthorized = useAppSelector(state => state.auth.isUserAuthorized)
     const login = useAppSelector(state => state.auth.login)!
-    const authorizedUser = useAppSelector(state => state.auth.authorizedUser)!
+
 
     useEffect(() => {
         if (status === 'idle') {
@@ -26,12 +28,14 @@ const HeaderApp = (): JSX.Element => {
 
     let content
     if (status === 'succeeded') {
-        content = isUserAuthorized ? (
-            <HeaderDropdown login={login} avatar={authorizedUser.photos.small}/>
+        content = (isUserAuthorized && avatar.status === 'succeeded') ?  (
+            <HeaderDropdown login={login} avatar={avatar.src}/>
         ) : (
-            <Button type="text" style={{color: 'white'}}>Log in</Button>
+            <Link to="login">
+                <Button type="text" style={{color: 'white'}}>Log in</Button>
+            </Link>
         )
-    } else if (status === 'failed') {
+    } else {
         content = '';
     }
 

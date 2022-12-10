@@ -5,7 +5,16 @@ import {profileAPI} from "../../api/profileAPI";
 interface ProfileState extends IRequest {
     profileInfo: IProfile,
     postsCount: number,
-    userStatus: string
+    userStatus: string,
+    authorizedUserAvatar: {
+        src: null | string,
+        status: IRequest['status']
+    }
+}
+
+type fetchProfilePayload = {
+    id: number,
+    isAuthorizedUserProfile?: boolean
 }
 
 const additionalInitialState: ProfileState = {
@@ -13,7 +22,11 @@ const additionalInitialState: ProfileState = {
     error: null,
     profileInfo: {} as IProfile,
     postsCount: 0,
-    userStatus: ''
+    userStatus: '',
+    authorizedUserAvatar: {
+        src: null,
+        status: 'idle'
+    }
 }
 
 const postsAdapter = createEntityAdapter<IPost>();
@@ -45,9 +58,13 @@ const postsData: IPost[] = [
 ];
 
 export const fetchProfile = createAsyncThunk('profile/fetchProfileInfo',
-    async (id: number) => {
+    async ({id, isAuthorizedUserProfile}: fetchProfilePayload, {dispatch}) => {
 
         const profileData = await profileAPI.fetchProfile(id)
+
+        if (isAuthorizedUserProfile){
+            dispatch(setAuthorizedUserAvatar(profileData.photos.small))
+        }
 
         return {profileInfo: profileData, posts: postsData}
     })
@@ -91,6 +108,10 @@ const profileSlice = createSlice({
             if (existingPost) {
                 existingPost.likesCount++
             }
+        },
+        setAuthorizedUserAvatar: (state, {payload}) => {
+            state.authorizedUserAvatar.src = payload
+            state.authorizedUserAvatar.status = 'succeeded'
         }
     },
     extraReducers(builder) {
@@ -120,7 +141,7 @@ const profileSlice = createSlice({
     }
 })
 
-export const {changeStatus, addPost, likePost} = profileSlice.actions
+export const {changeStatus, addPost, likePost, setAuthorizedUserAvatar} = profileSlice.actions
 export default profileSlice.reducer
 export const {
     selectAll: selectPosts,

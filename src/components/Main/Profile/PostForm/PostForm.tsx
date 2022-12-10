@@ -37,6 +37,10 @@ const PostForm = (): JSX.Element => {
         form.resetFields();
     };
 
+    const isBtnDisabled = () => {
+        return !form.getFieldsValue(true).post
+    }
+
     return (
         <Form
             name="newPost"
@@ -50,7 +54,7 @@ const PostForm = (): JSX.Element => {
                 name="post"
                 style={{marginBottom: '0'}}
             >
-                <TextArea showCount maxLength={300}/>
+                <TextArea showCount maxLength={100}/>
             </Form.Item>
 
             <Form.Item shouldUpdate>
@@ -59,12 +63,12 @@ const PostForm = (): JSX.Element => {
                         <Button
                             type="primary"
                             htmlType="submit"
-                            disabled={!form.getFieldsValue(true).post}
+                            disabled={isBtnDisabled()}
                         >
                             Post
                         </Button>
                         <Button htmlType="button" onClick={onReset} style={{marginLeft: '12px'}}
-                                disabled={!form.getFieldsValue(true).post}
+                                disabled={isBtnDisabled()}
                         >
                             Reset
                         </Button>

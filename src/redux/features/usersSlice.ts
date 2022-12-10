@@ -35,7 +35,7 @@ export const toggleFollow = createAsyncThunk('users/toggleFollow',
 
         let data
         if (payload.isFollow) {
-           data = await usersAPI.unFollow(payload.userId)
+            data = await usersAPI.unFollow(payload.userId)
         } else {
             data = await usersAPI.follow(payload.userId)
         }
@@ -47,7 +47,11 @@ export const toggleFollow = createAsyncThunk('users/toggleFollow',
 const usersSlice = createSlice({
     name: "users",
     initialState,
-    reducers: {},
+    reducers: {
+        changeStatus: (state, {payload}) => {
+            state.status = payload
+        }
+    },
     extraReducers(builder) {
         builder
             .addCase(fetchUsers.pending, (state) => {
@@ -68,7 +72,7 @@ const usersSlice = createSlice({
                 state.error = action.error.message || null
             })
             .addCase(toggleFollow.fulfilled, (state, action) => {
-                if (action.payload.resultCode === 0){
+                if (action.payload.resultCode === 0) {
                     const user = state.entities[action.payload.userId]
                     if (user) {
                         user.followed = !user.followed
@@ -85,4 +89,7 @@ export const {
     selectById: selectUserById,
     selectIds: selectUserIds
 } = usersAdapter.getSelectors<RootState>(state => state.users)
+
+
+export const {changeStatus} = usersSlice.actions
 
