@@ -6,8 +6,9 @@ type ContentLoaderProps = {
 } & IRequest
 
 const ContentLoader = ({status, error, renderContent}: ContentLoaderProps): JSX.Element => {
+    console.log(status);
     return <>
-        {status === 'idle' && <Loader/>}
+        {status === 'loading' && <Loader/>}
         {status === 'succeeded' && renderContent}
         {status === 'failed' && <ErrorMessage text={error}/>}
     </>

@@ -1,6 +1,6 @@
-import {Input, Tooltip, Typography, message} from 'antd';
+import {Input, message, Tooltip, Typography} from 'antd';
 import React, {useEffect, useState} from "react";
-import {useAppDispatch, useAppSelector} from "../../../../../redux/hooks";
+import {useAppDispatch} from "../../../../../redux/hooks";
 import {updateUserStatus} from "../../../../../redux/features/profileSlice";
 
 type UserStatusProps = {

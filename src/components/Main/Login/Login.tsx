@@ -14,11 +14,6 @@ const Login = (): JSX.Element => {
 
     const onFinish = (values: any) => {
         dispatch(login(values))
-        console.log('Success:', values);
-    };
-
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
     };
 
     if (isUserAuthorized) return <Navigate replace to="/profile" />
@@ -31,7 +26,6 @@ const Login = (): JSX.Element => {
                 wrapperCol={{span: 12}}
                 initialValues={{rememberMe: true}}
                 onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
                 autoComplete="off"
             >
                 <Form.Item

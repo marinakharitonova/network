@@ -3,13 +3,15 @@ import profileSlice from "./features/profileSlice";
 import dialogsSlice from "./features/dialogsSlice";
 import usersSlice from "./features/usersSlice";
 import authSlice from "./features/authSlice";
+import errorSlice from "./features/errorSlice";
 
 export const store = configureStore({
     reducer: {
         profile: profileSlice,
         dialogs: dialogsSlice,
         users: usersSlice,
-        auth: authSlice
+        auth: authSlice,
+        error: errorSlice
     }
 })
 

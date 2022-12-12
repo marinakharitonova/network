@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {authAPI} from "../../api/authAPI";
 import {fetchProfile, setAuthorizedUserAvatar} from "./profileSlice";
+import {showError} from "./errorSlice";
 
 interface AuthState {
     id: number | null,
@@ -38,7 +39,10 @@ export const login = createAsyncThunk('auth/login',
         if (result.resultCode === 0) {
             dispatch(fetchAuthorization())
 
-        } else throw new Error(result.messages.join(','))
+        } else {
+            const message = result.messages.length ? result.messages : ['Some error']
+            dispatch(showError(message))
+        }
 
     })
 

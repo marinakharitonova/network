@@ -4,10 +4,9 @@ import Banner from "./Banner/Banner";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {changeStatus, fetchProfile, fetchUserStatus} from "../../../redux/features/profileSlice";
 import ContentLoader from "../../ContentLoader/ContentLoader";
-import {withAuth} from "../../../hoc/withAuth";
 
 const Profile = (): JSX.Element => {
 
@@ -17,15 +16,18 @@ const Profile = (): JSX.Element => {
     const profileInfo = useAppSelector(state => state.profile.profileInfo);
     const userStatus = useAppSelector(state => state.profile.userStatus);
     const authorizedUserId = useAppSelector(state => state.auth.id);
+    const isUserAuthorized = useAppSelector(state => state.auth.isUserAuthorized);
     let {userId} = useParams();
     const profileId = userId ? Number(userId) : authorizedUserId;
 
+    const navigate = useNavigate();
+
     useEffect(() => {
-        if (!profileId) return;
+        if (!(profileId || isUserAuthorized)) navigate('/login');
 
-        dispatch(fetchProfile({id: profileId}))
+        dispatch(fetchProfile({id: profileId!}))
 
-        dispatch(fetchUserStatus(profileId))
+        dispatch(fetchUserStatus(profileId!))
 
         return () => {
             dispatch(changeStatus('idle'))
@@ -45,4 +47,4 @@ const Profile = (): JSX.Element => {
 }
 
 
-export default withAuth(Profile)
+export default Profile
