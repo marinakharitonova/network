@@ -1,13 +1,13 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 interface ErrorState {
-    messages: string[],
-    isError: boolean
+    isError: boolean,
+    message?: string
 }
 
 const initialState: ErrorState = {
-    messages: [],
-    isError: false
+    isError: false,
+    message: ''
 }
 
 const errorSlice = createSlice({
@@ -15,8 +15,8 @@ const errorSlice = createSlice({
     initialState,
     reducers: {
         showError: (state, {payload}) => {
-            state.isError = true
-            state.messages = payload
+            state.isError = payload.isError
+            state.message = payload.message
         }
     }
 })

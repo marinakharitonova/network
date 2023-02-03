@@ -5,8 +5,6 @@ import UserItem from "./UserItem/UserItem";
 
 const UsersList = (): JSX.Element => {
 
-    console.log('render list');
-
     const usersIds = useAppSelector(selectUserIds);
 
     return (

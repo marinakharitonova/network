@@ -1,10 +1,10 @@
 import {Button, List} from "antd";
 import AvatarApp from "../../../../AvatarApp/AvatarApp";
-import {useAppDispatch, useAppSelector} from "../../../../../redux/hooks";
+import {useAppSelector} from "../../../../../redux/hooks";
 import {selectUserById, toggleFollow} from "../../../../../redux/features/usersSlice";
 import {EntityId} from "@reduxjs/toolkit";
 import {Link, useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useDispatchThunk} from "../../../../../hooks/useDispatchThunk";
 
 type UserItemProps = {
     id: EntityId,
@@ -12,27 +12,18 @@ type UserItemProps = {
 
 const UserItem = ({id}: UserItemProps): JSX.Element => {
 
-    const user = useAppSelector(state => selectUserById(state, id))!;
-    const dispatch = useAppDispatch();
-    const [followRequestStatus, setFollowRequestStatus] = useState<IRequest['status']>('idle')
+    const user = useAppSelector(state => selectUserById(state, id))!
     const isUserAuthorized = useAppSelector(state => state.auth.isUserAuthorized)
     const navigate = useNavigate();
-
+    const [status, tryCatchWrapper] = useDispatchThunk()
     const userURL = `/profile/${id}`;
 
-    const handleToggleFollow = async () => {
+    const handleToggleFollow = () => {
         if (!isUserAuthorized) navigate('/login')
-        try {
-            setFollowRequestStatus('loading')
-            await dispatch(toggleFollow({userId: user.id, isFollow: user.followed})).unwrap();
-        } catch (err) {
-            console.error('Failed to follow user: ', err)
-        } finally {
-            setFollowRequestStatus('idle')
-        }
+        tryCatchWrapper(toggleFollow({userId: user.id, isFollow: user.followed}))
     }
 
-    const isFollowBtnDisabled = followRequestStatus === 'loading';
+    const isFollowBtnDisabled = status === 'loading';
 
     return (
         <List.Item

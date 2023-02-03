@@ -1,13 +1,15 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {authAPI} from "../../api/authAPI";
-import {fetchProfile, setAuthorizedUserAvatar} from "./profileSlice";
 import {showError} from "./errorSlice";
+import {RootState} from "../store";
+import {profileAPI} from "../../api/profileAPI";
 
 interface AuthState {
     id: number | null,
     email: string | null,
     login: string | null,
     isUserAuthorized: boolean,
+    avatar: string | null
     status: IRequest["status"]
 }
 
@@ -16,6 +18,7 @@ const initialState: AuthState = {
     email: null,
     login: null,
     isUserAuthorized: false,
+    avatar: null,
     status: 'idle'
 }
 
@@ -27,8 +30,19 @@ export const fetchAuthorization = createAsyncThunk('auth/fetchAuthorization',
         const {resultCode, data: {id}} = result
 
         if (resultCode === 0) {
-            dispatch(fetchProfile({id: id, isAuthorizedUserProfile: true}))
+            dispatch(fetchAuthorizedUserAvatar(id))
             dispatch(setAuthorizedUserData({...result.data, isUserAuthorized: true}))
+        }
+        return result.data
+    })
+
+export const fetchAuthorizedUserAvatar = createAsyncThunk('profile/fetchAuthorizedUserAvatar',
+    async (id: number, {dispatch}) => {
+
+        const {resultCode, data: {photos: {small}}} = await profileAPI.fetchProfile(id)
+
+        if (resultCode === 0) {
+            dispatch(setAuthorizedUserData({avatar: small}))
         }
 
     })
@@ -40,8 +54,7 @@ export const login = createAsyncThunk('auth/login',
             dispatch(fetchAuthorization())
 
         } else {
-            const message = result.messages.length ? result.messages : ['Some error']
-            dispatch(showError(message))
+            dispatch(showError({isError: true, message: result.messages[0]}))
         }
 
     })
@@ -49,9 +62,8 @@ export const login = createAsyncThunk('auth/login',
 export const logout = createAsyncThunk('auth/logout',
     async (_, {dispatch}) => {
         const result = await authAPI.logout()
-        if (result.resultCode === 0){
+        if (result.resultCode === 0) {
             dispatch(setAuthorizedUserData({isUserAuthorized: false}))
-            dispatch(setAuthorizedUserAvatar({status: 'idle', src: null}))
         }
     })
 
@@ -63,6 +75,7 @@ const authSlice = createSlice({
             state.id = payload.id || null
             state.email = payload.email || null
             state.login = payload.login || null
+            state.avatar = payload.avatar || null
             state.isUserAuthorized = payload.isUserAuthorized
         }
     },
@@ -79,3 +92,4 @@ const authSlice = createSlice({
 
 export default authSlice.reducer
 export const {setAuthorizedUserData} = authSlice.actions
+export const selectAuthorizationStatus = (state: RootState) => state.auth.status

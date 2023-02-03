@@ -6,27 +6,14 @@ interface ProfileState extends IRequest {
     profileInfo: IProfile,
     postsCount: number,
     userStatus: string,
-    authorizedUserAvatar: {
-        src: null | string,
-        status: IRequest['status']
-    }
-}
-
-type fetchProfilePayload = {
-    id: number,
-    isAuthorizedUserProfile?: boolean
 }
 
 const additionalInitialState: ProfileState = {
     status: 'idle',
-    error: null,
+    error: '',
     profileInfo: {} as IProfile,
     postsCount: 0,
     userStatus: '',
-    authorizedUserAvatar: {
-        src: null,
-        status: 'idle'
-    }
 }
 
 const postsAdapter = createEntityAdapter<IPost>();
@@ -58,13 +45,9 @@ const postsData: IPost[] = [
 ];
 
 export const fetchProfile = createAsyncThunk('profile/fetchProfileInfo',
-    async ({id, isAuthorizedUserProfile}: fetchProfilePayload, {dispatch}) => {
+    async (id: number, {dispatch}) => {
 
         const profileData = await profileAPI.fetchProfile(id)
-
-        if (isAuthorizedUserProfile){
-            dispatch(setAuthorizedUserAvatar(profileData.photos.small))
-        }
 
         return {profileInfo: profileData, posts: postsData}
     })
@@ -109,10 +92,6 @@ const profileSlice = createSlice({
                 existingPost.likesCount++
             }
         },
-        setAuthorizedUserAvatar: (state, {payload}) => {
-            state.authorizedUserAvatar.src = payload
-            state.authorizedUserAvatar.status = 'succeeded'
-        }
     },
     extraReducers(builder) {
         builder
@@ -133,6 +112,9 @@ const profileSlice = createSlice({
             .addCase(fetchUserStatus.fulfilled, (state, action) => {
                 state.userStatus = action.payload
             })
+            .addCase(fetchUserStatus.rejected, (state, action) => {
+                console.log(action.error.message);
+            })
             .addCase(updateUserStatus.fulfilled, (state, action) => {
                 if (action.payload.resultCode === 0) {
                     state.userStatus = action.payload.newStatus
@@ -141,7 +123,7 @@ const profileSlice = createSlice({
     }
 })
 
-export const {changeStatus, addPost, likePost, setAuthorizedUserAvatar} = profileSlice.actions
+export const {changeStatus, addPost, likePost} = profileSlice.actions
 export default profileSlice.reducer
 export const {
     selectAll: selectPosts,

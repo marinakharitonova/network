@@ -2,16 +2,19 @@ import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 type ContentLoaderProps = {
-    renderContent: JSX.Element
+    children: JSX.Element | JSX.Element[];
 } & IRequest
 
-const ContentLoader = ({status, error, renderContent}: ContentLoaderProps): JSX.Element => {
-    console.log(status);
-    return <>
-        {status === 'loading' && <Loader/>}
-        {status === 'succeeded' && renderContent}
-        {status === 'failed' && <ErrorMessage text={error}/>}
-    </>
+const ContentLoader = ({status, error, children}: ContentLoaderProps): JSX.Element => {
+
+    const currentError =  error ?? 'Big error'
+    return (
+        <>
+            {status === 'loading' && <Loader/>}
+            {status === 'failed' && <ErrorMessage text={currentError}/>}
+            {status === 'succeeded' && children}
+        </>
+    )
 }
 
 

@@ -3,44 +3,27 @@ import HeaderApp from "./components/HeaderApp/HeaderApp";
 import Main from "./components/Main/Main";
 import FooterApp from "./components/FooterApp/FooterApp";
 import React, {useEffect} from "react";
-import {purple} from "@ant-design/colors";
 import {useLocalStorage} from "./hooks/useLocalStorage";
 import ErrorNotification from "./components/ErrorNotification/ErrorNotification";
 import {fetchAuthorization} from "./redux/features/authSlice";
 import {useAppDispatch, useAppSelector} from "./redux/hooks";
-import ContentLoader from "./components/ContentLoader/ContentLoader";
-
-export const defaultColor = purple[8];
-
-interface ColorContextInterface {
-    color: string;
-    changeColor: (col: string) => void
-}
-
-export const ColorContext = React.createContext<ColorContextInterface | null>(null);
+import {defaultColor, ColorContext} from "./context/theme-context";
 
 const App = (): JSX.Element => {
-    const [appColor, setAppColor] = useLocalStorage<string>("appColor", defaultColor);
+    const [color, setColor] = useLocalStorage<string>("appColor", defaultColor);
     const dispatch = useAppDispatch();
     const status = useAppSelector(state => state.auth.status)
-
-    const colorContextValue: ColorContextInterface = {
-        color: appColor,
-        changeColor: (color: string) => {
-            setAppColor(color);
-        }
-    };
 
     useEffect(() => {
         if (status === 'idle') {
             dispatch(fetchAuthorization())
         }
-    }, [status, dispatch])
+    }, [status])
 
 
     return (
-        <ConfigProvider theme={{token: {colorPrimary: appColor}}}>
-            <ColorContext.Provider value={colorContextValue}>
+        <ConfigProvider theme={{token: {colorPrimary: color}}}>
+            <ColorContext.Provider value={{color, setColor}}>
                 <Layout style={{minHeight: "100vh"}}>
                     <ErrorNotification/>
                     <HeaderApp/>

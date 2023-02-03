@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {Dropdown, Menu, Space} from 'antd';
+import React from 'react';
 import type {MenuProps} from 'antd';
+import {Dropdown, Space} from 'antd';
 import AvatarApp from "../../AvatarApp/AvatarApp";
 import {useAppDispatch} from "../../../redux/hooks";
 import {logout} from "../../../redux/features/authSlice";
@@ -10,40 +10,25 @@ type HeaderDropdownProps = {
     avatar: string | null
 }
 
-const HeaderDropdown = ({login, avatar} : HeaderDropdownProps): JSX.Element => {
-    const [open, setOpen] = useState(false);
+const HeaderDropdown = ({login, avatar}: HeaderDropdownProps): JSX.Element => {
     const dispatch = useAppDispatch()
 
-    const handleMenuClick: MenuProps['onClick'] = e => {
-        if (e.key === '2') {
-            setOpen(false);
-        }
-
-        if (e.key === '1') {
+    const onClick: MenuProps['onClick'] = ({key}) => {
+        if (key === '1') {
             dispatch(logout())
         }
-    };
+    }
 
-    const handleOpenChange = (flag: boolean) => {
-        setOpen(flag);
-    };
-
-    const menu = (
-        <Menu
-            onClick={handleMenuClick}
-            items={[
-                {
-                    label: 'Log out',
-                    key: '1',
-                },
-            ]}
-            style={{marginTop: '10px'}}
-        />
-    );
+    const items: MenuProps['items'] = [
+        {
+            label: 'Log out',
+            key: '1',
+        },
+    ]
 
 
     return (
-        <Dropdown overlay={menu} onOpenChange={handleOpenChange} open={open}>
+        <Dropdown menu={{items, onClick}} placement="bottomRight" arrow>
             <a onClick={e => e.preventDefault()}>
                 <Space style={{color: 'white'}}>
                     <AvatarApp src={avatar} size={24}/>

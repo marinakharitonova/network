@@ -1,18 +1,8 @@
-import {Button, Form, Input, Select} from "antd";
+import {Button, Form} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import {useAppDispatch} from "../../../../redux/hooks";
 import {addPost} from "../../../../redux/features/profileSlice";
 import {useEffect, useState} from "react";
-
-const {Option} = Select;
-
-const layout = {
-    labelCol: {span: 8},
-    wrapperCol: {span: 16},
-};
-const tailLayout = {
-    wrapperCol: {offset: 8, span: 16},
-};
 
 const PostForm = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -26,7 +16,6 @@ const PostForm = (): JSX.Element => {
     const onFinish = (values: any) => {
         dispatch(addPost(values.post))
         form.resetFields()
-
     }
 
     const onFinishFailed = (errorInfo: any) => {

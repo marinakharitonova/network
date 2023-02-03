@@ -4,20 +4,19 @@ import {useEffect} from "react";
 
 const ErrorNotification = () => {
     const [messageApi, contextHolder] = message.useMessage();
-    const errMessages = useAppSelector(state => state.error.messages)
-    const showError = () => {
-        if (!errMessages.length) return
-        messageApi.open({
-            type: 'error',
-            content: errMessages.join(','),
-        });
-    }
-    useEffect(showError, [errMessages])
-    return (
-        <div>
-            {contextHolder}
-        </div>
-    )
+    const {isError, message: errMessage} = useAppSelector(state => state.error)
+
+    useEffect(() => {
+        if (isError) {
+            messageApi.open({
+                type: 'error',
+                content: errMessage,
+            });
+        }
+
+    }, [isError, errMessage, messageApi])
+
+    return <div>{contextHolder}</div>
 }
 
 export default ErrorNotification

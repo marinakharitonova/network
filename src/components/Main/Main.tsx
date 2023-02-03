@@ -3,17 +3,15 @@ import {Col, Layout, Row, Card} from 'antd';
 import Sidebar from './Sidebar/Sidebar';
 import ContentLoader from "../ContentLoader/ContentLoader";
 import {useAppSelector} from "../../redux/hooks";
+import {selectAuthorizationStatus} from "../../redux/features/authSlice";
+import {useOnlineStatus} from "../../hooks/useOnlineStatus";
 
 const {Content} = Layout;
 
 
 const Main = (): JSX.Element => {
-    const renderContent = (
-        <Card bordered={false} style={{height: '100%'}}>
-            <Outlet/>
-        </Card>
-    )
-    const status = useAppSelector(state => state.auth.status)
+    const status = useAppSelector(selectAuthorizationStatus)
+    const isOnline = useOnlineStatus()
     return (
         <Layout>
             <div className="container">
@@ -23,7 +21,11 @@ const Main = (): JSX.Element => {
                     </Col>
                     <Col span={20}>
                         <Content style={{height: '100%', paddingBottom: '36px'}}>
-                            <ContentLoader error={'err'} status={status} renderContent={renderContent}/>
+                            <ContentLoader status={status}>
+                                <Card bordered={false} style={{height: '100%'}}>
+                                    {isOnline ? <Outlet/> : <h1>Reconnecting...</h1>}
+                                </Card>
+                            </ContentLoader>
                         </Content>
                     </Col>
                 </Row>

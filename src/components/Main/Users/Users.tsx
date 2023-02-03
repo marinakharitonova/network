@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {changeStatus, fetchUsers} from "../../../redux/features/usersSlice";
+import {fetchUsers} from "../../../redux/features/usersSlice";
 import UsersList from "./UsersList/UsersList";
 import {useEffect, useState} from "react";
 import PaginationApp from "../../PaginationApp/PaginationApp";
@@ -15,34 +15,22 @@ const Users = (): JSX.Element => {
     const [pageSize] = useState(10);
 
     useEffect(() => {
-        if (status === 'idle') {
-            dispatch(fetchUsers({page: currentPage, count: pageSize}))
-        }
-    }, [status, dispatch])
-
-    useEffect(() => {
-        return () => {
-            dispatch(changeStatus('idle'))
-        }
-    }, [])
-
+        dispatch(fetchUsers({page: currentPage, count: pageSize}))
+    }, [currentPage, pageSize])
 
     const handlePageChange = (current: number) => {
-        dispatch(fetchUsers({page: current, count: pageSize}))
         setCurrentPage(current);
     }
 
-    const usersContent = (
-        <>
+    return (
+        <ContentLoader error={error} status={status}>
             <UsersList/>
             <PaginationApp total={usersCount} pageSize={pageSize}
                            current={currentPage}
                            handler={handlePageChange}
             />
-        </>
+        </ContentLoader>
     )
-
-    return <ContentLoader error={error} status={status} renderContent={usersContent}/>
 }
 
 export default Users

@@ -9,7 +9,6 @@ export const withAuth = <T extends object>(WrappedComponent: React.ComponentType
     const WithAuthComponent = (props: T) => {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const isUserAuthorized = useAppSelector(state => state.auth.isUserAuthorized)
-        console.log(isUserAuthorized);
         if (!isUserAuthorized) return <Navigate replace to="/login" />
         return <WrappedComponent {...props}/>
     }

@@ -21,4 +21,4 @@ const PostsList = (): JSX.Element => {
     )
 }
 
-export default React.memo(PostsList)
+export default PostsList

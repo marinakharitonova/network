@@ -10,7 +10,6 @@ type PaginationAppProps = {
 
 
 const PaginationApp = ({total, pageSize, current, pageSizeOptions = [pageSize], handler}: PaginationAppProps): JSX.Element => {
-    console.log('render pagination');
 
     const handlePageChange = (page: number) => {
         handler(page, pageSize);

@@ -14,7 +14,7 @@ interface UsersState {
 
 const additionalInitialState: UsersState = {
     status: 'idle',
-    error: null,
+    error: '',
     usersCount: 0
 }
 
@@ -69,7 +69,7 @@ const usersSlice = createSlice({
             })
             .addCase(fetchUsers.rejected, (state, action) => {
                 state.status = 'failed'
-                state.error = action.error.message || null
+                state.error = action.error.message
             })
             .addCase(toggleFollow.fulfilled, (state, action) => {
                 if (action.payload.resultCode === 0) {
