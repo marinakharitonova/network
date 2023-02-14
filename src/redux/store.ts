@@ -1,19 +1,25 @@
-import { configureStore } from '@reduxjs/toolkit'
-import profileSlice from "./features/profileSlice";
-import dialogsSlice from "./features/dialogsSlice";
-import usersSlice from "./features/usersSlice";
-import authSlice from "./features/authSlice";
-import errorSlice from "./features/errorSlice";
+import {combineReducers, configureStore, PreloadedState} from '@reduxjs/toolkit'
+import profileReducer from "./features/profileSlice";
+import dialogsReducer from "./features/dialogsSlice";
+import usersReducer from "./features/usersSlice";
+import authReducer from "./features/authSlice";
+import errorReducer from "./features/errorSlice";
 
-export const store = configureStore({
-    reducer: {
-        profile: profileSlice,
-        dialogs: dialogsSlice,
-        users: usersSlice,
-        auth: authSlice,
-        error: errorSlice
-    }
+const rootReducer = combineReducers({
+    profile: profileReducer,
+    dialogs: dialogsReducer,
+    users: usersReducer,
+    auth: authReducer,
+    error: errorReducer
 })
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export function setupStore(preloadedState?: PreloadedState<RootState>) {
+    return configureStore({
+        reducer: rootReducer,
+        preloadedState
+    })
+}
+
+export type RootState = ReturnType<typeof rootReducer>
+export type AppStore = ReturnType<typeof setupStore>
+export type AppDispatch = AppStore['dispatch']

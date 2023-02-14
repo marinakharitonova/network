@@ -38,7 +38,6 @@ const UserItem = ({id}: UserItemProps): JSX.Element => {
                 title={<Link to={userURL}>{user.name}</Link>}
                 description={user.status}
             />
-            <div>{user.location && `${user.location.country}, ${user.location.city}`}</div>
         </List.Item>
     )
 }

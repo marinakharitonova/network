@@ -6,7 +6,7 @@ import {
 import {RootState} from "../store";
 import {usersAPI} from "../../api/usersAPI";
 
-interface UsersState {
+export type UsersState = {
     status: IRequest["status"],
     error: IRequest["error"],
     usersCount: number
@@ -18,7 +18,7 @@ const additionalInitialState: UsersState = {
     usersCount: 0
 }
 
-const usersAdapter = createEntityAdapter<IUser>();
+export const usersAdapter = createEntityAdapter<IUser>();
 
 const initialState = usersAdapter.getInitialState(additionalInitialState);
 
@@ -47,11 +47,7 @@ export const toggleFollow = createAsyncThunk('users/toggleFollow',
 const usersSlice = createSlice({
     name: "users",
     initialState,
-    reducers: {
-        changeStatus: (state, {payload}) => {
-            state.status = payload
-        }
-    },
+    reducers: {},
     extraReducers(builder) {
         builder
             .addCase(fetchUsers.pending, (state) => {
@@ -89,7 +85,4 @@ export const {
     selectById: selectUserById,
     selectIds: selectUserIds
 } = usersAdapter.getSelectors<RootState>(state => state.users)
-
-
-export const {changeStatus} = usersSlice.actions
 

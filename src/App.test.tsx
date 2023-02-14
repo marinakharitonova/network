@@ -1,9 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import ReactDOM from "react-dom";
+import App from "./App";
+import {renderWithProviders} from "./utils/test-utils";
+import Users from "./components/Main/Users/Users";
 
-// test('renders learn react link', () => {
-//   render(<App />);
-//   const linkElement = screen.getByText(/learn react/i);
-//   expect(linkElement).toBeInTheDocument();
+// it('renders without crashing', () => {
+//
+//     ReactDOM.render((renderWithProviders(<App/>), div);
 // });

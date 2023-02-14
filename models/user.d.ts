@@ -7,9 +7,5 @@ interface IUser {
         large: string | null
     }
     status: string | null,
-    location: {
-        country: string,
-        city: string
-    } | null,
     followed: boolean,
 }
