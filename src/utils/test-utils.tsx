@@ -7,6 +7,7 @@ import {Provider} from 'react-redux'
 import type {AppStore, RootState} from '../redux/store'
 import {setupStore} from "../redux/store";
 import {BrowserRouter} from "react-router-dom";
+import userEvent from "@testing-library/user-event";
 
 
 // This type interface extends the default options for render from RTL, as well
@@ -35,4 +36,15 @@ export function renderWithProviders(
 
     // Return an object with the store and all of RTL's query functions
     return {store, ...render(ui, {wrapper: Wrapper, ...renderOptions})}
+}
+
+export function setup(ui: JSX.Element, {
+    preloadedState = {},
+    store = setupStore(preloadedState),
+    ...renderOptions
+}: ExtendedRenderOptions = {}) {
+    return {
+        user: userEvent.setup(),
+        ...renderWithProviders(ui, {preloadedState, store, ...renderOptions}),
+    }
 }
