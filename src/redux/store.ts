@@ -1,22 +1,18 @@
 import {combineReducers, configureStore, PreloadedState} from '@reduxjs/toolkit'
-import profileReducer from "./features/profileSlice";
-import dialogsReducer from "./features/dialogsSlice";
-import usersReducer from "./features/usersSlice";
-import authReducer from "./features/authSlice";
-import errorReducer from "./features/errorSlice";
+import authReducer from "./features/auth/authSlice";
+import {apiSlice} from "./features/api/apiSlice";
 
 const rootReducer = combineReducers({
-    profile: profileReducer,
-    dialogs: dialogsReducer,
-    users: usersReducer,
     auth: authReducer,
-    error: errorReducer
+    [apiSlice.reducerPath]: apiSlice.reducer
 })
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {
     return configureStore({
         reducer: rootReducer,
-        preloadedState
+        middleware: getDefaultMiddleware =>
+            getDefaultMiddleware().concat(apiSlice.middleware),
+        preloadedState,
     })
 }
 

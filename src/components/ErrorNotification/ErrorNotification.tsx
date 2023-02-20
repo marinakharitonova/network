@@ -1,20 +1,12 @@
 import {message} from "antd";
-import {useAppSelector} from "../../redux/hooks";
-import {useEffect} from "react";
 
-const ErrorNotification = () => {
+const ErrorNotification = ({errorMessage}: { errorMessage: string }) => {
     const [messageApi, contextHolder] = message.useMessage();
-    const {isError, message: errMessage} = useAppSelector(state => state.error)
 
-    useEffect(() => {
-        if (isError) {
-            messageApi.open({
-                type: 'error',
-                content: errMessage,
-            });
-        }
-
-    }, [isError, errMessage, messageApi])
+    messageApi.open({
+        type: 'error',
+        content: errorMessage,
+    });
 
     return <div>{contextHolder}</div>
 }

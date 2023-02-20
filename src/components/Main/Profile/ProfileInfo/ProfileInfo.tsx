@@ -1,13 +1,14 @@
-import {Descriptions, Row, Col, Button} from 'antd';
+import {Button, Col, Descriptions, Row} from 'antd';
 import AvatarApp from "../../../AvatarApp/AvatarApp";
 import {FacebookOutlined, GithubOutlined, SelectOutlined, TwitterOutlined, YoutubeOutlined} from "@ant-design/icons";
-import {useAppSelector} from "../../../../redux/hooks";
 import UserStatus from "./UserStatus/UserStatus";
 import React from "react";
 
-const ProfileInfo = (): JSX.Element => {
+type ProfileInfoProps = {
+    profile: IProfile
+}
 
-    const info = useAppSelector(state => state.profile.profileInfo);
+const ProfileInfo = ({profile} : ProfileInfoProps): JSX.Element => {
 
     function validateUrl(str: string) {
         if (/(http(s?)):\/\//i.test(str)) {
@@ -27,62 +28,62 @@ const ProfileInfo = (): JSX.Element => {
             <UserStatus/>
             <Row gutter={16} style={{marginBottom: '36px'}}>
                 <Col span={4}>
-                    <AvatarApp src={info.photos.large} shape="square" size={128}/>
+                    <AvatarApp src={profile.photos.large} shape="square" size={128}/>
                 </Col>
                 <Col span={18}>
                     <Descriptions style={{marginBottom: '36px'}}>
-                        <Descriptions.Item label="User name" span={3}>{info.fullName}</Descriptions.Item>
-                        {info.aboutMe &&
-                            <Descriptions.Item label="About me" span={3}>{info.aboutMe}</Descriptions.Item>
+                        <Descriptions.Item label="User name" span={3}>{profile.fullName}</Descriptions.Item>
+                        {profile.aboutMe &&
+                            <Descriptions.Item label="About me" span={3}>{profile.aboutMe}</Descriptions.Item>
                         }
                         <Descriptions.Item
                             label="Looking for a job" span={3}>
-                            {info.lookingForAJob ? 'Yes' : 'No'}
-                            {info.lookingForAJobDescription &&
+                            {profile.lookingForAJob ? 'Yes' : 'No'}
+                            {profile.lookingForAJobDescription &&
                                 <>
-                                    <br/> {info.lookingForAJobDescription}
+                                    <br/> {profile.lookingForAJobDescription}
                                 </>
                             }
                         </Descriptions.Item>
-                        {hasContacts(info.contacts) &&
+                        {hasContacts(profile.contacts) &&
                             <Descriptions.Item label="Contacts" span={3} labelStyle={{alignSelf: 'center'}}>
-                                {info.contacts.github &&
+                                {profile.contacts.github &&
                                     <Button
                                         type='link'
                                         icon={<GithubOutlined/>}
-                                        href={validateUrl(info.contacts.github)}
+                                        href={validateUrl(profile.contacts.github)}
                                         target='_blank'
                                     />
                                 }
-                                {info.contacts.facebook &&
+                                {profile.contacts.facebook &&
                                     <Button
                                         type='link'
                                         icon={<FacebookOutlined/>}
-                                        href={validateUrl(info.contacts.facebook)}
+                                        href={validateUrl(profile.contacts.facebook)}
                                         target='_blank'
                                     />
                                 }
-                                {info.contacts.twitter &&
+                                {profile.contacts.twitter &&
                                     <Button
                                         type='link'
                                         icon={<TwitterOutlined/>}
-                                        href={validateUrl(info.contacts.twitter)}
+                                        href={validateUrl(profile.contacts.twitter)}
                                         target='_blank'
                                     />
                                 }
-                                {info.contacts.website &&
+                                {profile.contacts.website &&
                                     <Button
                                         type='link'
                                         icon={<SelectOutlined/>}
-                                        href={validateUrl(info.contacts.website)}
+                                        href={validateUrl(profile.contacts.website)}
                                         target='_blank'
                                     />
                                 }
-                                {info.contacts.youtube &&
+                                {profile.contacts.youtube &&
                                     <Button
                                         type='link'
                                         icon={<YoutubeOutlined/>}
-                                        href={validateUrl(info.contacts.youtube)}
+                                        href={validateUrl(profile.contacts.youtube)}
                                         target='_blank'
                                     />
                                 }

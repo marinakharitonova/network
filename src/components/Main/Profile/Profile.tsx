@@ -1,41 +1,38 @@
-import PostsList from './PostsList/PostsList';
-import PostForm from "./PostForm/PostForm";
 import Banner from "./Banner/Banner";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
-import React, {useEffect} from "react";
-import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {useNavigate, useParams} from "react-router-dom";
-import {fetchProfile, fetchUserStatus} from "../../../redux/features/profileSlice";
+import React from "react";
+import {Navigate, useParams} from "react-router-dom";
+import {useGetProfileQuery} from "../../../redux/features/api/apiSlice";
 import ContentLoader from "../../ContentLoader/ContentLoader";
+import {selectCurrentUser} from "../../../redux/features/auth/authSlice";
+import {useAppSelector} from "../../../redux/hooks";
 
 const Profile = (): JSX.Element => {
+    const currentUser = useAppSelector(selectCurrentUser)
+    let {userId} = useParams()
 
-    const dispatch = useAppDispatch();
-    const status = useAppSelector(state => state.profile.status);
-    const error = useAppSelector(state => state.profile.error);
-    const authorizedUserId = useAppSelector(state => state.auth.id);
-    const isUserAuthorized = useAppSelector(state => state.auth.isUserAuthorized);
-    let {userId} = useParams();
-    const profileId = userId ? Number(userId) : authorizedUserId!
+    const profileId = userId ? Number(userId) : currentUser?.id
 
-    const navigate = useNavigate();
-
-    useEffect(() => {
-
-        if (!(profileId || isUserAuthorized)) navigate('/login');
-
-        dispatch(fetchProfile(profileId))
-
-        dispatch(fetchUserStatus(profileId!))
-    }, [profileId])
+    const {
+        data: profile,
+        isLoading,
+        isSuccess,
+        isError,
+        error
+    } = useGetProfileQuery(profileId!, {skip: !userId && !currentUser})
 
     return (
-        <ContentLoader error={error} status={status}>
-            <Banner/>
-            <ProfileInfo/>
-            <PostForm/>
-            <PostsList/>
-        </ContentLoader>
+        <>
+            {!(userId || currentUser) && <Navigate replace to="/login"/>}
+            <ContentLoader isError={isError} isLoading={isLoading} isSuccess={isSuccess} error={error}>
+                {profile && <>
+                    <Banner/>
+                    <ProfileInfo profile={profile}/>
+                </>}
+                {/*<PostForm/>*/}
+                {/*<PostsList/>*/}
+            </ContentLoader>
+        </>
     )
 }
 

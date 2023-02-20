@@ -1,21 +1,18 @@
 import React from 'react';
 import type {MenuProps} from 'antd';
-import {Dropdown, Space} from 'antd';
-import AvatarApp from "../../AvatarApp/AvatarApp";
-import {useAppDispatch} from "../../../redux/hooks";
-import {logout} from "../../../redux/features/authSlice";
+import {Dropdown} from 'antd';
+import {useLogoutMutation} from "../../../redux/features/api/apiSlice";
 
 type HeaderDropdownProps = {
     login: string,
-    avatar: string | null
 }
 
-const HeaderDropdown = ({login, avatar}: HeaderDropdownProps): JSX.Element => {
-    const dispatch = useAppDispatch()
+const HeaderDropdown = ({login}: HeaderDropdownProps): JSX.Element => {
+    const [logout] = useLogoutMutation()
 
     const onClick: MenuProps['onClick'] = ({key}) => {
         if (key === '1') {
-            dispatch(logout())
+            logout()
         }
     }
 
@@ -26,14 +23,10 @@ const HeaderDropdown = ({login, avatar}: HeaderDropdownProps): JSX.Element => {
         },
     ]
 
-
     return (
         <Dropdown menu={{items, onClick}} placement="bottomRight" arrow>
-            <a onClick={e => e.preventDefault()}>
-                <Space style={{color: 'white'}}>
-                    <AvatarApp src={avatar} size={24}/>
-                    {login}
-                </Space>
+            <a onClick={e => e.preventDefault()} style={{color: 'white'}}>
+                {login}
             </a>
         </Dropdown>
     )

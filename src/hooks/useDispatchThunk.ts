@@ -1,6 +1,5 @@
 import {useCallback, useState} from "react";
 import {useAppDispatch} from "../redux/hooks";
-import {showError} from "../redux/features/errorSlice";
 import {ActionCreator} from "@reduxjs/toolkit";
 
 
@@ -14,11 +13,11 @@ export function useDispatchThunk(): [string, (action: ActionCreator<any>) => voi
             dispatch(action)
                 .unwrap()
                 .catch((err: Error) => {
-                    dispatch(showError({isError: true, message: err.message}))
+                    //dispatch(showError({isError: true, message: err.message}))
                 })
                 .finally(() => {
                     setStatus('idle')
-                    dispatch(showError({isError: false}))
+                    //dispatch(showError({isError: false}))
                 })
         },
         [dispatch]

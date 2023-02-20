@@ -1,33 +1,37 @@
 import React, {useContext} from 'react';
-import {Layout, Button, Image, Typography, Space} from 'antd';
+import {Button, Image, Layout, Space, Typography} from 'antd';
 import logo from '../../assets/images/logo.png'
 import HeaderDropdown from "./HeaderDropdown/HeaderDropdown";
-import {useAppSelector} from "../../redux/hooks";
 import {Link} from "react-router-dom";
-import {selectAuthorizationStatus} from "../../redux/features/authSlice";
 import {ColorContext} from "../../context/theme-context";
+import {selectCurrentUser} from "../../redux/features/auth/authSlice";
+import {useAppSelector} from "../../redux/hooks";
 
 const {Header} = Layout;
 const {Text} = Typography;
 
-const HeaderApp = (): JSX.Element => {
+type HeaderAppProps = {
+    isSuccess: boolean,
+    isLoading: boolean
+}
+
+const HeaderApp = ({isSuccess, isLoading}: HeaderAppProps): JSX.Element => {
     const context = useContext(ColorContext)!;
-    const avatar = useAppSelector(state => state.auth.avatar)
-    const isUserAuthorized = useAppSelector(state => state.auth.isUserAuthorized)
-    const login = useAppSelector(state => state.auth.login)!
-    const status = useAppSelector(selectAuthorizationStatus)
+    const user = useAppSelector(selectCurrentUser)
+
+    const loginLink = (
+        <Link to="login">
+            <Button type="text" style={{color: 'white'}}>Log in</Button>
+        </Link>
+    )
 
     let content
-    if (status === 'succeeded') {
-        if (isUserAuthorized) {
-            content = <HeaderDropdown login={login} avatar={avatar}/>
-        } else {
-            content = (
-                <Link to="login">
-                    <Button type="text" style={{color: 'white'}}>Log in</Button>
-                </Link>
-            )
-        }
+    if (isLoading) {
+        content = ''
+    } else if (!isSuccess) {
+        content = loginLink
+    } else if (isSuccess) {
+        content = user ? <HeaderDropdown login={user.login}/> : loginLink
     }
 
     return (

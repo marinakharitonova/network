@@ -1,17 +1,19 @@
 import {List} from "antd";
-import {useAppSelector} from "../../../../redux/hooks";
-import {selectUserIds} from "../../../../redux/features/usersSlice";
 import UserItem from "./UserItem/UserItem";
 
-const UsersList = (): JSX.Element => {
+interface UsersListProps {
+    users: IUser[],
+    page: number,
+    pageSize: number
+}
 
-    const usersIds = useAppSelector(selectUserIds);
+const UsersList = ({users, page, pageSize}: UsersListProps) => {
 
     return (
         <List
             itemLayout="horizontal"
-            dataSource={usersIds}
-            renderItem={id => (<UserItem id={id}/>)}
+            dataSource={users}
+            renderItem={user => (<UserItem user={user} page={page} pageSize={pageSize}/>)}
         />
     )
 }
