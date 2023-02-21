@@ -4,12 +4,11 @@ type PaginationAppProps = {
     total: number,
     pageSize: number,
     current: number,
-    pageSizeOptions?: number[],
     handler: (page: number, pageSize: number) => void
 }
 
 
-const PaginationApp = ({total, pageSize, current, pageSizeOptions = [pageSize], handler}: PaginationAppProps): JSX.Element => {
+const PaginationApp = ({total, pageSize, current, handler}: PaginationAppProps): JSX.Element => {
 
     const handlePageChange = (page: number) => {
         handler(page, pageSize);
@@ -21,8 +20,8 @@ const PaginationApp = ({total, pageSize, current, pageSizeOptions = [pageSize], 
                         pageSize={pageSize}
                         current={current}
                         hideOnSinglePage={true}
-                        pageSizeOptions={pageSizeOptions}
                         onChange={handlePageChange}
+                        showSizeChanger={false}
             />
         </div>
     )

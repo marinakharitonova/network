@@ -48,6 +48,7 @@ const UserItem = ({user, page, pageSize}: UserItemProps) => {
         <>
             {createPortal(contextHolder, document.body)}
             <List.Item
+                style={{minHeight: '73px'}}
                 actions={
                     [<Button type='primary'
                              onClick={handleToggleFollow}>
