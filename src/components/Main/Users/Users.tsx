@@ -4,7 +4,7 @@ import PaginationApp from "../../PaginationApp/PaginationApp";
 import {useGetUsersQuery} from "../../../redux/features/api/apiSlice";
 import ContentLoader from "../../ContentLoader/ContentLoader";
 import {useSearchParams} from "react-router-dom";
-import {BackTop} from "antd";
+import {FloatButton} from "antd";
 
 const Users = (): JSX.Element => {
     let [searchParams, setSearchParams] = useSearchParams();
@@ -38,7 +38,7 @@ const Users = (): JSX.Element => {
     return (
         <ContentLoader isError={isError} isLoading={isLoading} isSuccess={isSuccess} error={error}>
             {data && <>
-                <BackTop />
+                <FloatButton.BackTop style={{bottom: '100px'}}/>
                 <UsersList users={data.users} page={currentPage} pageSize={pageSize} isFetching={isFetching}/>
                 <PaginationApp total={data.totalCount} pageSize={pageSize}
                                current={currentPage}

@@ -3,7 +3,6 @@ import AvatarApp from "../../../../AvatarApp/AvatarApp";
 import {useAppSelector} from "../../../../../redux/hooks";
 import {Link, useNavigate} from "react-router-dom";
 import {useToggleFollowMutation} from "../../../../../redux/features/api/apiSlice";
-import ErrorMessage from "../../../../ErrorMessage/ErrorMessage";
 import {memo} from "react";
 import {selectCurrentUser} from "../../../../../redux/features/auth/authSlice";
 import {useErrorNotification} from "../../../../../hooks/useErrorNotification";

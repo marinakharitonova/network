@@ -18,6 +18,7 @@ const UsersList = ({users, page, pageSize, isFetching}: UsersListProps) => {
             dataSource={users}
             renderItem={user => (<UserItem user={user} page={page} pageSize={pageSize}/>)}
             style={style}
+            data-testid="users-list"
         />
     )
 }
