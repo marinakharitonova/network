@@ -2,10 +2,11 @@ import {Outlet} from "react-router-dom";
 import {Card, Col, Layout, Row} from 'antd';
 import Sidebar from './Sidebar/Sidebar';
 import {useOnlineStatus} from "../../hooks/useOnlineStatus";
-import {useAuthQuery} from "../../redux/features/api/apiSlice";
 import ContentLoader from "../ContentLoader/ContentLoader";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 import {SerializedError} from "@reduxjs/toolkit";
+import React, {Suspense} from "react";
+import Loader from "../Loader/Loader";
 
 const {Content} = Layout;
 
@@ -28,11 +29,18 @@ const Main = ({isSuccess, isLoading, isError, error}: MainProps): JSX.Element =>
                     </Col>
                     <Col span={20}>
                         <Content style={{height: '100%', paddingBottom: '36px'}}>
-                            <ContentLoader isSuccess={isSuccess} isLoading={isLoading} isError={isError} error={error}>
-                                <Card bordered={false} style={{height: '100%'}}>
-                                    {isOnline ? <Outlet/> : <h1>Reconnecting...</h1>}
-                                </Card>
-                            </ContentLoader>
+                            <Card bordered={false} style={{height: '100%'}}>
+                                <ContentLoader isSuccess={isSuccess} isLoading={isLoading} isError={isError}
+                                               error={error}>
+                                    {isOnline
+                                        ?
+                                        <Suspense fallback={<Loader/>}>
+                                            <Outlet/>
+                                        </Suspense>
+                                        :
+                                        <h1>Reconnecting...</h1>}
+                                </ContentLoader>
+                            </Card>
                         </Content>
                     </Col>
                 </Row>

@@ -4,11 +4,12 @@ import Profile from "../components/Main/Profile/Profile";
 import Dialogs from "../components/Main/Dialogs/Dialogs";
 import ErrorPage from "../components/ErrorPage/ErrorPage";
 import Settings from "../components/Main/Settings/Settings";
-import News from "../components/Main/News/News";
 import Music from "../components/Main/Music/Music";
 import Users from "../components/Main/Users/Users";
 import {RouteObject} from "react-router-dom";
 import Login from "../components/Main/Login/Login";
+
+const News = React.lazy(() => import('../components/Main/News/News'));
 
 const routes: RouteObject[] = [
     {
