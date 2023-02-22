@@ -52,7 +52,7 @@
     "@testing-library/user-event": "^14.4.3",
     "@types/react-color": "^3.0.6",
     "@types/react-router-dom": "^5.3.3",
-    "cz-customizable": "^7.0.0",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "msw": "^1.0.1",
@@ -65,7 +65,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "node_modules/cz-customizable"
+      "path": "./node_modules/cz-conventional-changelog"
     }
   }
 }
