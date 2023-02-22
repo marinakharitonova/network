@@ -11,7 +11,7 @@ import {createPortal} from "react-dom";
 const {Title} = Typography;
 
 const Login = (): JSX.Element => {
-    const [login] = useLoginMutation()
+    const [login, {isLoading}] = useLoginMutation()
     const currentUser = useAppSelector(selectCurrentUser)
     const [contextHolder, showError] = useErrorNotification()
 
@@ -44,6 +44,7 @@ const Login = (): JSX.Element => {
                 initialValues={{rememberMe: true}}
                 onFinish={onFinish}
                 autoComplete="off"
+                disabled={isLoading}
             >
                 <Form.Item
                     name="email"

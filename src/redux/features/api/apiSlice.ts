@@ -59,7 +59,7 @@ const baseQuery = fetchBaseQuery({
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery,
-    tagTypes: ['User', 'Profile', 'Auth'],
+    tagTypes: ['Profile', 'Auth'],
     endpoints: builder => ({
         getUsers: builder.query<UsersResponse, UsersQuery>({
             query: (args) => `users?count=${args.pageSize}&page=${args.page}`,
@@ -108,7 +108,7 @@ export const apiSlice = createApi({
                 method: 'POST',
                 body: data,
             }),
-            invalidatesTags: ['Auth']
+            invalidatesTags: (result) => result && result.resultCode === 0 ? ['Auth'] : []
         }),
         logout: builder.mutation<AuthRawResponse, void>({
             query: () => ({
