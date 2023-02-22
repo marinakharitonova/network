@@ -88,6 +88,7 @@ export const apiSlice = createApi({
                     })
                 )
                 try {
+                    console.log(123);
                     await queryFulfilled
                 } catch {
                     patchResult.undo()

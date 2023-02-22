@@ -1,26 +1,27 @@
 import {Button, Checkbox, Form, Input, Typography} from 'antd';
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
-import React from "react";
+import React, {useContext} from "react";
 import {Navigate} from "react-router-dom";
 import {useLoginMutation} from "../../../redux/features/api/apiSlice";
 import {selectCurrentUser} from "../../../redux/features/auth/authSlice";
 import {useAppSelector} from "../../../redux/hooks";
-import {useErrorNotification} from "../../../hooks/useErrorNotification";
-import {createPortal} from "react-dom";
+import {MessageApiContext} from "../../../context/messageApi-context";
 
 const {Title} = Typography;
 
 const Login = (): JSX.Element => {
     const [login, {isLoading}] = useLoginMutation()
     const currentUser = useAppSelector(selectCurrentUser)
-    const [contextHolder, showError] = useErrorNotification()
+    const messageApi = useContext(MessageApiContext)
 
     const onFinish = (values: any) => {
         login(values)
             .unwrap()
             .then((payload) => {
                 if (payload.resultCode === 1) {
-                    showError(payload.messages[0])
+                    messageApi.open({type: 'error', content: payload.messages[0]})
+                } else {
+                    messageApi.open({type: 'success', content: 'You are successfully authorized!'})
                 }
             })
             .catch((error) => {
@@ -28,7 +29,7 @@ const Login = (): JSX.Element => {
                 if (error && 'status' in error) {
                     errMsg = 'error' in error ? error.error : JSON.stringify(error.data)
                 }
-                showError(errMsg)
+                messageApi.open({type: 'error', content: errMsg})
             })
     }
 
@@ -36,7 +37,6 @@ const Login = (): JSX.Element => {
 
     return (
         <>
-            {createPortal(contextHolder, document.body)}
             <Title level={2}>Login</Title>
             <Form
                 name="login"
