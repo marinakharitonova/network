@@ -25,7 +25,7 @@ const ProfileInfo = ({profile} : ProfileInfoProps): JSX.Element => {
 
     return (
         <>
-            <UserStatus/>
+            <UserStatus userId={profile.userId}/>
             <Row gutter={16} style={{marginBottom: '36px'}}>
                 <Col span={4}>
                     <AvatarApp src={profile.photos.large} shape="square" size={128}/>

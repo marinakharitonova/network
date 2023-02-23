@@ -44,6 +44,17 @@ type LoginQuery = {
     rememberMe: boolean
 }
 
+type RawResponse = {
+    data: any,
+    messages: Array<string>,
+    resultCode: number
+}
+
+type UpdateStatusQuery = {
+    status: string,
+    userId: number
+}
+
 const baseQuery = fetchBaseQuery({
     baseUrl: 'https://social-network.samuraijs.com/api/1.0/',
     prepareHeaders: (headers, {getState}) => {
@@ -59,7 +70,7 @@ const baseQuery = fetchBaseQuery({
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery,
-    tagTypes: ['Profile', 'Auth'],
+    tagTypes: ['Profile', 'Auth', 'ProfileStatus'],
     endpoints: builder => ({
         getUsers: builder.query<UsersResponse, UsersQuery>({
             query: (args) => `users?count=${args.pageSize}&page=${args.page}`,
@@ -88,7 +99,6 @@ export const apiSlice = createApi({
                     })
                 )
                 try {
-                    console.log(123);
                     await queryFulfilled
                 } catch {
                     patchResult.undo()
@@ -117,6 +127,26 @@ export const apiSlice = createApi({
                 method: 'DELETE',
             })
         }),
+        getStatus: builder.query<string, number>({
+            query: (userId) => `profile/status/${userId}`
+        }),
+        updateStatus: builder.mutation<RawResponse, UpdateStatusQuery>({
+            query: (arg) => ({
+                url: `profile/status`,
+                method: 'PUT',
+                body: {status: arg.status}
+            }),
+            async onQueryStarted({userId, status}, {dispatch, queryFulfilled}) {
+                const patchResult = dispatch(
+                    apiSlice.util.updateQueryData('getStatus', userId, draft => status)
+                )
+                try {
+                    await queryFulfilled
+                } catch {
+                    patchResult.undo()
+                }
+            }
+        }),
     })
 })
 
@@ -126,5 +156,7 @@ export const {
     useGetProfileQuery,
     useAuthQuery,
     useLogoutMutation,
-    useLoginMutation
+    useLoginMutation,
+    useGetStatusQuery,
+    useUpdateStatusMutation
 } = apiSlice
