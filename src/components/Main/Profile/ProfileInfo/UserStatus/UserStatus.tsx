@@ -70,11 +70,11 @@ const UserStatus = ({userId}: UserStatusProps): JSX.Element => {
     if (canUpdateStatus) {
         showModeContent = <Tooltip placement="topLeft" title={'Double click to edit'}>
             <div onDoubleClick={() => setMode('edit')} style={statusStyle}>
-                {status || '<Set your status here!>'}
+                {status || '< Set your status here <3 >'}
             </div>
         </Tooltip>
-    } else if (!canUpdateStatus && status) {
-        showModeContent = <div style={statusStyle}>{status}</div>
+    } else if (!canUpdateStatus) {
+        showModeContent = <div style={statusStyle}>{status || '< Status not specified yet >'}</div>
     }
     return (
         <div style={{marginBottom: '12px'}}>

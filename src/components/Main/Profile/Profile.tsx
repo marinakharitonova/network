@@ -27,7 +27,7 @@ const Profile = (): JSX.Element => {
             <ContentLoader isError={isError} isLoading={isLoading} isSuccess={isSuccess} error={error}>
                 {profile && <>
                     <Banner/>
-                    <ProfileInfo profile={profile}/>
+                    <ProfileInfo profile={profile} key={profile.userId}/>
                 </>}
                 {/*<PostForm/>*/}
                 {/*<PostsList/>*/}
