@@ -1,7 +1,7 @@
-import {useAppSelector} from "../redux/hooks";
+import {useAppSelector} from "../features/hooks";
 import {Navigate} from "react-router-dom";
 import React from "react";
-import {selectCurrentUser} from "../redux/features/auth/authSlice";
+import {selectCurrentUser} from "../features/auth/authSlice";
 
 export const withAuth = <T extends object>(WrappedComponent: React.ComponentType<T>) => {
 

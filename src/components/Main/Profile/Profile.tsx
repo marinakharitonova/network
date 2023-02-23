@@ -2,10 +2,10 @@ import Banner from "./Banner/Banner";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import React from "react";
 import {Navigate, useParams} from "react-router-dom";
-import {useGetProfileQuery} from "../../../redux/features/api/apiSlice";
+import {useGetProfileQuery} from "../../../features/api/apiSlice";
 import ContentLoader from "../../ContentLoader/ContentLoader";
-import {selectCurrentUser} from "../../../redux/features/auth/authSlice";
-import {useAppSelector} from "../../../redux/hooks";
+import {selectCurrentUser} from "../../../features/auth/authSlice";
+import {useAppSelector} from "../../../features/hooks";
 
 const Profile = (): JSX.Element => {
     const currentUser = useAppSelector(selectCurrentUser)

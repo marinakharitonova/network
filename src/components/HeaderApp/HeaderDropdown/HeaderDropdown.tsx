@@ -1,7 +1,7 @@
 import React from 'react';
 import type {MenuProps} from 'antd';
 import {Dropdown} from 'antd';
-import {useLogoutMutation} from "../../../redux/features/api/apiSlice";
+import {useLogoutMutation} from "../../../features/api/apiSlice";
 
 type HeaderDropdownProps = {
     login: string,

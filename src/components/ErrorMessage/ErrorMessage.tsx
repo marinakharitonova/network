@@ -1,7 +1,7 @@
 import {Alert} from "antd";
 
 type ErrorMessageProps = {
-    text: IRequest["error"]
+    text: string
 }
 
 const ErrorMessage = ({text}: ErrorMessageProps): JSX.Element => {

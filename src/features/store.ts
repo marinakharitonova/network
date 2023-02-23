@@ -1,6 +1,6 @@
 import {combineReducers, configureStore, PreloadedState} from '@reduxjs/toolkit'
-import authReducer from "./features/auth/authSlice";
-import {apiSlice} from "./features/api/apiSlice";
+import authReducer from "./auth/authSlice";
+import {apiSlice} from "./api/apiSlice";
 
 const rootReducer = combineReducers({
     auth: authReducer,

@@ -1,7 +1,7 @@
 import UsersList from "./UsersList/UsersList";
 import {useEffect, useState} from "react";
 import PaginationApp from "../../PaginationApp/PaginationApp";
-import {useGetUsersQuery} from "../../../redux/features/api/apiSlice";
+import {useGetUsersQuery} from "../../../features/api/apiSlice";
 import ContentLoader from "../../ContentLoader/ContentLoader";
 import {useSearchParams} from "react-router-dom";
 import {FloatButton} from "antd";

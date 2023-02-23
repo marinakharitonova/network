@@ -4,8 +4,8 @@ import logo from '../../assets/images/logo.png'
 import HeaderDropdown from "./HeaderDropdown/HeaderDropdown";
 import {Link} from "react-router-dom";
 import {ColorContext} from "../../context/theme-context";
-import {selectCurrentUser} from "../../redux/features/auth/authSlice";
-import {useAppSelector} from "../../redux/hooks";
+import {selectCurrentUser} from "../../features/auth/authSlice";
+import {useAppSelector} from "../../features/hooks";
 
 const {Header} = Layout;
 const {Text} = Typography;

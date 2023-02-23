@@ -1,11 +1,10 @@
 import {Button, List} from "antd";
 import AvatarApp from "../../../../AvatarApp/AvatarApp";
-import {useAppSelector} from "../../../../../redux/hooks";
+import {useAppSelector} from "../../../../../features/hooks";
 import {Link, useNavigate} from "react-router-dom";
-import {useToggleFollowMutation} from "../../../../../redux/features/api/apiSlice";
+import {useToggleFollowMutation} from "../../../../../features/api/apiSlice";
 import {memo, useContext} from "react";
-import {selectCurrentUser} from "../../../../../redux/features/auth/authSlice";
-import {createPortal} from "react-dom";
+import {selectCurrentUser} from "../../../../../features/auth/authSlice";
 import {MessageApiContext} from "../../../../../context/messageApi-context";
 
 interface UserItemProps {
@@ -28,11 +27,6 @@ const UserItem = ({user, page, pageSize}: UserItemProps) => {
         }
         toggleFollow({userId: user.id, isFollowed: user.followed, page, pageSize})
             .unwrap()
-            .then((payload) => {
-                if (payload.resultCode === 1) {
-                    messageApi.open({type: 'error', content: payload.messages[0]})
-                }
-            })
             .catch((error) => {
                 let errMsg = ''
                 if (error && 'status' in error) {

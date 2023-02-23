@@ -3,9 +3,9 @@ import {setupServer} from "msw/node";
 import {screen, waitFor} from '@testing-library/react'
 import {setup} from "../../../../../utils/test-utils";
 import UserItem from "./UserItem";
-import {setupStore} from "../../../../../redux/store";
+import {setupStore} from "../../../../../features/store";
 import {handlers} from "../../../../../utils/mock-handlers";
-import {apiSlice} from "../../../../../redux/features/api/apiSlice";
+import {apiSlice} from "../../../../../features/api/apiSlice";
 
 const mockedUsedNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({

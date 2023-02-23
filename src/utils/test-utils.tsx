@@ -4,8 +4,8 @@ import type {RenderOptions} from '@testing-library/react'
 import type {PreloadedState} from '@reduxjs/toolkit'
 import {Provider} from 'react-redux'
 
-import type {AppStore, RootState} from '../redux/store'
-import {setupStore} from "../redux/store";
+import type {AppStore, RootState} from '../features/store'
+import {setupStore} from "../features/store";
 import {BrowserRouter} from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 

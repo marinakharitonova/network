@@ -5,7 +5,7 @@ import FooterApp from "./components/FooterApp/FooterApp";
 import React from "react";
 import {useLocalStorage} from "./hooks/useLocalStorage";
 import {ColorContext, defaultColor} from "./context/theme-context";
-import {useAuthQuery} from "./redux/features/api/apiSlice";
+import {useAuthQuery} from "./features/api/apiSlice";
 import {MessageApiContext} from "./context/messageApi-context";
 
 const App = (): JSX.Element => {

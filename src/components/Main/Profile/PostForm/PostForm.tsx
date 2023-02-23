@@ -1,6 +1,6 @@
 import {Button, Form} from "antd";
 import TextArea from "antd/es/input/TextArea";
-import {useAppDispatch} from "../../../../redux/hooks";
+import {useAppDispatch} from "../../../../features/hooks";
 import {useEffect, useState} from "react";
 
 const PostForm = (): JSX.Element => {

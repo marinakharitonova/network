@@ -1,6 +1,6 @@
 import {Button, List, Tooltip} from 'antd';
 import {LikeOutlined} from '@ant-design/icons';
-import {useAppDispatch, useAppSelector} from "../../../../../redux/hooks";
+import {useAppDispatch, useAppSelector} from "../../../../../features/hooks";
 import {EntityId} from "@reduxjs/toolkit";
 import AvatarApp from "../../../../AvatarApp/AvatarApp";
 

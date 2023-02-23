@@ -1,8 +1,8 @@
 import {Skeleton, Tooltip} from 'antd';
 import React, {useContext, useEffect, useState} from "react";
-import {useAppSelector} from "../../../../../redux/hooks";
-import {useGetStatusQuery, useUpdateStatusMutation} from "../../../../../redux/features/api/apiSlice";
-import {selectCurrentUser} from "../../../../../redux/features/auth/authSlice";
+import {useAppSelector} from "../../../../../features/hooks";
+import {useGetStatusQuery, useUpdateStatusMutation} from "../../../../../features/api/apiSlice";
+import {selectCurrentUser} from "../../../../../features/auth/authSlice";
 import {MessageApiContext} from "../../../../../context/messageApi-context";
 import TextArea from "antd/es/input/TextArea";
 

@@ -2,9 +2,9 @@ import {Button, Checkbox, Form, Input, Typography} from 'antd';
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import React, {useContext} from "react";
 import {Navigate} from "react-router-dom";
-import {useLoginMutation} from "../../../redux/features/api/apiSlice";
-import {selectCurrentUser} from "../../../redux/features/auth/authSlice";
-import {useAppSelector} from "../../../redux/hooks";
+import {useLoginMutation} from "../../../features/api/apiSlice";
+import {selectCurrentUser} from "../../../features/auth/authSlice";
+import {useAppSelector} from "../../../features/hooks";
 import {MessageApiContext} from "../../../context/messageApi-context";
 
 const {Title} = Typography;

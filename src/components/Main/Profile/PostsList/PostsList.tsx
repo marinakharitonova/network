@@ -1,5 +1,5 @@
 import {List, Typography} from 'antd';
-import {useAppSelector} from "../../../../redux/hooks";
+import {useAppSelector} from "../../../../features/hooks";
 import PostItem from "./PostIem/PostItem";
 import React from "react";
 

@@ -6,7 +6,7 @@ import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import {render} from "@testing-library/react";
 import {renderWithProviders} from "./utils/test-utils";
-import {setupStore} from "./redux/store";
+import {setupStore} from "./features/store";
 
 window.matchMedia = (query) => ({
     matches: false,
