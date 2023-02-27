@@ -43,3 +43,9 @@ h1, h2, h3, h4, h5, h6 {
 .ant-layout-sider-children .ant-menu-item-selected {
     background: none !important;
 }
+
+.ant-upload-select, .ant-upload-wrapper {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+}

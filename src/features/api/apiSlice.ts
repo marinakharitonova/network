@@ -55,6 +55,23 @@ type UpdateStatusQuery = {
     userId: number
 }
 
+type UpdateAvatarResponse = {
+    data: {
+        photos: {
+            small: string,
+            large: string
+        }
+    },
+    fieldsError: Array<string>,
+    messages: Array<string>,
+    resultCode: number
+}
+
+type UpdateAvatarQuery = {
+    userId: number,
+    data: FormData
+}
+
 const baseQuery = fetchBaseQuery({
     baseUrl: 'https://social-network.samuraijs.com/api/1.0/',
     prepareHeaders: (headers, {getState}) => {
@@ -70,7 +87,7 @@ const baseQuery = fetchBaseQuery({
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery,
-    tagTypes: ['Profile', 'Auth', 'ProfileStatus'],
+    tagTypes: ['Profile', 'Auth', 'Users'],
     endpoints: builder => ({
         getUsers: builder.query<UsersResponse, UsersQuery>({
             query: (args) => `users?count=${args.pageSize}&page=${args.page}`,
@@ -79,7 +96,8 @@ export const apiSlice = createApi({
                     users: result.items,
                     totalCount: result.totalCount
                 }
-            }
+            },
+            providesTags: [{type: 'Users', id: 'PARTIAL_LIST'}]
         }),
         toggleFollow: builder.mutation({
             query: (args: UserFollowQuery) => ({
@@ -145,7 +163,29 @@ export const apiSlice = createApi({
                 } catch {
                     patchResult.undo()
                 }
-            }
+            },
+            invalidatesTags: [{type: 'Users', id: 'PARTIAL_LIST'}]
+        }),
+        updateAvatar: builder.mutation<UpdateAvatarResponse, UpdateAvatarQuery>({
+            query: (arg) => ({
+                url: `profile/photo`,
+                method: 'PUT',
+                body: arg.data
+            }),
+            async onQueryStarted({userId}, {dispatch, queryFulfilled}) {
+                try {
+                    const {data} = await queryFulfilled
+                    if (data.resultCode === 0) {
+                        dispatch(
+                            apiSlice.util.updateQueryData('getProfile', userId, (draft) => {
+                                draft.photos = data.data.photos
+                            })
+                        )
+                    }
+                } catch {
+                }
+            },
+            invalidatesTags: [{type: 'Users', id: 'PARTIAL_LIST'}]
         }),
     })
 })
@@ -158,5 +198,6 @@ export const {
     useLogoutMutation,
     useLoginMutation,
     useGetStatusQuery,
-    useUpdateStatusMutation
+    useUpdateStatusMutation,
+    useUpdateAvatarMutation
 } = apiSlice
