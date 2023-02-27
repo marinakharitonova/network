@@ -1,6 +1,36 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {RootState} from "../store";
 
+interface RawResponse {
+    data: unknown,
+    messages: Array<string>,
+    fieldsError?: Array<string>,
+    resultCode: number
+}
+
+interface AuthResponse extends RawResponse {
+    data: {
+        email: string,
+        login: string,
+        id: number,
+    }
+}
+
+interface LoginResponse extends RawResponse {
+    data: {
+        userId: number,
+    },
+}
+
+interface UpdateAvatarResponse extends RawResponse {
+    data: {
+        photos: {
+            small: string,
+            large: string
+        }
+    }
+}
+
 type UsersResponse = {
     users: IUser[],
     totalCount: number,
@@ -18,53 +48,15 @@ type UserFollowQuery = {
     pageSize: number
 }
 
-type AuthRawResponse = {
-    data: {
-        email: string,
-        login: string,
-        id: number,
-    },
-    fieldsError: Array<string>,
-    messages: Array<string>,
-    resultCode: number
-}
-
-type LoginRawResponse = {
-    data: {
-        userId: number,
-    },
-    fieldsError: Array<string>,
-    messages: Array<string>,
-    resultCode: number
-}
-
 type LoginQuery = {
     email: string,
     password: string,
     rememberMe: boolean
 }
 
-type RawResponse = {
-    data: any,
-    messages: Array<string>,
-    resultCode: number
-}
-
 type UpdateStatusQuery = {
     status: string,
     userId: number
-}
-
-type UpdateAvatarResponse = {
-    data: {
-        photos: {
-            small: string,
-            large: string
-        }
-    },
-    fieldsError: Array<string>,
-    messages: Array<string>,
-    resultCode: number
 }
 
 type UpdateAvatarQuery = {
@@ -127,11 +119,11 @@ export const apiSlice = createApi({
             query: (userId) => `profile/${userId}`,
             providesTags: (result, error, arg) => [{type: 'Profile', id: arg}]
         }),
-        auth: builder.query<AuthRawResponse, void>({
+        auth: builder.query<AuthResponse, void>({
             query: () => `auth/me`,
             providesTags: ['Auth']
         }),
-        login: builder.mutation<LoginRawResponse, LoginQuery>({
+        login: builder.mutation<LoginResponse, LoginQuery>({
             query: (data) => ({
                 url: `/auth/login`,
                 method: 'POST',
@@ -139,7 +131,7 @@ export const apiSlice = createApi({
             }),
             invalidatesTags: (result) => result && result.resultCode === 0 ? ['Auth'] : []
         }),
-        logout: builder.mutation<AuthRawResponse, void>({
+        logout: builder.mutation<AuthResponse, void>({
             query: () => ({
                 url: `/auth/login`,
                 method: 'DELETE',
