@@ -2,21 +2,19 @@ import {Button, Col, Descriptions, Row} from 'antd';
 import AvatarApp from "../../../AvatarApp/AvatarApp";
 import {FacebookOutlined, GithubOutlined, SelectOutlined, TwitterOutlined, YoutubeOutlined} from "@ant-design/icons";
 import UserStatus from "./UserStatus/UserStatus";
-import React, {useContext} from "react";
+import React from "react";
 import {useUpdateAvatarMutation} from "../../../../features/api/apiSlice";
-import {MessageApiContext} from "../../../../context/messageApi-context";
 import ImageUploader from "../../../ImageUploader/ImageUploader";
 import {useAppSelector} from "../../../../features/hooks";
 import {selectCurrentUser} from "../../../../features/auth/authSlice";
+import useMutationResponseHandler from "../../../../hooks/useMutationResponseHandler";
 
 type ProfileInfoProps = {
     profile: IProfile
 };
 
 const ProfileInfo = ({profile}: ProfileInfoProps): JSX.Element => {
-    const messageApi = useContext(MessageApiContext)
     const currentUser = useAppSelector(selectCurrentUser)
-
     const canUpdateAvatar = currentUser && currentUser.id === profile.userId
 
     function validateUrl(str: string) {
@@ -32,22 +30,10 @@ const ProfileInfo = ({profile}: ProfileInfoProps): JSX.Element => {
     }
 
     const [updateAvatar, {isLoading}] = useUpdateAvatarMutation()
+    const handleResponse = useMutationResponseHandler()
 
     const uploadAvatarCb = (formData: FormData) => {
-        updateAvatar({data: formData, userId: profile.userId})
-            .unwrap()
-            .then((response) => {
-                if (response.resultCode === 1) {
-                    messageApi.open({type: 'error', content: response.messages[0]})
-                }
-            })
-            .catch((error) => {
-                let errMsg = ''
-                if (error && 'status' in error) {
-                    errMsg = 'error' in error ? error.error : JSON.stringify(error.data)
-                }
-                messageApi.open({type: 'error', content: errMsg})
-            })
+        handleResponse(updateAvatar({data: formData, userId: profile.userId}))
     };
 
     return (

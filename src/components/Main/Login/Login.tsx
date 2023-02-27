@@ -1,36 +1,21 @@
 import {Button, Checkbox, Form, Input, Typography} from 'antd';
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
-import React, {useContext} from "react";
+import React from "react";
 import {Navigate} from "react-router-dom";
 import {useLoginMutation} from "../../../features/api/apiSlice";
 import {selectCurrentUser} from "../../../features/auth/authSlice";
 import {useAppSelector} from "../../../features/hooks";
-import {MessageApiContext} from "../../../context/messageApi-context";
+import useMutationResponseHandler from "../../../hooks/useMutationResponseHandler";
 
 const {Title} = Typography;
 
 const Login = (): JSX.Element => {
     const [login, {isLoading}] = useLoginMutation()
     const currentUser = useAppSelector(selectCurrentUser)
-    const messageApi = useContext(MessageApiContext)
+    const handleLoginResponse = useMutationResponseHandler('You are successfully authorized!')
 
     const onFinish = (values: any) => {
-        login(values)
-            .unwrap()
-            .then((payload) => {
-                if (payload.resultCode === 1) {
-                    messageApi.open({type: 'error', content: payload.messages[0]})
-                } else {
-                    messageApi.open({type: 'success', content: 'You are successfully authorized!'})
-                }
-            })
-            .catch((error) => {
-                let errMsg = ''
-                if (error && 'status' in error) {
-                    errMsg = 'error' in error ? error.error : JSON.stringify(error.data)
-                }
-                messageApi.open({type: 'error', content: errMsg})
-            })
+        handleLoginResponse(login(values))
     }
 
     if (currentUser) return <Navigate replace to="/profile"/>

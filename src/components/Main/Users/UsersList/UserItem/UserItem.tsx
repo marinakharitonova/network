@@ -3,9 +3,9 @@ import AvatarApp from "../../../../AvatarApp/AvatarApp";
 import {useAppSelector} from "../../../../../features/hooks";
 import {Link, useNavigate} from "react-router-dom";
 import {useToggleFollowMutation} from "../../../../../features/api/apiSlice";
-import {memo, useContext} from "react";
+import {memo} from "react";
 import {selectCurrentUser} from "../../../../../features/auth/authSlice";
-import {MessageApiContext} from "../../../../../context/messageApi-context";
+import useMutationResponseHandler from "../../../../../hooks/useMutationResponseHandler";
 
 interface UserItemProps {
     user: IUser,
@@ -18,22 +18,14 @@ const UserItem = ({user, page, pageSize}: UserItemProps) => {
     const navigate = useNavigate();
     const [toggleFollow] = useToggleFollowMutation()
     const userURL = `/profile/${user.id}`
-    const messageApi = useContext(MessageApiContext)
+    const handleResponse = useMutationResponseHandler()
 
     const handleToggleFollow = () => {
         if (!currentUser) {
             navigate('/login')
             return
         }
-        toggleFollow({userId: user.id, isFollowed: user.followed, page, pageSize})
-            .unwrap()
-            .catch((error) => {
-                let errMsg = ''
-                if (error && 'status' in error) {
-                    errMsg = 'error' in error ? error.error : JSON.stringify(error.data)
-                }
-                messageApi.open({type: 'error', content: errMsg})
-            })
+        handleResponse(toggleFollow({userId: user.id, isFollowed: user.followed, page, pageSize}))
     }
 
     return (

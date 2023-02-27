@@ -1,10 +1,10 @@
 import {Skeleton, Tooltip} from 'antd';
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useAppSelector} from "../../../../../features/hooks";
 import {useGetStatusQuery, useUpdateStatusMutation} from "../../../../../features/api/apiSlice";
 import {selectCurrentUser} from "../../../../../features/auth/authSlice";
-import {MessageApiContext} from "../../../../../context/messageApi-context";
 import TextArea from "antd/es/input/TextArea";
+import useMutationResponseHandler from "../../../../../hooks/useMutationResponseHandler";
 
 type EditMode = 'edit' | 'show';
 
@@ -19,12 +19,12 @@ const UserStatus = ({userId}: UserStatusProps): JSX.Element => {
         isSuccess,
     } = useGetStatusQuery(Number(userId))
 
-    const messageApi = useContext(MessageApiContext)
     const [mode, setMode] = useState<EditMode>('show')
     const [localStatus, setLocalStatus] = useState('')
     const currentUser = useAppSelector(selectCurrentUser)
-
     const canUpdateStatus = currentUser && currentUser.id === userId
+    const handleResponse = useMutationResponseHandler()
+    const [updateStatus] = useUpdateStatusMutation()
 
     useEffect(() => {
         if (status && status !== localStatus) {
@@ -32,22 +32,11 @@ const UserStatus = ({userId}: UserStatusProps): JSX.Element => {
         }
     }, [status])
 
-    const [updateStatus] = useUpdateStatusMutation()
-
     const handleInputBlur = () => {
         setMode('show')
         if (localStatus === status) return
 
-        updateStatus({status: localStatus, userId})
-            .unwrap()
-            .catch((error) => {
-                let errMsg = ''
-                if (error && 'status' in error) {
-                    errMsg = 'error' in error ? error.error : JSON.stringify(error.data)
-                }
-                messageApi.open({type: 'error', content: errMsg})
-            })
-
+        handleResponse(updateStatus({status: localStatus, userId}))
     }
 
     const statusStyle = {
@@ -63,7 +52,7 @@ const UserStatus = ({userId}: UserStatusProps): JSX.Element => {
                                       value={localStatus}
                                       showCount
                                       rows={3}
-                                      maxLength={300}
+
                                       style={{resize: 'none'}}/>
 
     let showModeContent = null

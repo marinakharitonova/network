@@ -1,5 +1,7 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {RootState} from "../store";
+import {PatchCollection} from "@reduxjs/toolkit/dist/query/core/buildThunks";
+import {PromiseWithKnownReason} from "@reduxjs/toolkit/dist/query/core/buildMiddleware/types";
 
 interface RawResponse {
     data: unknown,
@@ -64,6 +66,16 @@ type UpdateAvatarQuery = {
     data: FormData
 }
 
+const handleResponseErrors = (queryFulfilled: PromiseWithKnownReason<any, any>, handler: any) => {
+    queryFulfilled
+        .then(res => {
+            if (res.data.resultCode === 1) {
+                handler()
+            }
+        })
+        .catch(handler)
+}
+
 const baseQuery = fetchBaseQuery({
     baseUrl: 'https://social-network.samuraijs.com/api/1.0/',
     prepareHeaders: (headers, {getState}) => {
@@ -93,10 +105,10 @@ export const apiSlice = createApi({
         }),
         toggleFollow: builder.mutation({
             query: (args: UserFollowQuery) => ({
-                url: `follow/${args.userId}`,
+                url: `followq/${args.userId}`,
                 method: args.isFollowed ? 'DELETE' : 'POST'
             }),
-            async onQueryStarted({userId, isFollowed, page, pageSize}, {
+            onQueryStarted({userId, isFollowed, page, pageSize}, {
                 dispatch,
                 queryFulfilled,
             }) {
@@ -108,11 +120,7 @@ export const apiSlice = createApi({
                         }
                     })
                 )
-                try {
-                    await queryFulfilled
-                } catch {
-                    patchResult.undo()
-                }
+                handleResponseErrors(queryFulfilled, patchResult.undo)
             }
         }),
         getProfile: builder.query<IProfile, number>({
@@ -146,15 +154,11 @@ export const apiSlice = createApi({
                 method: 'PUT',
                 body: {status: arg.status}
             }),
-            async onQueryStarted({userId, status}, {dispatch, queryFulfilled}) {
+            onQueryStarted({userId, status}, {dispatch, queryFulfilled}) {
                 const patchResult = dispatch(
-                    apiSlice.util.updateQueryData('getStatus', userId, draft => status)
+                    apiSlice.util.updateQueryData('getStatus', userId, () => status)
                 )
-                try {
-                    await queryFulfilled
-                } catch {
-                    patchResult.undo()
-                }
+                handleResponseErrors(queryFulfilled, patchResult.undo)
             },
             invalidatesTags: [{type: 'Users', id: 'PARTIAL_LIST'}]
         }),
