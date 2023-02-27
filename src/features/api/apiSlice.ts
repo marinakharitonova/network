@@ -105,7 +105,7 @@ export const apiSlice = createApi({
         }),
         toggleFollow: builder.mutation({
             query: (args: UserFollowQuery) => ({
-                url: `followq/${args.userId}`,
+                url: `follow/${args.userId}`,
                 method: args.isFollowed ? 'DELETE' : 'POST'
             }),
             onQueryStarted({userId, isFollowed, page, pageSize}, {

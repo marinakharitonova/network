@@ -19,6 +19,7 @@ const UserItem = ({user, page, pageSize}: UserItemProps) => {
     const [toggleFollow] = useToggleFollowMutation()
     const userURL = `/profile/${user.id}`
     const handleResponse = useMutationResponseHandler()
+    const isCurrentUserItem = currentUser && currentUser.id === user.id
 
     const handleToggleFollow = () => {
         if (!currentUser) {
@@ -32,10 +33,12 @@ const UserItem = ({user, page, pageSize}: UserItemProps) => {
         <List.Item
             style={{minHeight: '73px'}}
             actions={
-                [<Button type='primary'
-                         onClick={handleToggleFollow}>
-                    {user.followed ? 'Unfollow' : 'Follow'}
-                </Button>]
+                isCurrentUserItem
+                    ? undefined
+                    : [<Button type='primary'
+                               onClick={handleToggleFollow}>
+                        {user.followed ? 'Unfollow' : 'Follow'}
+                    </Button>]
             }>
             <List.Item.Meta
                 avatar={<AvatarApp src={user.photos.small} size={40} key={user.id}/>}
