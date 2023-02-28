@@ -66,6 +66,8 @@ type UpdateAvatarQuery = {
     data: FormData
 }
 
+export type ProfileEditQuery = Omit<IProfile, "photos">
+
 const handleResponseErrors = (queryFulfilled: PromiseWithKnownReason<any, any>, handler: any) => {
     queryFulfilled
         .then(res => {
@@ -91,7 +93,7 @@ const baseQuery = fetchBaseQuery({
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery,
-    tagTypes: ['Profile', 'Auth', 'Users'],
+    tagTypes: ['Auth', 'Users'],
     endpoints: builder => ({
         getUsers: builder.query<UsersResponse, UsersQuery>({
             query: (args) => `users?count=${args.pageSize}&page=${args.page}`,
@@ -125,7 +127,27 @@ export const apiSlice = createApi({
         }),
         getProfile: builder.query<IProfile, number>({
             query: (userId) => `profile/${userId}`,
-            providesTags: (result, error, arg) => [{type: 'Profile', id: arg}]
+        }),
+        editProfile: builder.mutation<RawResponse, ProfileEditQuery>({
+            query: (arg) => ({
+                url: `profile`,
+                method: 'PUT',
+                body: arg,
+            }),
+            async onQueryStarted(arg, {dispatch, queryFulfilled}) {
+                try {
+                    const {data} = await queryFulfilled
+                    if (data.resultCode === 0) {
+                        dispatch(
+                            apiSlice.util.updateQueryData('getProfile', arg.userId, (draft) => {
+                                Object.assign(draft, arg)
+                            })
+                        )
+                    }
+                } catch {
+                }
+            },
+            invalidatesTags: [{type: 'Users', id: 'PARTIAL_LIST'}]
         }),
         auth: builder.query<AuthResponse, void>({
             query: () => `auth/me`,
@@ -195,5 +217,6 @@ export const {
     useLoginMutation,
     useGetStatusQuery,
     useUpdateStatusMutation,
-    useUpdateAvatarMutation
+    useUpdateAvatarMutation,
+    useEditProfileMutation
 } = apiSlice

@@ -12,7 +12,7 @@ const {Title} = Typography;
 const Login = (): JSX.Element => {
     const [login, {isLoading}] = useLoginMutation()
     const currentUser = useAppSelector(selectCurrentUser)
-    const handleLoginResponse = useMutationResponseHandler('You are successfully authorized!')
+    const handleLoginResponse = useMutationResponseHandler({message: 'You are successfully authorized!'})
 
     const onFinish = (values: any) => {
         handleLoginResponse(login(values))
