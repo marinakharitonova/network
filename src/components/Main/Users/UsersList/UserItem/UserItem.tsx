@@ -2,10 +2,10 @@ import {Button, List} from "antd";
 import AvatarApp from "../../../../AvatarApp/AvatarApp";
 import {useAppSelector} from "../../../../../features/hooks";
 import {Link, useNavigate} from "react-router-dom";
-import {useToggleFollowMutation} from "../../../../../features/api/apiSlice";
 import {memo} from "react";
 import {selectCurrentUser} from "../../../../../features/auth/authSlice";
 import useMutationResponseHandler from "../../../../../hooks/useMutationResponseHandler";
+import {useToggleFollowUsersMutation} from "../../../../../features/api/apiSlice";
 
 interface UserItemProps {
     user: IUser,
@@ -16,7 +16,7 @@ interface UserItemProps {
 const UserItem = ({user, page, pageSize}: UserItemProps) => {
     const currentUser = useAppSelector(selectCurrentUser)
     const navigate = useNavigate();
-    const [toggleFollow] = useToggleFollowMutation()
+    const [toggleFollow] = useToggleFollowUsersMutation()
     const userURL = `/profile/${user.id}`
     const handleResponse = useMutationResponseHandler()
     const isCurrentUserItem = currentUser && currentUser.id === user.id

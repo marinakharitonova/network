@@ -1,6 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {RootState} from "../store";
-import {PatchCollection} from "@reduxjs/toolkit/dist/query/core/buildThunks";
 import {PromiseWithKnownReason} from "@reduxjs/toolkit/dist/query/core/buildMiddleware/types";
 
 interface RawResponse {
@@ -66,6 +65,13 @@ type UpdateAvatarQuery = {
     data: FormData
 }
 
+interface ToggleFollowProfileQuery {
+    isFollowed: boolean,
+    userId: number
+}
+
+interface ToggleFollowUsersQuery extends ToggleFollowProfileQuery, UsersQuery {}
+
 export type ProfileEditQuery = Omit<IProfile, "photos">
 
 const handleResponseErrors = (queryFulfilled: PromiseWithKnownReason<any, any>, handler: any) => {
@@ -93,7 +99,7 @@ const baseQuery = fetchBaseQuery({
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery,
-    tagTypes: ['Auth', 'Users'],
+    tagTypes: ['Auth', 'Users', 'FollowStatus'],
     endpoints: builder => ({
         getUsers: builder.query<UsersResponse, UsersQuery>({
             query: (args) => `users?count=${args.pageSize}&page=${args.page}`,
@@ -105,7 +111,27 @@ export const apiSlice = createApi({
             },
             providesTags: [{type: 'Users', id: 'PARTIAL_LIST'}]
         }),
-        toggleFollow: builder.mutation({
+        getFollowStatus: builder.query<boolean, number>({
+            query: (arg) => (`follow/${arg}`),
+            providesTags: (result, error, arg) => [{type: 'FollowStatus', id: arg}]
+        }),
+        toggleFollowProfile: builder.mutation<RawResponse, ToggleFollowProfileQuery>({
+            query: (args: UserFollowQuery) => ({
+                url: `follow/${args.userId}`,
+                method: args.isFollowed ? 'DELETE' : 'POST'
+            }),
+            onQueryStarted({userId, isFollowed}, {
+                dispatch,
+                queryFulfilled,
+            }) {
+                const patchResult = dispatch(
+                    apiSlice.util.updateQueryData('getFollowStatus', userId, draft => !draft)
+                )
+                handleResponseErrors(queryFulfilled, patchResult.undo)
+            },
+            invalidatesTags: [{type: 'Users', id: 'PARTIAL_LIST'}]
+        }),
+        toggleFollowUsers: builder.mutation<RawResponse, ToggleFollowUsersQuery>({
             query: (args: UserFollowQuery) => ({
                 url: `follow/${args.userId}`,
                 method: args.isFollowed ? 'DELETE' : 'POST'
@@ -123,7 +149,8 @@ export const apiSlice = createApi({
                     })
                 )
                 handleResponseErrors(queryFulfilled, patchResult.undo)
-            }
+            },
+            invalidatesTags: (result, error, arg) => [{type: 'FollowStatus', id: arg.userId}]
         }),
         getProfile: builder.query<IProfile, number>({
             query: (userId) => `profile/${userId}`,
@@ -210,7 +237,8 @@ export const apiSlice = createApi({
 
 export const {
     useGetUsersQuery,
-    useToggleFollowMutation,
+    useToggleFollowUsersMutation,
+    useToggleFollowProfileMutation,
     useGetProfileQuery,
     useAuthQuery,
     useLogoutMutation,
@@ -218,5 +246,6 @@ export const {
     useGetStatusQuery,
     useUpdateStatusMutation,
     useUpdateAvatarMutation,
-    useEditProfileMutation
+    useEditProfileMutation,
+    useGetFollowStatusQuery
 } = apiSlice
