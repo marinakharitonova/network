@@ -1,17 +1,17 @@
-import React, {useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import ProfileDescription from "../ProfileDescription/ProfileDescription";
 import {Button} from "antd";
 import ProfileInfoEditor from "../ProfileInfoEditor/ProfileInfoEditor";
+import {useMode} from "../../../../../hooks/useMode";
 
 type ProfileDataProps = {
     canUpdate: boolean,
     profile: IProfile
 }
 type OmittedProfile = Omit<IProfile, 'photos' | 'userId' | 'contacts'>
-type ModeType = 'show' | 'edit'
 
 function ProfileData({canUpdate, profile}: ProfileDataProps) {
-    const [mode, setMode] = useState<ModeType>('show')
+    const [mode, switchMode] = useMode()
     const formInitialValues = useMemo(() => {
         const initValues = {} as OmittedProfile
 
@@ -31,10 +31,10 @@ function ProfileData({canUpdate, profile}: ProfileDataProps) {
                     ? <>
                         <ProfileDescription profile={profile}/>
                         {canUpdate &&
-                            <Button type="primary" onClick={() => setMode('edit')}>Edit info</Button>}
+                            <Button type="primary" onClick={switchMode}>Edit info</Button>}
                     </>
                     : <ProfileInfoEditor initialValues={formInitialValues}
-                                         onFinishEdit={() => setMode('show')}/>
+                                         onFinishEdit={switchMode}/>
             }
         </>
     );

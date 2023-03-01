@@ -5,8 +5,7 @@ import {useGetStatusQuery, useUpdateStatusMutation} from "../../../../../feature
 import {selectCurrentUser} from "../../../../../features/auth/authSlice";
 import TextArea from "antd/es/input/TextArea";
 import useMutationResponseHandler from "../../../../../hooks/useMutationResponseHandler";
-
-type EditMode = 'edit' | 'show';
+import {useMode} from "../../../../../hooks/useMode";
 
 type UserStatusProps = {
     userId: number
@@ -19,7 +18,7 @@ const UserStatus = ({userId}: UserStatusProps): JSX.Element => {
         isSuccess,
     } = useGetStatusQuery(Number(userId))
 
-    const [mode, setMode] = useState<EditMode>('show')
+    const [mode, switchMode] = useMode()
     const [localStatus, setLocalStatus] = useState('')
     const currentUser = useAppSelector(selectCurrentUser)
     const canUpdateStatus = currentUser && currentUser.id === userId
@@ -33,7 +32,7 @@ const UserStatus = ({userId}: UserStatusProps): JSX.Element => {
     }, [status])
 
     const handleInputBlur = () => {
-        setMode('show')
+        switchMode()
         if (localStatus === status) return
 
         handleResponse(updateStatus({status: localStatus, userId}))
@@ -58,7 +57,7 @@ const UserStatus = ({userId}: UserStatusProps): JSX.Element => {
     let showModeContent = null
     if (canUpdateStatus) {
         showModeContent = <Tooltip placement="topLeft" title={'Double click to edit'}>
-            <div onDoubleClick={() => setMode('edit')} style={statusStyle}>
+            <div onDoubleClick={switchMode} style={statusStyle}>
                 {status || '< Set your status here <3 >'}
             </div>
         </Tooltip>

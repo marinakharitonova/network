@@ -5,15 +5,15 @@ import banner2 from "../../../../assets/images/profile/banner-2.jpg";
 import banner3 from "../../../../assets/images/profile/banner-3.jpg";
 import banner4 from "../../../../assets/images/profile/banner-4.jpg";
 import {CheckOutlined, EditOutlined} from "@ant-design/icons";
-import {useRef, useState} from "react";
+import {useRef} from "react";
 import {useLocalStorage} from "../../../../hooks/useLocalStorage";
 import {useAppSelector} from "../../../../features/hooks";
 import {selectCurrentUser} from "../../../../features/auth/authSlice";
-
-type Mode = 'edit' | 'show'
+import {useMode} from "../../../../hooks/useMode";
 
 const bannersList = [banner0, banner1, banner2, banner3, banner4]
-const imagesList = bannersList.map(banner => (<Image width={'100%'} height={300} src={banner} preview={false} key={banner}/>))
+const imagesList = bannersList.map(banner => (
+    <Image width={'100%'} height={300} src={banner} preview={false} key={banner}/>))
 
 type BannerProps = {
     userId: number
@@ -25,7 +25,7 @@ const Banner = ({userId}: BannerProps): JSX.Element => {
     const currentUser = useAppSelector(selectCurrentUser)
     const canUpdate = currentUser && currentUser.id === userId
 
-    const [mode, setMode] = useState<Mode>('show')
+    const [mode, switchMode] = useMode()
 
     const initialSlide = userBanner && userBanner.userId === userId ? userBanner.slideId : 0
 
@@ -38,11 +38,11 @@ const Banner = ({userId}: BannerProps): JSX.Element => {
 
     const handleSaveClick = () => {
         setStorageBanner(JSON.stringify({userId: currentUser!.id, slideId: currentSlide.current}))
-        setMode('show')
+        switchMode()
     }
 
     const handleEditClick = () => {
-        setMode('edit')
+        switchMode()
     }
 
     return (
