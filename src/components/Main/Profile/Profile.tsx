@@ -38,7 +38,7 @@ const Profile = (): JSX.Element => {
                            isSuccess={isProfileSuccess && isFollowStatusSuccess}
                            error={profileError || followStatusError}>
                 {profile && <>
-                    <Banner/>
+                    <Banner userId={profile.userId}/>
                     <ProfileInfo profile={profile} key={profile.userId} followStatus={Boolean(followStatus)}/>
                 </>}
                 {/*<PostForm/>*/}
