@@ -3,7 +3,7 @@ import {MessageApiContext} from "../context/messageApi-context";
 import {MutationActionCreatorResult} from "@reduxjs/toolkit/dist/query/core/buildInitiate";
 import {MutationDefinition} from "@reduxjs/toolkit/query";
 
-const useMutationResponseHandler = (onSuccess?: {message?: string, callback?: () => void}) => {
+const useMutationResponseHandler = (onSuccess?: { message?: string, callback?: () => void }) => {
     const messageApi = useContext(MessageApiContext)
 
     return (rawResult: MutationActionCreatorResult<MutationDefinition<any, any, any, any>>) => {
@@ -12,7 +12,7 @@ const useMutationResponseHandler = (onSuccess?: {message?: string, callback?: ()
             .then((result) => {
                 if (result.resultCode === 1) {
                     messageApi.open({type: 'error', content: result.messages[0]})
-                } else {
+                } else if (result.resultCode === 0) {
                     if (onSuccess?.message) {
                         messageApi.open({type: 'success', content: onSuccess.message})
                     }

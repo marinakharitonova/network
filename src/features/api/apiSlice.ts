@@ -52,7 +52,8 @@ type UserFollowQuery = {
 type LoginQuery = {
     email: string,
     password: string,
-    rememberMe: boolean
+    rememberMe: boolean,
+    captcha?: string
 }
 
 type UpdateStatusQuery = {
@@ -70,7 +71,8 @@ interface ToggleFollowProfileQuery {
     userId: number
 }
 
-interface ToggleFollowUsersQuery extends ToggleFollowProfileQuery, UsersQuery {}
+interface ToggleFollowUsersQuery extends ToggleFollowProfileQuery, UsersQuery {
+}
 
 export type ProfileEditQuery = Omit<IProfile, "photos">
 
@@ -180,6 +182,9 @@ export const apiSlice = createApi({
             query: () => `auth/me`,
             providesTags: ['Auth']
         }),
+        getCaptcha: builder.query<{ url: string }, void>({
+            query: () => `/security/get-captcha-url`
+        }),
         login: builder.mutation<LoginResponse, LoginQuery>({
             query: (data) => ({
                 url: `/auth/login`,
@@ -247,5 +252,6 @@ export const {
     useUpdateStatusMutation,
     useUpdateAvatarMutation,
     useEditProfileMutation,
-    useGetFollowStatusQuery
+    useGetFollowStatusQuery,
+    useGetCaptchaQuery
 } = apiSlice
