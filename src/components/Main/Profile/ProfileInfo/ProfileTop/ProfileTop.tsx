@@ -1,6 +1,6 @@
 import React from 'react';
 import UserStatus from "../UserStatus/UserStatus";
-import {Button} from "antd";
+import {Button, Col, Row} from "antd";
 import {useToggleFollowProfileMutation} from "../../../../../features/api/apiSlice";
 import useMutationResponseHandler from "../../../../../hooks/useMutationResponseHandler";
 
@@ -19,13 +19,18 @@ const ProfileTop = ({userId, isProfileOwner, followStatus}: ProfileTopProps) => 
     }
 
     return (
-        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-            <UserStatus userId={userId}/>
-            {
-                !isProfileOwner
-                && <Button type="primary" onClick={handleToggleFollow}>{followStatus ? 'Unfollow' : 'Follow'}</Button>
-            }
-        </div>
+        <Row gutter={16}>
+            <Col span={18}>
+                <UserStatus userId={userId}/>
+            </Col>
+            <Col span={6} style={{textAlign: 'right'}}>
+                {
+                    !isProfileOwner
+                    &&
+                    <Button type="primary" onClick={handleToggleFollow}>{followStatus ? 'Unfollow' : 'Follow'}</Button>
+                }
+            </Col>
+        </Row>
     );
 }
 
