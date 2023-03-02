@@ -73,11 +73,8 @@ const handleResponseErrors = (queryFulfilled: PromiseWithKnownReason<{ data: Mut
 
 const baseQuery = fetchBaseQuery({
     baseUrl: 'https://social-network.samuraijs.com/api/1.0/',
-    prepareHeaders: (headers, {getState}) => {
-        const apiKey = (getState() as RootState).auth.apiKey
-        if (apiKey) {
-            headers.set('API-KEY', apiKey)
-        }
+    prepareHeaders: (headers) => {
+        headers.set('API-KEY', 'e6ffdf33-5ec5-4b1b-8821-1e3065551482')
         return headers
     },
     credentials: 'include',

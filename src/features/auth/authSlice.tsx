@@ -8,12 +8,11 @@ type AuthState = {
         email: string,
         login: string,
     } | null
-    apiKey: string | null
 }
 
 const authSlice = createSlice({
     name: 'auth',
-    initialState: {user: null, apiKey: null} as AuthState,
+    initialState: {user: null} as AuthState,
     reducers: {},
     extraReducers: builder => {
         builder
@@ -22,7 +21,6 @@ const authSlice = createSlice({
                 (state, action) => {
                     if (action.payload.resultCode === 0) {
                         state.user = action.payload.data
-                        state.apiKey = '41b53631-d409-42fd-9c23-c463cd4b426b'
                     }
                 }
             )
@@ -31,7 +29,6 @@ const authSlice = createSlice({
                 (state, action) => {
                     if (action.payload.resultCode === 0) {
                         state.user = null
-                        state.apiKey = null
                     }
                 }
             )
