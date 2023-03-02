@@ -23,8 +23,7 @@ const Sidebar = (): JSX.Element => {
         {label: (<NavLink to='dialogs' style={getStyle}>Dialogs</NavLink>), key: '2'},
         {label: (<NavLink to='users' style={getStyle}>Users</NavLink>), key: '3'},
         {label: (<NavLink to='news' style={getStyle} >News</NavLink>), key: '4'},
-        {label: (<NavLink to='music' style={getStyle}>Music</NavLink>), key: '5'},
-        {label: (<NavLink to='settings' style={getStyle}>Settings</NavLink>), key: '6'},
+        {label: (<NavLink to='settings' style={getStyle}>Settings</NavLink>), key: '5'},
     ]
 
     return (
