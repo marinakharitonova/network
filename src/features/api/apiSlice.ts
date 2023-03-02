@@ -1,36 +1,21 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import {createApi, fetchBaseQuery, FetchBaseQueryMeta} from "@reduxjs/toolkit/query/react";
 import {RootState} from "../store";
 import {PromiseWithKnownReason} from "@reduxjs/toolkit/dist/query/core/buildMiddleware/types";
 
-interface RawResponse {
-    data: unknown,
+type RawResponse<T> = {
+    data: T,
     messages: Array<string>,
     fieldsError?: Array<string>,
     resultCode: number
 }
 
-interface AuthResponse extends RawResponse {
-    data: {
-        email: string,
-        login: string,
-        id: number,
-    }
-}
+type MutationResponse = RawResponse<{ resultCode: number }>
 
-interface LoginResponse extends RawResponse {
-    data: {
-        userId: number,
-    },
-}
+type AuthResponse = RawResponse<{ email: string, login: string, id: number }>
 
-interface UpdateAvatarResponse extends RawResponse {
-    data: {
-        photos: {
-            small: string,
-            large: string
-        }
-    }
-}
+type LoginResponse = RawResponse<{ userId: number }>
+
+type UpdateAvatarResponse = RawResponse<{ photos: { small: string, large: string } }>
 
 type UsersResponse = {
     users: IUser[],
@@ -76,7 +61,7 @@ interface ToggleFollowUsersQuery extends ToggleFollowProfileQuery, UsersQuery {
 
 export type ProfileEditQuery = Omit<IProfile, "photos">
 
-const handleResponseErrors = (queryFulfilled: PromiseWithKnownReason<any, any>, handler: any) => {
+const handleResponseErrors = (queryFulfilled: PromiseWithKnownReason<{ data: MutationResponse; meta: FetchBaseQueryMeta | undefined; }, any>, handler: any) => {
     queryFulfilled
         .then(res => {
             if (res.data.resultCode === 1) {
@@ -117,7 +102,7 @@ export const apiSlice = createApi({
             query: (arg) => (`follow/${arg}`),
             providesTags: (result, error, arg) => [{type: 'FollowStatus', id: arg}]
         }),
-        toggleFollowProfile: builder.mutation<RawResponse, ToggleFollowProfileQuery>({
+        toggleFollowProfile: builder.mutation<MutationResponse, ToggleFollowProfileQuery>({
             query: (args: UserFollowQuery) => ({
                 url: `follow/${args.userId}`,
                 method: args.isFollowed ? 'DELETE' : 'POST'
@@ -133,7 +118,7 @@ export const apiSlice = createApi({
             },
             invalidatesTags: [{type: 'Users', id: 'PARTIAL_LIST'}]
         }),
-        toggleFollowUsers: builder.mutation<RawResponse, ToggleFollowUsersQuery>({
+        toggleFollowUsers: builder.mutation<MutationResponse, ToggleFollowUsersQuery>({
             query: (args: UserFollowQuery) => ({
                 url: `follow/${args.userId}`,
                 method: args.isFollowed ? 'DELETE' : 'POST'
@@ -157,7 +142,7 @@ export const apiSlice = createApi({
         getProfile: builder.query<IProfile, number>({
             query: (userId) => `profile/${userId}`,
         }),
-        editProfile: builder.mutation<RawResponse, ProfileEditQuery>({
+        editProfile: builder.mutation<MutationResponse, ProfileEditQuery>({
             query: (arg) => ({
                 url: `profile`,
                 method: 'PUT',
@@ -202,7 +187,7 @@ export const apiSlice = createApi({
         getStatus: builder.query<string, number>({
             query: (userId) => `profile/status/${userId}`
         }),
-        updateStatus: builder.mutation<RawResponse, UpdateStatusQuery>({
+        updateStatus: builder.mutation<MutationResponse, UpdateStatusQuery>({
             query: (arg) => ({
                 url: `profile/status`,
                 method: 'PUT',

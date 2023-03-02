@@ -4,12 +4,11 @@ import Profile from "../components/Main/Profile/Profile";
 import Dialogs from "../components/Main/Dialogs/Dialogs";
 import ErrorPage from "../components/ErrorPage/ErrorPage";
 import Settings from "../components/Main/Settings/Settings";
-import Music from "../components/Main/Music/Music";
-import Users from "../components/Main/Users/Users";
-import {RouteObject} from "react-router-dom";
+import {Navigate, RouteObject} from "react-router-dom";
 import Login from "../components/Main/Login/Login";
 
 const News = React.lazy(() => import('../components/Main/News/News'));
+const Users = React.lazy(() => import('../components/Main/Users/Users'));
 
 const routes: RouteObject[] = [
     {
@@ -19,7 +18,7 @@ const routes: RouteObject[] = [
         children: [
             {
                 path: "",
-                element: <Login/>,
+                element: <Navigate to='/profile'/>,
             },
             {
                 path: "login",
@@ -52,10 +51,6 @@ const routes: RouteObject[] = [
             {
                 path: "news",
                 element: <News/>,
-            },
-            {
-                path: "music",
-                element: <Music/>,
             },
             {
                 path: "settings",

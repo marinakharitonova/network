@@ -22,10 +22,10 @@
   },
   "include": [
     "src",
-    "models/dialog.d.ts",
-    "models/message.d.ts",
-    "models/post.d.ts",
-    "models/user.d.ts",
-    "models/profile.d.ts"
+    "src/models/dialog.d.ts",
+    "src/models/message.d.ts",
+    "src/models/post.d.ts",
+    "src/models/user.d.ts",
+    "src/models/profile.d.ts"
   ]
 }
