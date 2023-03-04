@@ -1,7 +1,18 @@
+import {Col, Row} from "antd";
+import Everything from "./Everything/Everything";
+import TopHeadlines from "./TopHeadlines/TopHeadlines";
+
 
 const News = (): JSX.Element => {
     return (
-        <div>News</div>
+        <Row gutter={16}>
+            <Col span={6}>
+                <TopHeadlines/>
+            </Col>
+            <Col span={18}>
+                <Everything/>
+            </Col>
+        </Row>
     )
 }
 

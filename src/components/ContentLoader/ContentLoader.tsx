@@ -3,6 +3,7 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import React from "react";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 import {SerializedError} from "@reduxjs/toolkit";
+import {parseFetchError} from "../../utils/parseFetchError";
 
 type ContentLoaderProps = {
     children: JSX.Element | JSX.Element[] | undefined;
@@ -15,15 +16,10 @@ type ContentLoaderProps = {
 
 const ContentLoader = ({isLoading, isSuccess, isError, error, children}: ContentLoaderProps): JSX.Element => {
 
-    let errMsg = ''
-    if (error && 'status' in error) {
-        errMsg = 'error' in error ? error.error : JSON.stringify(error.data)
-    }
-
     return (
         <>
             {isLoading && <Loader/>}
-            {isError && <ErrorMessage text={errMsg}/>}
+            {isError && <ErrorMessage text={parseFetchError(error)}/>}
             {isSuccess && children}
         </>
     )

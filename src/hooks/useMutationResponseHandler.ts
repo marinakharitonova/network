@@ -2,6 +2,7 @@ import {useContext} from "react";
 import {MessageApiContext} from "../context/messageApi-context";
 import {MutationActionCreatorResult} from "@reduxjs/toolkit/dist/query/core/buildInitiate";
 import {MutationDefinition} from "@reduxjs/toolkit/query";
+import {parseFetchError} from "../utils/parseFetchError";
 
 const useMutationResponseHandler = (onSuccess?: { message?: string, callback?: () => void }) => {
     const messageApi = useContext(MessageApiContext)
@@ -20,11 +21,7 @@ const useMutationResponseHandler = (onSuccess?: { message?: string, callback?: (
                 }
             })
             .catch((error) => {
-                let errMsg = ''
-                if (error && 'status' in error) {
-                    errMsg = 'error' in error ? error.error : JSON.stringify(error.data)
-                }
-                messageApi.open({type: 'error', content: errMsg})
+                messageApi.open({type: 'error', content: parseFetchError(error)})
             })
     }
 }

@@ -1,5 +1,4 @@
 import {createApi, fetchBaseQuery, FetchBaseQueryMeta} from "@reduxjs/toolkit/query/react";
-import {RootState} from "../store";
 import {PromiseWithKnownReason} from "@reduxjs/toolkit/dist/query/core/buildMiddleware/types";
 
 type RawResponse<T> = {
