@@ -53,3 +53,15 @@ h1, h2, h3, h4, h5, h6 {
 .banner-carousel img {
     object-fit: cover;
 }
+
+.chat-list .ant-list-item-meta-title {
+    margin: 0 !important;
+}
+
+.chat-list .ant-list-item-meta-avatar {
+    margin-inline-end: 10px !important;
+}
+
+.chat-list .ant-list-item-meta-description {
+    color: black !important;
+}

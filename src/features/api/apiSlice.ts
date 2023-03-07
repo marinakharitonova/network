@@ -60,6 +60,13 @@ interface ToggleFollowUsersQuery extends ToggleFollowProfileQuery, UsersQuery {
 
 export type ProfileEditQuery = Omit<IProfile, "photos">
 
+export type ChatMessage = {
+    userId: number,
+    userName: string,
+    message: string,
+    photo: string | null
+}
+
 const handleResponseErrors = (queryFulfilled: PromiseWithKnownReason<{ data: MutationResponse; meta: FetchBaseQueryMeta | undefined; }, any>, handler: any) => {
     queryFulfilled
         .then(res => {
@@ -234,5 +241,5 @@ export const {
     useUpdateAvatarMutation,
     useEditProfileMutation,
     useGetFollowStatusQuery,
-    useGetCaptchaQuery
+    useGetCaptchaQuery,
 } = apiSlice

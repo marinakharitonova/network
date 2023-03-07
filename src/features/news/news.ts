@@ -88,7 +88,7 @@ type SourcesQuery = {
 const baseQuery = fetchBaseQuery({
     baseUrl: 'https://newsapi.org/v2/',
     prepareHeaders: (headers) => {
-        headers.set('X-Api-Key', 'fe168ebfbae442b9802a625373428e54')
+        headers.set('X-Api-Key', 'e62fcd81c46c4445a6eaeaaf15b3ccc2')
         return headers
     }
 })

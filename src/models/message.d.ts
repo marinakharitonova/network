@@ -1,7 +1,6 @@
 interface IMessage {
-    id: number,
-    author: {
-        avatarSrc: string | null,
-    },
-    text: string
+    userId: number,
+    userName: string,
+    message: string,
+    photo: string | null
 }

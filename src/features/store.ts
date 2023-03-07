@@ -2,18 +2,20 @@ import {combineReducers, configureStore, PreloadedState} from '@reduxjs/toolkit'
 import authReducer from "./auth/authSlice";
 import {apiSlice} from "./api/apiSlice";
 import {newsApiSlice} from "./news/news";
+import {chatApiSlice} from "./chat/chatSlice";
 
 const rootReducer = combineReducers({
     auth: authReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
-    [newsApiSlice.reducerPath]: newsApiSlice.reducer
+    [newsApiSlice.reducerPath]: newsApiSlice.reducer,
+    [chatApiSlice.reducerPath]: chatApiSlice.reducer
 })
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {
     return configureStore({
         reducer: rootReducer,
         middleware: getDefaultMiddleware =>
-            getDefaultMiddleware().concat(apiSlice.middleware).concat(newsApiSlice.middleware),
+            getDefaultMiddleware().concat(apiSlice.middleware).concat(newsApiSlice.middleware).concat(chatApiSlice.middleware),
         preloadedState,
     })
 }
