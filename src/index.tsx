@@ -7,7 +7,7 @@ import routes from "./routes/routes";
 import {Provider} from "react-redux";
 import {setupStore} from "./features/store";
 
-const router = createBrowserRouter(routes);
+const router = createBrowserRouter(routes, {basename: process.env.PUBLIC_URL});
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(

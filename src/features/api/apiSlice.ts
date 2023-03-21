@@ -80,7 +80,7 @@ const handleResponseErrors = (queryFulfilled: PromiseWithKnownReason<{ data: Mut
 const baseQuery = fetchBaseQuery({
     baseUrl: 'https://social-network.samuraijs.com/api/1.0/',
     prepareHeaders: (headers) => {
-        headers.set('API-KEY', 'e6ffdf33-5ec5-4b1b-8821-1e3065551482')
+        headers.set('API-KEY', process.env.REACT_APP_API_KEY!)
         return headers
     },
     credentials: 'include',

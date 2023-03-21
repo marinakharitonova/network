@@ -82,13 +82,10 @@ type SourcesQuery = {
     country: Country
 }
 
-//pavel fe168ebfbae442b9802a625373428e54
-//marina e62fcd81c46c4445a6eaeaaf15b3ccc2
-
 const baseQuery = fetchBaseQuery({
     baseUrl: 'https://newsapi.org/v2/',
     prepareHeaders: (headers) => {
-        headers.set('X-Api-Key', 'e62fcd81c46c4445a6eaeaaf15b3ccc2')
+        headers.set('X-Api-Key', process.env.REACT_APP_NEWS_API_KEY!)
         return headers
     }
 })
