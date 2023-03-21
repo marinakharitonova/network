@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/marinakharitonova/network-t/static/css/main.e8cc7992.css",
+    "main.js": "/marinakharitonova/network-t/static/js/main.58220b26.js",
+    "static/js/870.96da633d.chunk.js": "/marinakharitonova/network-t/static/js/870.96da633d.chunk.js",
+    "static/js/583.a4303c39.chunk.js": "/marinakharitonova/network-t/static/js/583.a4303c39.chunk.js",
+    "static/js/4.9732851f.chunk.js": "/marinakharitonova/network-t/static/js/4.9732851f.chunk.js",
+    "static/js/27.f7c131aa.chunk.js": "/marinakharitonova/network-t/static/js/27.f7c131aa.chunk.js",
+    "static/js/670.46fd2da1.chunk.js": "/marinakharitonova/network-t/static/js/670.46fd2da1.chunk.js",
+    "static/js/531.cefef5b8.chunk.js": "/marinakharitonova/network-t/static/js/531.cefef5b8.chunk.js",
+    "static/media/banner-4.jpg": "/marinakharitonova/network-t/static/media/banner-4.6e7d18de81b0f2a7bfe8.jpg",
+    "static/media/banner-1.jpeg": "/marinakharitonova/network-t/static/media/banner-1.33b2273c0aafde49c91a.jpeg",
+    "static/media/banner-2.jpg": "/marinakharitonova/network-t/static/media/banner-2.060412813b2b59e02db4.jpg",
+    "static/media/banner-3.jpg": "/marinakharitonova/network-t/static/media/banner-3.216655576c083411f36c.jpg",
+    "static/media/banner-0.jpg": "/marinakharitonova/network-t/static/media/banner-0.c800d53f0a4477e8ae76.jpg",
+    "index.html": "/marinakharitonova/network-t/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.e8cc7992.css",
+    "static/js/main.58220b26.js"
+  ]
+}
