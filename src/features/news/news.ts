@@ -99,7 +99,7 @@ const appendSearchParams = <T extends TopHeadlinesQuery | EverythingQuery | Sour
     for (let key in paramsObj) {
         let value = paramsObj[key as keyof Partial<T>]
         if (value) {
-            result.push(`${key}=${value}`)
+            result.push(`${key}=${encodeURI(value as string)}`)
         }
     }
 

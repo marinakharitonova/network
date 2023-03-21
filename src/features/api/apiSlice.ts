@@ -115,7 +115,7 @@ export const apiSlice = createApi({
                 queryFulfilled,
             }) {
                 const patchResult = dispatch(
-                    apiSlice.util.updateQueryData('getFollowStatus', userId, draft => !draft)
+                    apiSlice.util.updateQueryData('getFollowStatus', userId, () => !isFollowed)
                 )
                 handleResponseErrors(queryFulfilled, patchResult.undo)
             },

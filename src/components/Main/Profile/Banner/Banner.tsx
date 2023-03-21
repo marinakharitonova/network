@@ -27,7 +27,7 @@ const Banner = ({userId}: BannerProps): JSX.Element => {
 
     const [mode, switchMode] = useMode()
 
-    const initialSlide = userBanner && userBanner.userId === userId ? userBanner.slideId : 0
+    const initialSlide = userBanner && userBanner.userId === userId ? userBanner.slideId : 3
 
     const currentSlide = useRef(initialSlide)
     const sliderRef = useRef(null)

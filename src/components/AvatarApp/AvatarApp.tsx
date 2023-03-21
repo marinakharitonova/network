@@ -3,7 +3,7 @@ import {UserOutlined} from "@ant-design/icons";
 import React, {CSSProperties} from "react";
 
 type AvatarAppProps = {
-    src: String | null,
+    src: string | null,
     size?: number,
     style?: CSSProperties,
     shape?: 'circle' | 'square'
