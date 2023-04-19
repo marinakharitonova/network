@@ -42,9 +42,9 @@ specific date or source, to change the sort order and the component in which the
 these parameters could generate many identical requests for data with the same search parameters, but this does not
 happen, because the data received during the request is cached and when requested with identical parameters, they are
 simply retrieved from the cache. This is especially convenient given that the news API is free and has a limit on the
-number of requests. (Because the [News API](https://newsapi.org/) is free and only works in development mode, I wasn't
+number of requests. (*Because the [News API](https://newsapi.org/) is free and only works in development mode, I wasn't
 able to host the News
-page in the production version of the app.)
+page in the production version of the app.*)
 
 On the Chat page, interaction with the server takes place over the websocket protocol, which allows you to receive
 messages from callers without having to send a request for updates or reload the page.
