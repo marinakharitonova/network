@@ -1,46 +1,41 @@
-# Getting Started with Create React App
+# Network project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Network is a desktop web application, a social network created based
+on [free lessons on YouTube](https://www.youtube.com/watch?v=gb7gMluAeao&list=PLcvhF2Wqh7DNVy1OCUpG3i5lyxyBWhGZ8).
 
-## Available Scripts
+This is a [React](https://react.dev/) project written in [Typescript](https://www.typescriptlang.org/) using tools
+like
 
-In the project directory, you can run:
+* [Ant Design](https://ant.design/) to create a user interface
+* [React Router](https://reactrouter.com/en/main) to enables client side routing
+* [Redux Toolkit](https://redux-toolkit.js.org/) tools for managing the application state, and in
+  particular [RTK Query](https://redux-toolkit.js.org/rtk-query/overview) to fetching and caching data
 
-### `yarn start`
+This project does not provide a registration mechanism,
+so please register [here](https://social-network.samuraijs.com/signUp) to take full advantage of the application.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Application Features
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+The application was created based on real social networks and includes the main functionality inherent in them:
 
-### `yarn test`
+* authorization,
+* user's personal page with the ability to specify information about yourself and choose the design of your page,
+* a page with a list of all network users, the ability to subscribe to the user of interest, as well as view his
+  personal page,
+* a general chat page, to which all users of the social network can connect and leave their messages there,
+* settings page where the user can change the color theme of their app,
+* news page (*only available in development mode*), presents a list of top headlines, and the ability to search for
+  news by keywords, followed by filtering by several parameters
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Project implementation features
 
-### `yarn build`
+The Ant Design library used to build the UI provides a number of ready-made components, such as layout
+components, Form, DatePicker, Pagination, which greatly speeds up the process of building the user interface
+and allows you to create a unique application design.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The RTK Query utility allows me to declaratively describe the logic for fetching and mutation application data in one
+place and provides convenient hooks for calling in components. Being able to do optimistic updates has allowed me to
+make the UI feel faster. For example, this can be seen on the Users page: when you click on the Follow button, the
+button state changes instantly (the label changes to Unfollow) while the request is still in process.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
