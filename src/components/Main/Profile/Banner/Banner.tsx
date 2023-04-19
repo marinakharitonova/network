@@ -5,40 +5,69 @@ import banner2 from "../../../../assets/images/profile/banner-2.jpg";
 import banner3 from "../../../../assets/images/profile/banner-3.jpg";
 import banner4 from "../../../../assets/images/profile/banner-4.jpg";
 import {CheckOutlined, EditOutlined} from "@ant-design/icons";
-import {useRef} from "react";
+import {useMemo, useRef} from "react";
 import {useLocalStorage} from "../../../../hooks/useLocalStorage";
 import {useAppSelector} from "../../../../features/hooks";
 import {selectCurrentUser} from "../../../../features/auth/authSlice";
 import {useMode} from "../../../../hooks/useMode";
 
 const bannersList = [banner0, banner1, banner2, banner3, banner4]
-const imagesList = bannersList.map(banner => (
-    <Image width={'100%'} height={300} src={banner} preview={false} key={banner}/>))
+
+const createBanners = (src: string) => {
+    const newBannerList = bannersList.slice(0)
+    const index = bannersList.findIndex(elem => elem === src)
+
+    const temp = newBannerList[0]
+    newBannerList[0] = src
+    newBannerList[index] = temp
+    return newBannerList
+}
 
 type BannerProps = {
     userId: number
 }
 
 const Banner = ({userId}: BannerProps): JSX.Element => {
-    const [storageBanner, setStorageBanner] = useLocalStorage<string | null>("appBanner", null)
-    const userBanner = storageBanner ? JSON.parse(storageBanner) : null
+    const [storageBanners, setStorageBanners] = useLocalStorage<{ userId: number, src: string }[]>("network-banner", [])
     const currentUser = useAppSelector(selectCurrentUser)
     const canUpdate = currentUser && currentUser.id === userId
-
     const [mode, switchMode] = useMode()
 
-    const initialSlide = userBanner && userBanner.userId === userId ? userBanner.slideId : 3
-
-    const currentSlide = useRef(initialSlide)
+    const initialSlideSrc = useMemo(() => currentUser ? storageBanners.filter(banner => banner.userId === currentUser.id)[0]?.src ?? banner3 : banner3, [currentUser, storageBanners])
+    const userBannersList = useMemo(() => createBanners(initialSlideSrc), [initialSlideSrc])
+    const currentSlideSrc = useRef(initialSlideSrc)
     const sliderRef = useRef(null)
 
     const onChange = (slide: number) => {
-        currentSlide.current = slide
+        currentSlideSrc.current = userBannersList[slide]
     }
 
     const handleSaveClick = () => {
-        setStorageBanner(JSON.stringify({userId: currentUser!.id, slideId: currentSlide.current}))
         switchMode()
+        if (initialSlideSrc === currentSlideSrc.current) {
+            return
+        }
+        setStorageBanners((prevStorageBanners) => {
+            const newBanner = {
+                userId: userId,
+                src: currentSlideSrc.current
+            }
+
+            const existingBanner = prevStorageBanners.find(banner => banner.userId === currentUser!.id)
+
+            if (existingBanner) {
+                return prevStorageBanners.map(banner => {
+                    if (banner.userId === currentUser!.id) {
+                        return ({
+                            ...banner,
+                            src: currentSlideSrc.current
+                        })
+                    } else return banner
+                })
+            } else {
+                return [...prevStorageBanners, newBanner]
+            }
+        })
     }
 
     const handleEditClick = () => {
@@ -61,13 +90,14 @@ const Banner = ({userId}: BannerProps): JSX.Element => {
                         ? <Image
                             width={'100%'}
                             height={300}
-                            src={bannersList[initialSlide]}
+                            src={initialSlideSrc}
                             alt={'Banner'}
                             style={{objectFit: 'cover'}}
                             preview={false}
                         />
                         : <Carousel afterChange={onChange} className='banner-carousel' ref={sliderRef}>
-                            {imagesList}
+                            {userBannersList.map(banner => (
+                                <Image width={'100%'} height={300} src={banner} preview={false} key={banner}/>))}
                         </Carousel>
                 }
             </div>
