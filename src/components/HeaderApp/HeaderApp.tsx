@@ -1,11 +1,11 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {Button, Image, Layout, Space, Typography} from 'antd';
 import logo from '../../assets/images/logo.png'
 import HeaderDropdown from "./HeaderDropdown/HeaderDropdown";
 import {Link} from "react-router-dom";
-import {ColorContext} from "../../context/theme-context";
 import {selectCurrentUser} from "../../features/auth/authSlice";
 import {useAppSelector} from "../../features/hooks";
+import {useAppColor} from "../../hooks/useAppColor";
 
 const {Header} = Layout;
 const {Text} = Typography;
@@ -16,8 +16,10 @@ type HeaderAppProps = {
 }
 
 const HeaderApp = ({isSuccess, isLoading}: HeaderAppProps): JSX.Element => {
-    const context = useContext(ColorContext)!;
+
     const user = useAppSelector(selectCurrentUser)
+    const appColor = useAppColor()
+
 
     const loginLink = (
         <Link to="login">
@@ -35,7 +37,7 @@ const HeaderApp = ({isSuccess, isLoading}: HeaderAppProps): JSX.Element => {
     }
 
     return (
-        <Header style={{background: context.color}}>
+        <Header style={{background: appColor}}>
             <div className="container">
                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                     <Space align={'center'}>

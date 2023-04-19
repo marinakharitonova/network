@@ -1,15 +1,14 @@
 import {Button, Layout, Space, Typography} from 'antd';
 import {GithubOutlined} from '@ant-design/icons';
-import {useContext} from "react";
-import {ColorContext} from "../../context/theme-context";
+import {useAppColor} from "../../hooks/useAppColor";
 
 const {Footer} = Layout;
 const {Text} = Typography;
 
 const FooterApp = (): JSX.Element => {
-    const context = useContext(ColorContext)!;
+    const appColor = useAppColor()
     return (
-        <Footer style={{background: context.color}}>
+        <Footer style={{background: appColor}}>
             <div className="container">
                 <div style={{textAlign: 'right', width: '100%', color: 'white'}}>
                     <Space size={10}>

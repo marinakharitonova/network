@@ -4,12 +4,15 @@ import Main from "./components/Main/Main";
 import FooterApp from "./components/FooterApp/FooterApp";
 import React from "react";
 import {useLocalStorage} from "./hooks/useLocalStorage";
-import {ColorContext, defaultColor} from "./context/theme-context";
 import {useAuthQuery} from "./features/api/apiSlice";
 import {MessageApiContext} from "./context/messageApi-context";
+import {ColorsContext} from "./context/ColorsContext";
+import {useAppColor} from "./hooks/useAppColor";
 
 const App = (): JSX.Element => {
-    const [color, setColor] = useLocalStorage<string>("appColor", defaultColor);
+    const [colors, setColors] = useLocalStorage<{ userId: number, color: string }[]>("network-color", []);
+
+    const appColor = useAppColor()
 
     const [api, contextHolder] = message.useMessage();
 
@@ -21,8 +24,8 @@ const App = (): JSX.Element => {
     } = useAuthQuery()
 
     return (
-        <ConfigProvider theme={{token: {colorPrimary: color}}}>
-            <ColorContext.Provider value={{color, setColor}}>
+        <ConfigProvider theme={{token: {colorPrimary: appColor}}}>
+            <ColorsContext.Provider value={{colors, setColors}}>
                 <MessageApiContext.Provider value={api}>
                     <Layout style={{minHeight: "100vh"}}>
                         {contextHolder}
@@ -31,7 +34,7 @@ const App = (): JSX.Element => {
                         <FooterApp/>
                     </Layout>
                 </MessageApiContext.Provider>
-            </ColorContext.Provider>
+            </ColorsContext.Provider>
         </ConfigProvider>
     );
 }

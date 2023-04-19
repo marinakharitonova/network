@@ -1,17 +1,16 @@
 import {Layout, Menu} from 'antd';
 import {NavLink} from "react-router-dom";
-import {useContext} from "react";
-import {ColorContext} from "../../../context/theme-context";
+import {useAppColor} from "../../../hooks/useAppColor";
 
 const {Sider} = Layout;
 
 const Sidebar = (): JSX.Element => {
 
-    const context = useContext(ColorContext)!
+    const appColor = useAppColor()
 
     let activeStyle = {
         textDecoration: 'underline',
-        textDecorationColor: context.color
+        textDecorationColor: appColor
     }
 
     const getStyle = ({isActive}: { isActive: boolean }) => {
