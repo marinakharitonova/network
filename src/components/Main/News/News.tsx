@@ -9,7 +9,7 @@ const News = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (process.env.NODE_ENV !== 'production') {
+        if (process.env.NODE_ENV === 'production') {
             navigate("/404", {replace: true});
         }
     }, [navigate]);
