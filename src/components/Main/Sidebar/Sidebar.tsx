@@ -14,7 +14,7 @@ const Sidebar = (): JSX.Element => {
         textDecorationColor: context.color
     }
 
-    const getStyle = ({ isActive } : {isActive: boolean}) => {
+    const getStyle = ({isActive}: { isActive: boolean }) => {
         return isActive ? activeStyle : undefined
     }
 
@@ -22,9 +22,12 @@ const Sidebar = (): JSX.Element => {
         {label: (<NavLink to='profile' style={getStyle}>Profile</NavLink>), key: '1'},
         {label: (<NavLink to='chat' style={getStyle}>Chat</NavLink>), key: '2'},
         {label: (<NavLink to='users' style={getStyle}>Users</NavLink>), key: '3'},
-        {label: (<NavLink to='news' style={getStyle} >News</NavLink>), key: '4'},
-        {label: (<NavLink to='settings' style={getStyle}>Settings</NavLink>), key: '5'},
+        {label: (<NavLink to='settings' style={getStyle}>Settings</NavLink>), key: '4'},
     ]
+
+    if (process.env.NODE_ENV !== 'production') {
+        items.push({label: (<NavLink to='news' style={getStyle}>News</NavLink>), key: '5'})
+    }
 
     return (
         <Sider breakpoint={"md"}>
