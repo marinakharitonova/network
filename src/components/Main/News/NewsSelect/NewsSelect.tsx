@@ -1,6 +1,5 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import {Select, Typography} from "antd";
-import {arEG} from "date-fns/locale";
 
 const {Text} = Typography;
 

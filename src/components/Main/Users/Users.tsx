@@ -17,7 +17,7 @@ const Users = (): JSX.Element => {
         if (currentPage !== queryPage) {
             setCurrentPage(queryPage)
         }
-    }, [queryPage])
+    }, [queryPage, currentPage])
 
     const {
         data,
