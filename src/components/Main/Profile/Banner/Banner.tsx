@@ -33,7 +33,11 @@ const Banner = ({userId}: BannerProps): JSX.Element => {
     const canUpdate = currentUser && currentUser.id === userId
     const [mode, switchMode] = useMode()
 
-    const initialSlideSrc = useMemo(() => currentUser ? storageBanners.filter(banner => banner.userId === currentUser.id)[0]?.src ?? banner3 : banner3, [currentUser, storageBanners])
+    const initialSlideSrc = useMemo(() => storageBanners.length > 0
+            ? storageBanners.filter(banner => banner.userId === userId)[0]?.src ?? banner3
+            : banner3,
+        [userId, storageBanners])
+    console.log(initialSlideSrc);
     const userBannersList = useMemo(() => createBanners(initialSlideSrc), [initialSlideSrc])
     const currentSlideSrc = useRef(initialSlideSrc)
     const sliderRef = useRef(null)
