@@ -37,7 +37,7 @@ const Banner = ({userId}: BannerProps): JSX.Element => {
             ? storageBanners.filter(banner => banner.userId === userId)[0]?.src ?? banner3
             : banner3,
         [userId, storageBanners])
-    console.log(initialSlideSrc);
+
     const userBannersList = useMemo(() => createBanners(initialSlideSrc), [initialSlideSrc])
     const currentSlideSrc = useRef(initialSlideSrc)
     const sliderRef = useRef(null)
