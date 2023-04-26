@@ -2,7 +2,7 @@
   "name": "network-t",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://marinakharitonova.github.io/network-t",
+  "homepage": "https://marinakharitonova.github.io/network",
   "dependencies": {
     "@ant-design/colors": "^6.0.0",
     "@ant-design/icons": "^4.7.0",

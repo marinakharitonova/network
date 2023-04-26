@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {ChatMessage} from "../../../../features/api/apiSlice";
 import {List} from "antd";
 import AvatarApp from "../../../AvatarApp/AvatarApp";
@@ -6,9 +6,15 @@ import {Link} from "react-router-dom";
 
 type MessagesListProps = {
     messages: ChatMessage[]
+    onLoadCb: () => void
 }
 
-const MessagesList = ({messages}: MessagesListProps): JSX.Element => {
+const MessagesList = ({messages, onLoadCb}: MessagesListProps): JSX.Element => {
+
+    useEffect(() => {
+        onLoadCb()
+    }, [onLoadCb])
+
     return (
         <List
             itemLayout="horizontal"

@@ -33,7 +33,7 @@ const NewMessageForm = ({onMessageSend} : NewMessageFormProps): JSX.Element => {
         >
             <Form.Item
                 name="message"
-                style={{marginBottom: '0'}}
+                style={{marginBottom: '15px'}}
             >
                 <TextArea showCount maxLength={300} placeholder={'Type your message'}/>
             </Form.Item>

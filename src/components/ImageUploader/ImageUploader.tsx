@@ -30,10 +30,10 @@ const ImageUploader = ({imageUrl, uploadCb, children, size, isLoading}: ImageUpl
         return isJpgOrPng && isLt2M;
     };
 
-    const handleChange = (file: string | boolean | void | File | Blob) => {
+    const handleChange = (value: any) => {
         let formData = new FormData()
 
-        formData.append('image', file as File)
+        formData.append('image', value as File)
 
         uploadCb(formData)
     };
@@ -51,7 +51,7 @@ const ImageUploader = ({imageUrl, uploadCb, children, size, isLoading}: ImageUpl
 
     return (
         <div style={{width: `${increasedSize}px`, height: `${increasedSize}px`}}>
-            <ImgCrop rotate onModalOk={handleChange} beforeCrop={beforeUpload}>
+            <ImgCrop rotationSlider={true} onModalOk={handleChange} beforeCrop={beforeUpload}>
                 <Upload
                     name="image"
                     accept="image/png, image/jpeg"
