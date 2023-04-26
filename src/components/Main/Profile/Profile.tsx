@@ -1,11 +1,12 @@
 import Banner from "./Banner/Banner";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import React from "react";
-import {Navigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {useGetFollowStatusQuery, useGetProfileQuery} from "../../../features/api/apiSlice";
 import ContentLoader from "../../ContentLoader/ContentLoader";
 import {selectCurrentUser} from "../../../features/auth/authSlice";
 import {useAppSelector} from "../../../features/hooks";
+import {withAuth} from "../../../hoc/withAuth";
 
 const Profile = (): JSX.Element => {
     const currentUser = useAppSelector(selectCurrentUser)
@@ -32,7 +33,6 @@ const Profile = (): JSX.Element => {
 
     return (
         <>
-            {!(userId || currentUser) && <Navigate replace to="/login"/>}
             <ContentLoader isError={isProfileError || isFollowStatusError}
                            isLoading={isProfileLoading || isFollowStatusLoading}
                            isSuccess={isProfileSuccess && isFollowStatusSuccess}
@@ -48,4 +48,4 @@ const Profile = (): JSX.Element => {
     )
 }
 
-export default Profile
+export default withAuth(Profile)
