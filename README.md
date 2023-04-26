@@ -31,9 +31,9 @@ The application was created based on real social networks and includes the main 
 
 The Ant Design library used to build the UI provides a number of ready-made components, such as layout
 components, Form, DatePicker, Pagination, which greatly speeds up the process of building the user interface
-and allows you to create a unique application design.
+and allows me to create a unique application design.
 
-The RTK Query utility allows me to declaratively describe the logic for fetching and mutation application data in one
+The RTK Query utility has allowed me to declaratively describe the logic for fetching and mutation application data in one
 place and provides convenient hooks for calling in components. Being able to do optimistic updates has allowed me to
 make the UI feel faster. For example, this can be seen on the Users page: when you click on the Follow button, the
 button state changes instantly (the label changes to Unfollow) while the request is still in process. The caching
@@ -46,7 +46,7 @@ number of requests. (*Because the [News API](https://newsapi.org/) is free and o
 able to host the News
 page in the production version of the app.*)
 
-On the Chat page, interaction with the server takes place over the websocket protocol, which allows you to receive
+On the Chat page, interaction with the server takes place over the websocket protocol, which allows user to receive
 messages from callers without having to send a request for updates or reload the page.
 
 Changing the color theme of the application, as well as changing the banner on the user's personal page, work using
